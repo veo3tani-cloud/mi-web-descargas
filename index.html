@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -708,9 +707,12 @@
         const ADMIN_ID = "GL22tXZLqzcCRpfvNxAoO3sbFt03";
 
         // --- VARIABLES GLOBALES DEL ESTADO DE LA APP ---
+        // (MODIFICADO) Detectamos si es móvil al inicio
+        const isMobileStart = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+        let activeTab = isMobileStart ? 'mobile' : 'pc'; // Si es móvil, arranca en 'mobile'. Si no, en 'pc'.
+
         let currentCategory = 'home';
         let currentSearchTerm = '';
-        let activeTab = 'pc';
         let currentItem = null;
         let currentDownloadLink = null;
         let commentsUnsubscribe = null;
@@ -758,7 +760,7 @@ Este es el software que SÍ TENEMOS. Conoce sus IDs y títulos:
 * Ej: "¡Hola! Soy IA-Lahs, tu asistente. ¿Qué software buscamos hoy?"
 
 **Regla 2: Búsqueda de Software (¡LA MÁS IMPORTANTE!)**
-* El usuario pedirá software (ej: "tienes el photoshop", "busco spotify mod", "office 2019").
+* El usuario pedirá software (ej: "tienes el photoshop", "busco spotify mod", "office 019").
 * Usa tu conocimiento del INVENTARIO para encontrar la MEJOR coincidencia.
 * **A. SI LO ENCUENTRAS (Match):**
     * Responde amablemente y proporciona un enlace a la tarjeta en la página.
@@ -1426,9 +1428,9 @@ Este es el software que SÍ TENEMOS. Conoce sus IDs y títulos:
             
             // (MODIFICADO) Prioriza Español Latinoamericano
             let spanishVoice = voices.find(voice => voice.lang === 'es-419') // Específico de Chrome
-                               || voices.find(voice => voice.lang === 'es-MX') // México
-                               || voices.find(voice => voice.lang === 'es-US') // US
-                               || voices.find(voice => voice.lang.startsWith('es-')); // Cualquiera
+                                || voices.find(voice => voice.lang === 'es-MX') // México
+                                || voices.find(voice => voice.lang === 'es-US') // US
+                                || voices.find(voice => voice.lang.startsWith('es-')); // Cualquiera
             
             if (spanishVoice) {
                 utterThis.voice = spanishVoice;
@@ -1961,6 +1963,26 @@ Este es el software que SÍ TENEMOS. Conoce sus IDs y títulos:
         const adminLoginBtn = document.getElementById('admin-login-btn');
         const adminStatus = document.getElementById('admin-status');
         const commentInput = document.getElementById('comment-input');
+
+        // (NUEVO) AJUSTE VISUAL INICIAL DE PESTAÑAS
+        // Si detectamos móvil, cambiamos los colores de las pestañas y la visibilidad antes de cargar nada
+        if (activeTab === 'mobile') {
+            // Cambiar pestaña PC a inactiva
+            if(tabPc) {
+                tabPc.classList.replace('text-blue-700', 'text-slate-500');
+                tabPc.classList.replace('bg-blue-100', 'bg-slate-100');
+                tabPc.classList.replace('border-blue-600', 'border-transparent');
+            }
+            // Cambiar pestaña Móvil a activa
+            if(tabMobile) {
+                tabMobile.classList.replace('text-slate-500', 'text-green-700');
+                tabMobile.classList.replace('bg-slate-100', 'bg-green-100');
+                tabMobile.classList.replace('border-transparent', 'border-green-600');
+            }
+            // Mostrar contenido móvil y ocultar PC
+            if(contentPc) contentPc.classList.add('hidden');
+            if(contentMobile) contentMobile.classList.remove('hidden');
+        }
 
         // --- ASIGNACIÓN DE EVENTOS ---
         const openAiChatBtn = document.getElementById('open-ai-chat-btn');
