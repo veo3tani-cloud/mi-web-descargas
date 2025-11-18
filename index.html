@@ -44,86 +44,7 @@
     
     <!-- Bloque SEO Multilingüe (hreflang) -->
     <link rel="alternate" hreflang="es" href="https://descargarultimaversion.netlify.app/" />
-    <link rel="alternate" hreflang="en" href="https://descargarultimaversion.netlify.app/" />
-    <link rel="alternate" hreflang="pt" href="https://descargarultimaversion.netlify.app/" />
-    <link rel="alternate" hreflang="de" href="https://descargarultimaversion.netlify.app/" />
-    <link rel="alternate" hreflang="fr" href="https://descargarultimaversion.netlify.app/" />
-    <link rel="alternate" hreflang="ru" href="https://descargarultimaversion.netlify.app/" />
-    <link rel="alternate" hreflang="id" href="https://descargarultimaversion.netlify.app/" />
-    <link rel="alternate" hreflang="hi" href="https://descargarultimaversion.netlify.app/" />
-    <link rel="alternate" hreflang="ar" href="https://descargarultimaversion.netlify.app/" />
-    <link rel="alternate" hreflang="tr" href="https://descargarultimaversion.netlify.app/" />
-    <link rel="alternate" hreflang="vi" href="https://descargarultimaversion.netlify.app/" />
-    <link rel="alternate" hreflang="pl" href="https://descargarultimaversion.netlify.app/" />
-    <link rel="alternate" hreflang="it" href="https://descargarultimaversion.netlify.app/" />
-    <link rel="alternate" hreflang="th" href="https://descargarultimaversion.netlify.app/" />
     <link rel="alternate" hreflang="x-default" href="https://descargarultimaversion.netlify.app/" />
-
-    <!-- ===== DATOS ESTRUCTURADOS (SCHEMA.ORG) PARA SEO ===== -->
-    <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "WebSite",
-      "name": "Descargar Ultima Version",
-      "url": "https://descargarultimaversion.vercel.app/", 
-      "potentialAction": {
-        "@type": "SearchAction",
-        "target": {
-          "@type": "EntryPoint",
-          "urlTemplate": "https://descargarultimaversion.vercel.app/?q={search_term_string}"
-        },
-        "query-input": "required name=search_term_string"
-      },
-      "description": "Descarga las últimas versiones de tu software favorito. Adobe, 3ds Max, Blender, Office y más. Versiones full y actualizadas."
-    }
-    </script>
-    <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "CollectionPage",
-      "name": "Descargas de Software para PC y Móvil",
-      "description": "Descarga las últimas versiones de software popular como Office, Photoshop, Spotify MOD y más.",
-      "mainEntity": {
-        "@type": "ItemList",
-        "itemListElement": [
-          {
-            "@type": "ListItem",
-            "position": 1,
-            "item": {
-              "@type": "SoftwareApplication",
-              "name": "Microsoft Office 2021-2024 Professional Plus",
-              "applicationCategory": "OfficeApplication",
-              "operatingSystem": "Windows",
-              "description": "La suite de ofimática esencial con Word, Excel, PowerPoint y más."
-            }
-          },
-          {
-            "@type": "ListItem",
-            "position": 2,
-            "item": {
-              "@type": "SoftwareApplication",
-              "name": "Adobe Photoshop 2025",
-              "applicationCategory": "DesignApplication",
-              "operatingSystem": "Windows, macOS",
-              "description": "Edición de imágenes de nivel profesional con IA generativa."
-            }
-          },
-          {
-            "@type": "ListItem",
-            "position": 3,
-            "item": {
-              "@type": "SoftwareApplication",
-              "name": "Spotify MOD (APK)",
-              "applicationCategory": "MusicApplication",
-              "operatingSystem": "Android",
-              "description": "Tu música sin límites. Escucha sin anuncios y con saltos ilimitados."
-            }
-          }
-        ]
-      }
-    }
-    </script>
-    <!-- ===== FIN DE DATOS ESTRUCTURADOS PARA SEO ===== -->
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -141,205 +62,62 @@
         .modal-video-container iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none; }
         .nav-link.active { color: #2563eb; }
         
-        /* --- ESTILOS DEL MENÚ (MODIFICADOS) --- */
-        .dropdown {
-            display: none; /* Oculto por defecto */
-            position: absolute;
-            background-color: white;
-            min-width: 220px;
-            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.1);
-            z-index: 100;
-            border-radius: 0.5rem;
-            border: 1px solid #e5e7eb;
-            opacity: 0;
-            transform: translateY(-10px);
-            transition: opacity 150ms ease-in-out, transform 150ms ease-in-out;
-        }
-        /* Mostrar en hover (PC) */
-        .group:hover .dropdown {
-            display: block;
-            opacity: 1;
-            transform: translateY(0);
-        }
-        /* Mostrar con clic (JS) */
-        .dropdown.open {
-            display: block;
-            opacity: 1;
-            transform: translateY(0);
-        }
-
+        /* --- ESTILOS DEL MENÚ --- */
+        .dropdown { display: none; position: absolute; background-color: white; min-width: 220px; box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.1); z-index: 100; border-radius: 0.5rem; border: 1px solid #e5e7eb; opacity: 0; transform: translateY(-10px); transition: opacity 150ms ease-in-out, transform 150ms ease-in-out; }
+        .group:hover .dropdown { display: block; opacity: 1; transform: translateY(0); }
+        .dropdown.open { display: block; opacity: 1; transform: translateY(0); }
         .dropdown-item { display: block; padding: 12px 16px; }
         .dropdown-item:hover { background-color: #f1f1f1; }
         .sub-dropdown { display: none; position: absolute; left: 100%; top: -1px; background-color: white; min-width: 220px; box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.1); z-index: 101; border-radius: 0.5rem; border: 1px solid #e5e7eb; }
         .group-submenu:hover .sub-dropdown { display: block; }
+        
         .yape-modal-content { background: white; padding: 2rem; border-radius: 12px; max-width: 90%; width: 350px; box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2); position: relative; text-align: center; }
         .tab-button { padding: 0.75rem 1rem; font-size: 0.875rem; font-weight: 600; border-bottom-width: 3px; transition: all 0.2s ease-in-out; }
         @media (min-width: 640px) { .tab-button { padding: 1rem 1.5rem; font-size: 1rem; } }
         .comments-modal-content { background: white; padding: 1.5rem; border-radius: 12px; max-width: 90%; width: 700px; box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2); position: relative; margin: auto; max-height: 90vh; display: flex; flex-direction: column; }
         #comments-list { max-height: 40vh; overflow-y: auto; padding-right: 1rem; margin-bottom: 1rem; }
         .comment { background-color: #f8fafc; border: 1px solid #e2e8f0; padding: 0.75rem 1rem; border-radius: 0.5rem; margin-bottom: 0.75rem; }
-        .comment p { font-size: 0.875rem; color: #334155; word-wrap: break-word; }
-        .comment span { font-size: 0.75rem; color: #64748b; }
-        .comment-reply, .comment.admin-comment { background-color: #f0f9ff; border: 1px solid #bae6fd; padding: 0.75rem 1rem; border-radius: 0.5rem; margin-top: 0.5rem; margin-left: 0; }
-        .comment.admin-comment span { color: #0284c7; }
+        .comment.admin-comment { background-color: #f0f9ff; border: 1px solid #bae6fd; }
         .like-btn { background-color: #f1f5f9; color: #64748b; }
         .like-btn.liked { background-color: #fecaca; color: #dc2626; }
         @keyframes highlight-card { 0% { background-color: #ffffff; transform: scale(1); } 50% { background-color: #dbeafe; transform: scale(1.03); } 100% { background-color: #ffffff; transform: scale(1); } }
         .card-highlight { animation: highlight-card 1.5s ease-in-out; }
-        /* Animación de pulso para el botón de 'Cómo descargar' */
         .animate-pulse { animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite; }
         @keyframes pulse { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: .7; transform: scale(1.05); } }
 
         /* Banner fijo solo en móviles */
         @media (max-width: 768px) {
             #mobile-ad-top {
-                position: fixed;
-                top: 0;
-                left: 0;
-                width: 100%;
-                height: 60px; /* deja un poco de margen para el banner */
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                background: #fff;
-                z-index: 9999;
-                box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+                position: fixed; top: 0; left: 0; width: 100%; height: 60px; display: flex; justify-content: center; align-items: center; background: #fff; z-index: 9999; box-shadow: 0 2px 5px rgba(0,0,0,0.1);
             }
-            body {
-                padding-top: 60px; /* evita que tape el contenido */
-            }
+            body { padding-top: 60px; }
         }
-
-        /* Estilos para el Traductor de Google */
-        #google_translate_element_wrapper {
-            position: fixed;
-            bottom: 15px;
-            right: 15px;
-            z-index: 1001; /* Asegura que esté sobre otro contenido */
-        }
-        #google_translate_element {
-            padding: 5px;
-            background-color: #ffffff;
-            border: 1px solid #e2e8f0;
-            border-radius: 8px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-        }
-        /* Oculta la barra superior de Google Translate después de traducir */
+        
+        #google_translate_element_wrapper { position: fixed; bottom: 15px; right: 15px; z-index: 1001; }
+        #google_translate_element { padding: 5px; background-color: #ffffff; border: 1px solid #e2e8f0; border-radius: 8px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15); }
         body { top: 0 !important; }
         .skiptranslate { display: none !important; }
 
-        /* --- NUEVOS ESTILOS PARA EL CHAT DE IA --- */
+        /* Chat IA */
         #ai-chat-modal { z-index: 2000; }
-        #ai-chat-content {
-            width: 90%;
-            max-width: 500px;
-            height: 70vh;
-            max-height: 600px;
-            margin: auto;
-            display: flex;
-            flex-direction: column;
-            transform: scale(0.95);
-            transition: transform 0.3s ease;
-        }
+        #ai-chat-content { width: 90%; max-width: 500px; height: 70vh; max-height: 600px; margin: auto; display: flex; flex-direction: column; transform: scale(0.95); transition: transform 0.3s ease; }
         .modal-overlay.open #ai-chat-content { transform: scale(1); }
         #ai-chat-messages { flex-grow: 1; overflow-y: auto; padding: 1rem; }
-        .ai-chat-bubble {
-            max-width: 80%;
-            padding: 0.75rem 1rem;
-            border-radius: 1rem;
-            margin-bottom: 0.5rem;
-            word-wrap: break-word;
-            line-height: 1.5;
-        }
-        .ai-chat-bubble.user {
-            background-color: #3b82f6;
-            color: white;
-            border-bottom-right-radius: 0.25rem;
-            align-self: flex-end;
-            margin-left: auto;
-        }
-        .ai-chat-bubble.ai {
-            background-color: #e5e7eb;
-            color: #1f2937;
-            border-bottom-left-radius: 0.25rem;
-            align-self: flex-start;
-            margin-right: auto;
-        }
-        .ai-chat-bubble.ai a {
-            color: #2563eb;
-            text-decoration: underline;
-            font-weight: 600;
-        }
-        .ai-chat-bubble.loading {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-        /* Animación de puntos (...) */
-        .typing-dot {
-            height: 8px;
-            width: 8px;
-            background-color: #9ca3af;
-            border-radius: 50%;
-            display: inline-block;
-            animation: typing 1.4s infinite both;
-        }
-        .typing-dot:nth-child(1) { animation-delay: 0s; }
-        .typing-dot:nth-child(2) { animation-delay: 0.2s; }
-        .typing-dot:nth-child(3) { animation-delay: 0.4s; }
-        @keyframes typing {
-            0% { opacity: 0.2; transform: scale(0.8); }
-            20% { opacity: 1; transform: scale(1); }
-            100% { opacity: 0.2; transform: scale(0.8); }
-        }
+        .ai-chat-bubble { max-width: 80%; padding: 0.75rem 1rem; border-radius: 1rem; margin-bottom: 0.5rem; word-wrap: break-word; line-height: 1.5; }
+        .ai-chat-bubble.user { background-color: #3b82f6; color: white; border-bottom-right-radius: 0.25rem; align-self: flex-end; margin-left: auto; }
+        .ai-chat-bubble.ai { background-color: #e5e7eb; color: #1f2937; border-bottom-left-radius: 0.25rem; align-self: flex-start; margin-right: auto; }
+        .typing-dot { height: 8px; width: 8px; background-color: #9ca3af; border-radius: 50%; display: inline-block; animation: typing 1.4s infinite both; }
+        .typing-dot:nth-child(1) { animation-delay: 0s; } .typing-dot:nth-child(2) { animation-delay: 0.2s; } .typing-dot:nth-child(3) { animation-delay: 0.4s; }
+        @keyframes typing { 0% { opacity: 0.2; transform: scale(0.8); } 20% { opacity: 1; transform: scale(1); } 100% { opacity: 0.2; transform: scale(0.8); } }
 
-        /* --- ESTILOS PIZARRA DE PEDIDOS --- */
-        .request-board-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 0.75rem 1rem;
-            background-color: #f8fafc;
-            border: 1px solid #e2e8f0;
-            border-radius: 0.5rem;
-            margin-bottom: 0.75rem;
-        }
-        .vote-btn {
-            background-color: #f1f5f9;
-            color: #64748b;
-            padding: 0.5rem 0.75rem;
-            border-radius: 0.375rem;
-            font-weight: 600;
-            font-size: 0.875rem;
-            transition: all 0.2s ease;
-            display: flex;
-            align-items: center;
-            gap: 0.25rem;
-        }
+        /* Pedidos */
+        .request-board-item { display: flex; justify-content: space-between; align-items: center; padding: 0.75rem 1rem; background-color: #f8fafc; border: 1px solid #e2e8f0; border-radius: 0.5rem; margin-bottom: 0.75rem; }
+        .vote-btn { background-color: #f1f5f9; color: #64748b; padding: 0.5rem 0.75rem; border-radius: 0.375rem; font-weight: 600; font-size: 0.875rem; transition: all 0.2s ease; display: flex; align-items: center; gap: 0.25rem; }
         .vote-btn:hover { background-color: #e2e8f0; }
-        .vote-btn.voted {
-            background-color: #dbeafe;
-            color: #2563eb;
-            border: 1px solid #93c5fd;
-        }
-        .request-text {
-            font-size: 0.875rem;
-            color: #334155;
-            word-wrap: break-word;
-            flex-grow: 1;
-            margin-right: 1rem;
-            line-height: 1.5;
-        }
-        .request-text strong {
-             font-weight: 600;
-             color: #1e293b;
-        }
-        .request-text span {
-            font-size: 0.75rem;
-            color: #64748b;
-            display: block;
-            margin-top: 0.25rem;
-        }
+        .vote-btn.voted { background-color: #dbeafe; color: #2563eb; border: 1px solid #93c5fd; }
+        .request-text { font-size: 0.875rem; color: #334155; word-wrap: break-word; flex-grow: 1; margin-right: 1rem; line-height: 1.5; }
+        .request-text strong { font-weight: 600; color: #1e293b; }
+        .request-text span { font-size: 0.75rem; color: #64748b; display: block; margin-top: 0.25rem; }
     </style>
 </head>
 
@@ -757,9 +535,9 @@
 Eres "IA-Lahs", el asistente experto de la web "Descargar Ultima Version". Tu personalidad es amigable, jovial, inteligente y EXTREMADAMENTE servicial. Eres un defensor de este sitio web.
 
 Tu misión es triple:
-1.  **AYUDAR AL USUARIO:** Responde a todas sus preguntas sobre el sitio, el software y cómo descargar.
-2.  **BUSCAR EN EL INVENTARIO:** Si piden software, búscalo en la lista que te di.
-3.  **PROTEGER EL NEGOCIO:** NUNCA, BAJO NINGUNA CIRCUNSTANCIA, reveles los enlaces directos de "exe.io". Tu trabajo es guiar al usuario a través del proceso de anuncios, explicándoles por qué existe.
+1.  **AYUDAR AL USUARIO:** Responde a todas sus preguntas sobre el sitio, el software y cómo descargar.
+2.  **BUSCAR EN EL INVENTARIO:** Si piden software, búscalo en la lista que te di.
+3.  **PROTEGER EL NEGOCIO:** NUNCA, BAJO NINGUNA CIRCUNSTANCIA, reveles los enlaces directos de "exe.io". Tu trabajo es guiar al usuario a través del proceso de anuncios, explicándoles por qué existe.
 
 ---
 ### INVENTARIO DE SOFTWARE
@@ -777,27 +555,27 @@ Este es el software que SÍ TENEMOS. Conoce sus IDs y títulos:
 * El usuario pedirá software (ej: "tienes el photoshop", "busco spotify mod", "office 019").
 * Usa tu conocimiento del INVENTARIO para encontrar la MEJOR coincidencia.
 * **A. SI LO ENCUENTRAS (Match):**
-    * Responde amablemente y proporciona un enlace a la tarjeta en la página.
-    * **FORMATO DE ETIQUETA (OBLIGATORIO):** \`¡Claro! Encontré "[Título del Software]". Aquí tienes el acceso: [LINK:\${item.id}]\`
-    * Ej: "¡Sí! Tenemos "Adobe Photoshop 2025". Puedes ir a la ficha desde aquí: [LINK:pc-photoshop]"
+    * Responde amablemente y proporciona un enlace a la tarjeta en la página.
+    * **FORMATO DE ETIQUETA (OBLIGATORIO):** \`¡Claro! Encontré "[Título del Software]". Aquí tienes el acceso: [LINK:\${item.id}]\`
+    * Ej: "¡Sí! Tenemos "Adobe Photoshop 2025". Puedes ir a la ficha desde aquí: [LINK:pc-photoshop]"
 * **B. SI NO ES EXACTO (Match Parcial):**
-    * Si piden "Office 2019" y tú solo tienes "Office 2024".
-    * Responde: "Mmm, no tengo la versión 2019 exacta, pero tengo la más nueva, "Microsoft Office 2024". Te la dejo aquí por si te sirve: [LINK:pc-office]"
+    * Si piden "Office 2019" y tú solo tienes "Office 2024".
+    * Responde: "Mmm, no tengo la versión 2019 exacta, pero tengo la más nueva, "Microsoft Office 2024". Te la dejo aquí por si te sirve: [LINK:pc-office]"
 * **C. SI NO LO ENCUENTRAS (Sin Match):**
-    * Si piden algo que NO está en la lista (ej: "Winamp").
-    * Responde amablemente que no lo tienes y que lo añadirás a la pizarra de pedidos.
-    * **FORMATO DE ETIQUETA (OBLIGATORIO):** \`¡Uy! Parece que (Software) aún no está en nuestro catálogo. ¡Pero no te preocupes! Lo acabo de añadir a la "Pizarra de Pedidos" para que el admin lo vea y otros puedan votar. [ADD_TO_BOARD:\${softwareName}]\`
-    * Ej: "¡Vaya! Parece que 'Winamp' aún no lo tenemos. ¡Pero lo acabo de añadir a la "Pizarra de Pedidos" pública! El admin lo revisará pronto. [ADD_TO_BOARD:Winamp]"
+    * Si piden algo que NO está en la lista (ej: "Winamp").
+    * Responde amablemente que no lo tienes y que lo añadirás a la pizarra de pedidos.
+    * **FORMATO DE ETIQUETA (OBLIGATORIO):** \`¡Uy! Parece que (Software) aún no está en nuestro catálogo. ¡Pero no te preocupes! Lo acabo de añadir a la "Pizarra de Pedidos" para que el admin lo vea y otros puedan votar. [ADD_TO_BOARD:\${softwareName}]\`
+    * Ej: "¡Vaya! Parece que 'Winamp' aún no lo tenemos. ¡Pero lo acabo de añadir a la "Pizarra de Pedidos" pública! El admin lo revisará pronto. [ADD_TO_BOARD:Winamp]"
 
 **Regla 3: Cómo Descargar (¡DEFENDER EL SITIO!)**
 * El usuario se quejará de los anuncios o preguntará cómo descargar.
 * **NUNCA des el link de \`exe.io\`.**
 * **PASO 1 (Defender):** Explica que la "Vía Gratuita" usa un socio (\`exe.io\`) que muestra anuncios, y que esos clics son los que pagan el servidor y mantienen el sitio vivo.
 * **PASO 2 (Guiar):**
-    * Pregúntale si está en PC o Móvil, o detecta (te daré la info).
-    * **Si es PC:** "Es sencillo. En la página de \`exe.io\`, solo tienes que hacer clic en los botones, cerrar las pestañas nuevas que se abran, y volver a la pestaña original. Repite hasta que salga el captcha y el botón 'Get Link'."
-    * **Si es MÓVIL (MUY IMPORTANTE):** "¡Atención en móvil! Es igual que en PC (clic, cerrar pestaña, volver), PERO tu navegador (Chrome o Brave) intentará bloquear las ventanas emergentes. Si te sale un aviso de 'Adblock' o no te deja avanzar, es probable que tu navegador esté bloqueando las ventanas emergentes. Cada navegador es diferente, así que no puedo darte los pasos exactos, ¡pero la solución está en permitir 'Ventanas emergentes' para el sitio! **La forma más fácil de verlo es en nuestro video tutorial**, solo haz clic en el botón amarillo '¿Cómo descargar? (Video)'."
-    * **Referir al Video:** Siempre recuérdales que pueden ver el video tutorial haciendo clic en el botón "amarillo '¿Cómo descargar? (Video)'" que está arriba en la web.
+    * Pregúntale si está en PC o Móvil, o detecta (te daré la info).
+    * **Si es PC:** "Es sencillo. En la página de \`exe.io\`, solo tienes que hacer clic en los botones, cerrar las pestañas nuevas que se abran, y volver a la pestaña original. Repite hasta que salga el captcha y el botón 'Get Link'."
+    * **Si es MÓVIL (MUY IMPORTANTE):** "¡Atención en móvil! Es igual que en PC (clic, cerrar pestaña, volver), PERO tu navegador (Chrome o Brave) intentará bloquear las ventanas emergentes. Si te sale un aviso de 'Adblock' o no te deja avanzar, es probable que tu navegador esté bloqueando las ventanas emergentes. Cada navegador es diferente, así que no puedo darte los pasos exactos, ¡pero la solución está en permitir 'Ventanas emergentes' para el sitio! **La forma más fácil de verlo es en nuestro video tutorial**, solo haz clic en el botón amarillo '¿Cómo descargar? (Video)'."
+    * **Referir al Video:** Siempre recuérdales que pueden ver el video tutorial haciendo clic en el botón "amarillo '¿Cómo descargar? (Video)'" que está arriba en la web.
 
 **Regla 4: La Vía Directa (Alternativa)**
 * Si el usuario se queja mucho o pregunta por una alternativa.
@@ -805,1497 +583,1481 @@ Este es el software que SÍ TENEMOS. Conoce sus IDs y títulos:
 * Explica: "Si prefieres saltarte todos los anuncios, tenemos una 'Vía Directa'. Con una pequeña donación (vía Yape o PayPal, los botones están en el footer de la web), nos ayudas directamente. Solo tienes que enviar tu captura de pago a nuestro WhatsApp (el link verde 'Reclamar Donación' también está en el footer) y te daremos el link de descarga directo. ¡Tú eliges cómo apoyar!"
 `;
 
-        // =================================================================
-        // ===== SECCIÓN 1: FUNCIONES AUXILIARES (Ayudantes) =====
-        // =================================================================
-        
-        /**
-         * Actualiza el enlace activo en la barra de navegación.
-         */
-        function updateActiveLink() {
-            document.querySelectorAll('.nav-link, .nav-link-parent').forEach(link => link.classList.remove('active'));
-            const activeLink = document.querySelector(`.nav-link[data-category="${currentCategory}"]`);
-            if (activeLink) {
-                activeLink.classList.add('active');
-                const parentGroup = activeLink.closest('.group');
-                if (parentGroup) {
-                    const parentBtn = parentGroup.querySelector('.nav-link-parent');
-                    if (parentBtn) parentBtn.classList.add('active');
-                }
-            } else if (currentCategory === 'home') {
-                const homeLink = document.querySelector(`.nav-link[data-category="home"]`);
-                if (homeLink) homeLink.classList.add('active');
-            }
-        }
-
-        /**
-         * (MODIFICADO)
-         * Renderiza las tarjetas de software. Ahora es más seguro y previene XSS.
-         */
-        function renderCards(items, targetGridElement, noResultsElement) {
-            // Verificación de seguridad (causa del error anterior)
-            if (!targetGridElement || !noResultsElement) {
-                console.error("Error en renderCards: targetGridElement o noResultsElement es nulo.");
-                return;
-            }
-            
-            targetGridElement.innerHTML = ''; // Limpiar
-            if (items.length === 0) {
-                noResultsElement.classList.remove('hidden');
-                targetGridElement.classList.add('hidden');
-            } else {
-                noResultsElement.classList.add('hidden');
-                targetGridElement.classList.remove('hidden');
-            }
-            
-            // Ordenar por fecha (más nuevo primero)
-            const sortedItems = items.sort((a, b) => {
-                const dateA = a.date ? new Date(a.date) : new Date(0);
-                const dateB = b.date ? new Date(b.date) : new Date(0);
-                return dateB - dateA;
-            });
-
-            sortedItems.forEach(item => {
-                let placeholderColor = 'e2e8f0/94a3b8';
-                if (activeTab === 'mobile') placeholderColor = '16a34a/ffffff';
-                if (item.category && (item.category.includes('adobe') || item.category.includes('photoshop') || item.category.includes('premiere'))) placeholderColor = '1e40af/ffffff';
-                
-                const passwordHtml = (item.platform === 'pc') ? `<span class="text-xs text-slate-500 text-center mt-2">Contraseña: taiwebs.com</span>` : '';
-                
-                const userHasLiked = userLikes[item.id] || false;
-                const likeButtonClass = userHasLiked ? 'like-btn liked' : 'like-btn';
-
-                const card = document.createElement('div');
-                card.className = 'bg-white rounded-xl shadow-sm overflow-hidden border border-slate-200 hover:shadow-lg hover:border-blue-300 transition-all duration-300 transform hover:-translate-y-1';
-                card.id = `card-${item.id}`;
-                
-                // Usar innerHTML para la estructura, pero rellenar con textContent para seguridad
-                card.innerHTML = `
-                    <img class="h-48 w-full object-cover" src="" alt=""> <!-- src y alt se asignan abajo -->
-                    <div class="p-5">
-                        <div class="flex justify-between items-center mb-1">
-                            <p class="text-xs text-slate-500"></p> <!-- fecha -->
-                            <span id="download-count-${item.id}" class="inline-flex items-center gap-1 text-xs text-blue-600 font-medium bg-blue-50 px-2 py-0.5 rounded-full" title="Descargas">
-                                <svg class="h-3 w-3" fill="currentColor" viewBox="0 0 20 20"><path d="M10.75 2.75a.75.75 0 00-1.5 0v8.614L6.295 8.23a.75.75 0 00-1.09 1.03l4.25 4.5a.75.75 0 001.09 0l4.25-4.5a.75.75 0 00-1.09-1.03l-2.905 3.084V2.75z"></path><path d="M3.5 12.75a.75.75 0 00-1.5 0v2.5A2.75 2.75 0 004.75 18h10.5A2.75 2.75 0 0018 15.25v-2.5a.75.75 0 00-1.5 0v2.5a1.25 1.25 0 01-1.25 1.25H4.75a1.25 1.25 0 01-1.25-1.25v-2.5z"></path></svg>
-                                0 <!-- contador de descargas -->
-                            </span>
-                        </div>
-                        <h3 class="text-lg font-bold text-slate-900 mb-2 truncate" title=""></h3> <!-- título -->
-                        <p class="text-slate-600 text-sm mb-4 h-20 overflow-hidden"></p> <!-- descripción -->
-                        <div class="flex flex-col sm:flex-row gap-3">
-                            <div class="flex-grow flex flex-col">
-                                <button class="download-btn w-full inline-block text-center bg-blue-600 text-white font-semibold py-2.5 px-4 rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors ${item.downloadLink === '#' ? 'opacity-50 cursor-not-allowed' : ''}">Descargar</button>
-                                ${passwordHtml}
-                            </div>
-                            <div class="flex-shrink-0 flex items-center justify-center gap-3">
-                                <button aria-label="Me gusta" class="${likeButtonClass} flex items-center flex-shrink-0 p-2.5 rounded-lg transition-colors" data-item-id="">
-                                    <svg class="h-5 w-5" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z" clip-rule="evenodd"></path></svg>
-                                    <!-- contador de likes (se añade dinámicamente) -->
-                                </button>
-                                <button aria-label="Comentarios" class="comment-btn flex items-center flex-shrink-0 bg-slate-100 text-slate-600 p-2.5 rounded-lg hover:bg-slate-200 transition-colors" data-item-id="">
-                                    <svg class="h-5 w-5" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 2c-4.42 0-8 3.134-8 7 0 2.653 1.606 4.935 3.999 6.136.002.001.005.003.007.004l.004.002c.002.001.004.002.006.003l.003.001.002.001.002.001.001.001c.001 0 .002.001.003.001.001 0 .002.001.002.001l.001.001c.001 0 .002 0 .003.001.001 0 .002 0 .002.001l.002.001c.001 0 .001 0 .002.001.001 0 .001 0 .002.001h.001l.001.001h.001c.001 0 .001 0 .002 0h.001l.001 0h.001l.002 0 .001 0 .002 0 .001 0h.001c.001 0 .002 0 .003 0h.001l.002 0 .001 0 .002 0 .001 0c.001 0 .002 0 .003 0l.002 0 .002 0 .003 0A6.98 6.98 0 0010 18a.75.75 0 00.75-.75V15.12c0-.28.124-.54.33-.733l.002-.002.002-.002.003-.003.004-.003.003-.003.002-.002.002-.002.001-.001c.001 0 .002-.001.002-.001.001 0 .002-.001.002-.001l.001-.001c.001 0 .002-.001.003-.001.001 0 .002-.001.003-.001l.001-.001.002-.001.002-.001.002-.001.003-.001c.001 0 .002-.001.004-.001.001 0 .002-.001.003-.001.218-.088.428-.19.63-.309l.002-.001c.001 0 .003-.001.004-.002.001 0 .002-.001.004-.002.002-.001.003-.002.005-.003.001 0 .002-.001.003-.002l.003-.002.001-.001.001-.001c0 0 .001-.001.001-.001L13.05 14a6.96 6.96 0 003.95-6C17 5.134 13.42 2 10 2z" clip-rule="evenodd"></path></svg>
-                                </button>
-                                <button aria-label="Compartir" class="share-btn flex-shrink-0 bg-slate-100 text-slate-600 p-2.5 rounded-lg hover:bg-slate-200 transition-colors" data-title="" data-url="">
-                                    <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6L15 7.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 0a3 3 0 105.367 2.684 3 3 0 00-5.367-2.684zm-7.316 2.684l6.632 3.316"></path></svg>
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                `;
-                
-                // Asignación segura de atributos y textContent
-                const img = card.querySelector('img');
-                img.src = item.imageUrl || `https://placehold.co/600x400/${placeholderColor}?text=Imagen+no+disponible`;
-                img.alt = item.title || "Imagen de software";
-                img.onerror = function() {
-                    this.onerror=null;
-                    this.src=`https://placehold.co/600x400/${placeholderColor}?text=${encodeURIComponent(item.title || 'Error')}`;
-                };
-                
-                const titleEl = card.querySelector('h3');
-                titleEl.textContent = item.title || "Sin Título";
-                titleEl.title = item.title || "Sin Título";
-                
-                card.querySelector('p.text-slate-500').textContent = new Date(item.date || Date.now()).toLocaleDateString('es-ES', { year: 'numeric', month: 'long', day: 'numeric' });
-                card.querySelector('p.text-slate-600').textContent = item.description || "Sin descripción.";
-                
-                const downloadBtn = card.querySelector('.download-btn');
-                if (downloadBtn) {
-                   downloadBtn.dataset.itemId = item.id;
-                   downloadBtn.dataset.downloadLink = item.downloadLink || "#";
-                }
-                
-                const shareBtn = card.querySelector('.share-btn');
-                if (shareBtn) {
-                   shareBtn.dataset.title = item.title || "Descargar Ultima Version";
-                   shareBtn.dataset.url = `${window.location.origin}${window.location.pathname}?item=${encodeURIComponent(item.id)}`;
-                }
-                
-                const likeBtn = card.querySelector('.like-btn');
-                if (likeBtn) {
-                    likeBtn.dataset.itemId = item.id;
-                }
-
-                const commentBtn = card.querySelector('.comment-btn');
-                if (commentBtn) {
-                    commentBtn.dataset.itemId = item.id;
-                }
-
-                targetGridElement.appendChild(card);
-            });
-
-            // Re-vincular eventos (¡IMPORTANTE!)
-            targetGridElement.querySelectorAll('.share-btn').forEach(button => button.addEventListener('click', handleShare));
-            targetGridElement.querySelectorAll('.comment-btn').forEach(button => button.addEventListener('click', openCommentsModal));
-            targetGridElement.querySelectorAll('.like-btn').forEach(button => button.addEventListener('click', handleLike));
-            targetGridElement.querySelectorAll('.download-btn').forEach(button => button.addEventListener('click', (e) => {
-                const { itemId, downloadLink } = e.currentTarget.dataset;
-                handleDownloadClick(e, itemId, downloadLink);
-            }));
-
-            // Actualizar contadores
-            items.forEach(item => {
-                updateLikeCount(item.id, item.likes || 0);
-                updateDownloadCount(item.id, item.downloads || 0);
-            });
-        }
-
-        /**
-         * Maneja el clic en el botón de descarga, mostrando la guía si es móvil.
-         */
-        async function handleDownloadClick(event, itemId, downloadLink) {
-            event.preventDefault();
-            const downloadGuideModal = document.getElementById('download-guide-modal');
-            
-            if (downloadLink && downloadLink !== "#") {
-                currentDownloadLink = downloadLink;
-                
-                if (isMobileDevice() && downloadGuideModal) {
-                    downloadGuideModal.classList.add('open');
-                } else {
-                    // Si es PC o no hay modal, va directo
-                    window.open(currentDownloadLink, '_blank');
-                    currentDownloadLink = null;
-                }
-                
-                if (db) {
-                    await incrementDownloadCount(itemId);
-                }
-            } else {
-                console.warn("Enlace de descarga aún no disponible.");
-            }
-        }
-        
-        /**
-         * Verifica si el dispositivo es móvil.
-         */
-        function isMobileDevice() {
-            return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-        }
-
-        /**
-         * (MODIFICADO)
-         * Incrementa el contador de descargas en Firebase.
-         */
-        async function incrementDownloadCount(itemId) {
-            if (!db) return;
-            // (MODIFICADO) La ruta ahora es 'software-items'
-            const itemRef = doc(db, `artifacts/${appId}/public/data/software-items`, itemId);
-            try {
-                // (MODIFICADO) El campo se llama 'downloads'
-                await updateDoc(itemRef, { downloads: increment(1) });
-            } catch (error) {
-                console.error("Error al incrementar descargas: ", error);
-            }
-        }
-
-        /**
-         * (MODIFICADO)
-         * Actualiza el contador de descargas en la UI en tiempo real.
-         */
-        function updateDownloadCount(itemId, staticCount) {
-            if (!db || downloadListeners[itemId]) return;
-            const itemRef = doc(db, `artifacts/${appId}/public/data/software-items`, itemId);
-            
-            downloadListeners[itemId] = onSnapshot(itemRef, (doc) => {
-                const countEl = document.getElementById(`download-count-${itemId}`);
-                if (!countEl) return;
-                
-                let count = staticCount;
-                if (doc.exists() && doc.data().downloads !== undefined) {
-                    count = doc.data().downloads;
-                }
-                
-                // Limpiar y rellenar de forma segura
-                countEl.innerHTML = ''; // Limpiar
-                countEl.appendChild(document.querySelector('.like-btn svg').cloneNode(true)); // Re-añadir icono
-                countEl.appendChild(document.createTextNode(` ${count.toLocaleString('es-ES')}`));
-            }, (error) => {
-                console.error(`Error en listener de descargas (${itemId}):`, error);
-            });
-        }
-
-        /**
-         * (MODIFICADO)
-         * Navega a una tarjeta específica (usado por el ranking y la IA).
-         */
-        function handleTopDownloadClick(e, cardId) {
-            if (e) e.preventDefault();
-            const itemId = cardId || (e ? e.currentTarget.dataset.itemId : null);
-            if (!itemId) return;
-
-            // (MODIFICADO) Busca en la lista global 'allSoftware'
-            let item = allSoftware.find(i => i.id === itemId);
-            if (!item) {
-                console.warn(`No se encontró el item ${itemId} en allSoftware.`);
-                return;
-            }
-
-            let itemTab = item.platform || 'pc'; // 'platform' viene de Firebase
-            
-            if (activeTab !== itemTab) {
-                const tabToClick = (itemTab === 'pc') ? document.getElementById('tab-pc') : document.getElementById('tab-mobile');
-                if (tabToClick) tabToClick.click();
-            }
-
-            setTimeout(() => {
-                const cardElement = document.getElementById(`card-${item.id}`);
-                if (cardElement) {
-                    cardElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                    cardElement.classList.add('card-highlight');
-                    setTimeout(() => {
-                        cardElement.classList.remove('card-highlight');
-                    }, 1500);
-                }
-            }, 100);
-        }
-
-        /**
-         * Maneja la función de compartir (Nativo o Copiar al portapapeles).
-         */
-        function handleShare(e) {
-            const title = e.currentTarget.dataset.title;
-            const url = e.currentTarget.dataset.url;
-            if (navigator.share) {
-                navigator.share({ title, url }).catch(console.error);
-            } else {
-                try {
-                    // Fallback para copiar (requiere un input temporal)
-                    const tempInput = document.createElement('input');
-                    document.body.appendChild(tempInput);
-                    tempInput.value = url;
-                    tempInput.select();
-                    document.execCommand('copy');
-                    document.body.removeChild(tempInput);
-                    console.log("Enlace copiado: " + url);
-                    // (Aquí se podría mostrar un toast de "Copiado")
-                } catch (err) {
-                    console.error("No se pudo copiar el enlace: ", err);
-                }
-            }
-        }
-
-        /**
-         * Asegura que haya un usuario (Anónimo o Logueado)
-         */
-        async function ensureUserIsLoggedIn() {
-            if (!auth) return null;
-            if (auth.currentUser) {
-                return auth.currentUser;
-            }
-            try {
-                // Si no hay usuario, intenta un login anónimo
-                const userCredential = await signInAnonymously(auth);
-                return userCredential.user;
-            } catch (error) {
-                console.error("Error al iniciar sesión anónima sobre la marcha:", error);
-                return null;
-            }
-        }
-
-        /**
-         * (MODIFICADO)
-         * Abre el modal de comentarios.
-         */
-        function openCommentsModal(e) {
-            const button = e.currentTarget;
-            const itemId = button.dataset.itemId;
-            currentItem = allSoftware.find(i => i.id === itemId); // Busca en la lista global
-            if (!currentItem) return;
-            
-            const commentsModal = document.getElementById('comments-modal');
-            const commentsModalTitle = document.getElementById('comments-modal-title');
-            const commentInput = document.getElementById('comment-input');
-            const commentsList = document.getElementById('comments-list');
-
-            commentsModalTitle.textContent = `Comentarios de "${currentItem.title}"`;
-            commentInput.value = '';
-            commentsList.innerHTML = '<p class="text-slate-500 text-sm">Cargando comentarios...</p>';
-            if (commentsModal) commentsModal.classList.add('open');
-            loadComments(currentItem);
-        }
-
-        /**
-         * Carga los comentarios de un item desde Firebase.
-         */
-        function loadComments(item) {
-            if (commentsUnsubscribe) commentsUnsubscribe();
-            if (!db) return;
-            const commentsList = document.getElementById('comments-list');
-            const commentsCollection = collection(db, `artifacts/${appId}/public/data/comments`, item.id, "messages");
-            const q = query(commentsCollection, orderBy("timestamp", "desc"));
-            
-            commentsUnsubscribe = onSnapshot(q, (snapshot) => {
-                commentsList.innerHTML = '';
-                
-                if (item.staticComment) {
-                    const staticCommentEl = document.createElement('div');
-                    staticCommentEl.className = 'comment';
-                    staticCommentEl.innerHTML = `<p></p><span class="block text-right">hace tiempo</span>`;
-                    staticCommentEl.querySelector('p').textContent = item.staticComment; // Asignación segura
-                    commentsList.appendChild(staticCommentEl);
-                }
-                
-                if (snapshot.empty && !item.staticComment) {
-                    commentsList.innerHTML = '<p class="text-slate-500 text-sm">No hay comentarios. ¡Sé el primero!</p>';
-                    return;
-                }
-                
-                snapshot.forEach(doc => {
-                    const comment = doc.data();
-                    const date = comment.timestamp ? comment.timestamp.toDate().toLocaleString('es-ES') : 'Justo ahora';
-                    const isAdmin = comment.uid === ADMIN_ID;
-                    const commentEl = document.createElement('div');
-                    commentEl.className = isAdmin ? 'comment admin-comment' : 'comment';
-                    
-                    const displayName = isAdmin ? `<strong>[ADMIN]</strong> ${comment.displayName || 'Admin'}` : (comment.displayName || 'Anónimo');
-                    
-                    commentEl.innerHTML = `<p></p><span class="block text-right">Por: ${displayName} - ${date}</span>`;
-                    commentEl.querySelector('p').textContent = comment.text; // Asignación segura (previene XSS)
-                    
-                    commentsList.appendChild(commentEl);
-                });
-            }, (error) => {
-                console.error("Error al cargar comentarios: ", error);
-                commentsList.innerHTML = '<p class="text-red-500 text-sm">Error al cargar comentarios.</p>';
-            });
-        }
-
-        /**
-         * Envía un nuevo comentario a Firebase.
-         */
-        async function submitComment(textArea, button, collectionRef) {
-            const commentText = textArea.value.trim();
-            if (!commentText) return;
-            const user = await ensureUserIsLoggedIn();
-            if (!user) {
-                console.error("No se pudo obtener usuario para comentar.");
-                return;
-            }
-            button.disabled = true;
-            button.textContent = 'Enviando...';
-            try {
-                await addDoc(collectionRef, {
-                    text: commentText,
-                    timestamp: serverTimestamp(),
-                    uid: user.uid,
-                    displayName: (user.uid === ADMIN_ID) ? (user.displayName || 'Admin') : (user.isAnonymous ? 'Anónimo' : (user.displayName || 'Usuario'))
-                });
-                textArea.value = '';
-            } catch (error) {
-                console.error("Error al enviar comentario: ", error);
-            } finally {
-                button.disabled = false;
-                button.textContent = 'Enviar Comentario';
-            }
-        }
-
-        // --- FUNCIONES DE LA PIZARRA DE PEDIDOS ---
-
-        /**
-         * Añade un nuevo pedido de software a Firebase (si no existe).
-         */
-        async function addSoftwareRequest(softwareName) {
-            if (!db) return;
-            const user = await ensureUserIsLoggedIn();
-            if (!user) return;
-            
-            const requestsCollection = collection(db, `artifacts/${appId}/public/data/general-requests`);
-            
-            // Evitar duplicados (insensible a mayúsculas/minúsculas)
-            const lowerCaseName = softwareName.toLowerCase().trim();
-            const q = query(requestsCollection, where("lowerCaseName", "==", lowerCaseName));
-            const existing = await getDocs(q);
-            
-            if (existing.empty) {
-                try {
-                    const newRequestRef = await addDoc(requestsCollection, {
-                        text: softwareName,
-                        lowerCaseName: lowerCaseName,
-                        timestamp: serverTimestamp(),
-                        uid: user.uid,
-                        displayName: (user.uid === ADMIN_ID) ? 'Admin' : (user.isAnonymous ? 'Anónimo' : (user.displayName || 'Usuario')),
-                        votes: 1 // Empezar con 1 voto (el del solicitante)
-                    });
-                    // Marcar como votado
-                    userVotes[newRequestRef.id] = true;
-                    localStorage.setItem('userVotes', JSON.stringify(userVotes));
-                } catch (e) {
-                    console.error("Error al añadir pedido:", e);
-                }
-            } else {
-                console.log("El pedido ya existe:", softwareName);
-            }
-        }
-
-        /**
-         * Carga la pizarra de pedidos desde Firebase.
-         */
-        function loadGeneralRequests() {
-            const generalRequestsList = document.getElementById('general-requests-list');
-            if (!generalRequestsList || !db) return; 
-            
-            generalRequestsList.innerHTML = '<p class="text-slate-500 text-sm p-4 text-center">Cargando pedidos...</p>';
-            
-            if (generalRequestsUnsubscribe) generalRequestsUnsubscribe();
-            
-            const requestsCollection = collection(db, `artifacts/${appId}/public/data/general-requests`);
-            
-            // (MODIFICADO) Quitar 'orderBy' de la consulta de Firebase
-            const q = query(requestsCollection);
-
-            generalRequestsUnsubscribe = onSnapshot(q, (snapshot) => {
-                generalRequestsList.innerHTML = '';
-                if (snapshot.empty) {
-                    generalRequestsList.innerHTML = '<p class="text-slate-500 text-sm p-4 text-center">Aún no hay pedidos. ¡Pídele a la IA!</p>';
-                    return;
-                }
-                
-                // Convertir a array para ordenar en JS
-                const requests = [];
-                snapshot.forEach(doc => {
-                    requests.push({ id: doc.id, data: doc.data() });
-                });
-
-                // Ordenar en JavaScript (Primero por votos, luego por fecha)
-                requests.sort((a, b) => {
-                    const votesDiff = (b.data.votes || 0) - (a.data.votes || 0);
-                    if (votesDiff !== 0) {
-                        return votesDiff;
-                    }
-                    const dateA = (a.data.timestamp && a.data.timestamp.toMillis) ? a.data.timestamp.toMillis() : 0;
-                    const dateB = (b.data.timestamp && b.data.timestamp.toMillis) ? b.data.timestamp.toMillis() : 0;
-                    return dateB - dateA;
-                });
-                
-                requests.forEach(doc => {
-                    const request = doc.data;
-                    const requestId = doc.id;
-                    const date = request.timestamp ? request.timestamp.toDate().toLocaleDateString('es-ES') : 'reciente';
-                    const userHasVoted = userVotes[requestId] || false;
-                    const voteButtonClass = userHasVoted ? 'vote-btn voted' : 'vote-btn';
-                    
-                    const requestEl = document.createElement('div');
-                    requestEl.className = 'request-board-item';
-                    
-                    requestEl.innerHTML = `
-                        <div class="request-text">
-                            <strong></strong>
-                            <span>Pedido por: ${request.displayName || 'Anónimo'} - ${date}</span>
-                        </div>
-                        <button class="${voteButtonClass}" data-request-id="${requestId}">
-                            ▲ <span id="vote-count-${requestId}">${request.votes || 0}</span>
-                        </button>
-                    `;
-                    requestEl.querySelector('strong').textContent = request.text; // Asignación segura
-                    
-                    generalRequestsList.appendChild(requestEl);
-                    
-                    requestEl.querySelector('.vote-btn').addEventListener('click', handleVote);
-                });
-            }, (error) => {
-                console.error("Error al cargar pedidos: ", error);
-                generalRequestsList.innerHTML = `<p class="text-red-500 text-sm p-4 text-center">Error al cargar pedidos: ${error.message}</p>`;
-            });
-        }
-
-        /**
-         * Maneja un voto (arriba o abajo) en la pizarra de pedidos.
-         */
-        async function handleVote(e) {
-            const button = e.currentTarget;
-            const requestId = button.dataset.requestId;
-            const user = await ensureUserIsLoggedIn();
-            if (!user) return;
-            
-            const hasVoted = userVotes[requestId] || false;
-            const requestRef = doc(db, `artifacts/${appId}/public/data/general-requests`, requestId);
-            
-            try {
-                await runTransaction(db, async (transaction) => {
-                    const requestDoc = await transaction.get(requestRef);
-                    if (!requestDoc.exists()) return;
-                    
-                    const currentVotes = requestDoc.data().votes || 0;
-                    let newVoteCount = currentVotes;
-
-                    if (hasVoted) {
-                        newVoteCount = currentVotes > 0 ? currentVotes - 1 : 0;
-                        userVotes[requestId] = false;
-                    } else {
-                        newVoteCount = currentVotes + 1;
-                        userVotes[requestId] = true;
-                    }
-                    transaction.update(requestRef, { votes: newVoteCount });
-                });
-                
-                localStorage.setItem('userVotes', JSON.stringify(userVotes));
-                
-            } catch (error) {
-                console.error("Error al votar:", error);
-                // Revertir el estado local si la transacción falla
-                userVotes[requestId] = hasVoted;
-                localStorage.setItem('userVotes', JSON.stringify(userVotes));
-            }
-        }
-        
-        /**
-         * (MODIFICADO)
-         * Maneja un "Me Gusta" en una tarjeta de software.
-         */
-        async function handleLike(e) {
-            const button = e.currentTarget;
-            const itemId = button.dataset.itemId;
-            const user = await ensureUserIsLoggedIn();
-            if (!user) {
-                console.error("No se pudo obtener usuario para dar like.");
-                return;
-            }
-            // (MODIFICADO) Ruta de la base de datos
-            const itemRef = doc(db, `artifacts/${appId}/public/data/software-items`, itemId);
-            const userHasLiked = userLikes[itemId] || false;
-            
-            try {
-                await runTransaction(db, async (transaction) => {
-                    const itemDoc = await transaction.get(itemRef);
-                    if (!itemDoc.exists()) return;
-                    
-                    // (MODIFICADO) Campo 'likes'
-                    const currentLikes = itemDoc.data().likes || 0;
-                    
-                    if (!userHasLiked) {
-                        transaction.update(itemRef, { likes: currentLikes + 1 });
-                        userLikes[itemId] = true;
-                        button.classList.add('liked');
-                    } else {
-                        transaction.update(itemRef, { likes: currentLikes > 0 ? currentLikes - 1 : 0 });
-                        userLikes[itemId] = false;
-                        button.classList.remove('liked');
-                    }
-                });
-                localStorage.setItem('userLikes', JSON.stringify(userLikes)); // Guardar en localStorage
-            } catch (error) {
-                console.error("Error al dar like: ", error);
-            }
-        }
-
-        /**
-         * (MODIFICADO)
-         * Actualiza el contador de "Me Gusta" en tiempo real.
-         */
-        function updateLikeCount(itemId, staticLikes) {
-            if (!db || likeListeners[itemId]) return;
-            const itemRef = doc(db, `artifacts/${appId}/public/data/software-items`, itemId);
-            
-            likeListeners[itemId] = onSnapshot(itemRef, (doc) => {
-                // (MODIFICADO) Campo 'likes'
-                const likeCount = (doc.exists() && doc.data().likes !== undefined) ? doc.data().likes : staticLikes;
-                
-                const button = document.querySelector(`.like-btn[data-item-id="${itemId}"]`);
-                if (!button) return;
-                
-                let countSpan = button.querySelector('span');
-                if (!countSpan) {
-                    countSpan = document.createElement('span');
-                    countSpan.className = 'ml-1 text-sm font-medium';
-                    button.appendChild(countSpan);
-                }
-                countSpan.textContent = likeCount;
-            }, (error) => {
-                console.error(`Error en listener de likes (${itemId}):`, error);
-            });
-        }
-        
-        // =================================================================
-        // ===== SECCIÓN 2: LÓGICA DEL CHAT DE IA =====
-        // =================================================================
-
-        // --- INICIO FUNCIONES DE VOZ (TTS Y STT) ---
-        const synth = window.speechSynthesis;
-        let voices = [];
-        
-        function loadVoices() {
-            voices = synth.getVoices();
-        }
-        
-        loadVoices();
-        if (synth.onvoiceschanged !== undefined) {
-            synth.onvoiceschanged = loadVoices;
-        }
-
-        function speak(text) {
-            if (!isSpeechEnabled || !text || synth.speaking) {
-                return;
-            }
-            const cleanText = text.replace(/\[LINK:[^\]]+\]/g, '')
-                                .replace(/\[ADD_TO_BOARD:[^\]]+\]/g, '')
-                                .replace(/<[^>]+>/g, ''); // Quitar HTML
-
-            const utterThis = new SpeechSynthesisUtterance(cleanText);
-            utterThis.onerror = (event) => {
-                console.error('SpeechSynthesisUtterance.onerror', event);
-            };
-            
-            // (MODIFICADO) Prioriza Español Latinoamericano
-            let spanishVoice = voices.find(voice => voice.lang === 'es-419') // Específico de Chrome
-                                || voices.find(voice => voice.lang === 'es-MX') // México
-                                || voices.find(voice => voice.lang === 'es-US') // US
-                                || voices.find(voice => voice.lang.startsWith('es-')); // Cualquiera
-            
-            if (spanishVoice) {
-                utterThis.voice = spanishVoice;
-            } else {
-                utterThis.lang = 'es-419'; // Fallback
-            }
-            
-            synth.speak(utterThis);
-        }
-
-        const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-        let isListening = false;
-        
-        if (SpeechRecognition) {
-            recognition = new SpeechRecognition();
-            recognition.continuous = false;
-            recognition.lang = 'es-ES';
-            recognition.interimResults = false;
-            recognition.maxAlternatives = 1;
-
-            recognition.onresult = (event) => {
-                const speechResult = event.results[0][0].transcript;
-                if(aiChatInput) aiChatInput.value = speechResult;
-            };
-
-            recognition.onspeechend = () => {
-                recognition.stop();
-            };
-
-            recognition.onstart = () => {
-                isListening = true;
-                const micIcon = document.getElementById('mic-icon');
-                const micListening = document.getElementById('mic-listening');
-                if(micIcon) micIcon.classList.add('hidden');
-                if(micListening) micListening.classList.remove('hidden');
-            };
-
-            recognition.onend = () => {
-                isListening = false;
-                const micIcon = document.getElementById('mic-icon');
-                const micListening = document.getElementById('mic-listening');
-                if(micIcon) micIcon.classList.remove('hidden');
-                if(micListening) micListening.classList.add('hidden');
-            };
-
-            recognition.onerror = (event) => {
-                console.error("Error de reconocimiento de voz:", event.error);
-                if(aiChatError) {
-                    aiChatError.textContent = `Error de micrófono: ${event.error}. Asegúrate de dar permiso.`;
-                    aiChatError.classList.remove('hidden');
-                }
-            };
-
-        } else {
-            console.warn("Reconocimiento de voz no soportado en este navegador.");
-        }
-        // --- FIN FUNCIONES DE VOZ ---
-
-        /**
-         * Añade un mensaje (usuario o IA) al DOM del chat.
-         */
-        function addMessageToChat(role, text) {
-            if (!aiChatMessages) return;
-
-            const bubble = document.createElement('div');
-            bubble.classList.add('ai-chat-bubble', role);
-
-            if (role === 'user') {
-                bubble.textContent = text;
-            } else {
-                bubble.innerHTML = text.replace(/\n/g, "<br>");
-            }
-            
-            aiChatMessages.appendChild(bubble);
-            aiChatMessages.scrollTop = aiChatMessages.scrollHeight;
-            return bubble;
-        }
-
-        /**
-         * Muestra la burbuja de "escribiendo..."
-         */
-        function addLoadingBubble() {
-            if (!aiChatMessages) return;
-            const bubble = document.createElement('div');
-            bubble.id = 'ai-loading-bubble';
-            bubble.classList.add('ai-chat-bubble', 'ai', 'loading');
-            bubble.innerHTML = `
-                <span class="typing-dot"></span>
-                <span class="typing-dot"></span>
-                <span class="typing-dot"></span>
-            `;
-            aiChatMessages.appendChild(bubble);
-            aiChatMessages.scrollTop = aiChatMessages.scrollHeight;
-        }
-
-        /**
-         * Quita la burbuja de "escribiendo..."
-         */
-        function removeLoadingBubble() {
-            const loadingBubble = document.getElementById('ai-loading-bubble');
-            if (loadingBubble) {
-                loadingBubble.remove();
-            }
-        }
-
-        /**
-         * Llama a la API de Gemini (IA Chat).
-         */
-        async function getAiChatResponse(history) {
-            const device = isMobileDevice() ? 'Móvil (Android o iPhone)' : 'PC (Windows o Mac)';
-            const contextualSystemPrompt = `CONTEXTO DEL DISPOSITIVO: El usuario está actualmente en un dispositivo: ${device}. Ten esto en cuenta para tus guías de descarga.\n\n${dynamicSystemPrompt}`;
-            
-            const historyWithInventory = [...history]; // Copia
-            
-            if (!dynamicSystemPrompt) {
-                 console.warn("¡El prompt dinámico de la IA aún no está listo!");
-            }
-
-            // =================================================================
-            // ===== ¡PASO 3: TU CLAVE DE IA (GEMINI) VA AQUÍ! =====
-            // (Esta es la que creaste en AI Studio, la que termina en ...UMCw)
-            // =================================================================
-            const apiKey = "AIzaSyC2eih2fC7lR3VA9Uv1zOWbxy7egX9UMCw";
-            // =================================================================
-            
-            if (apiKey.includes("AQUI_VA_TU")) {
-                throw new Error("API Key de IA (Gemini) no configurada. Por favor, edita el script y añade tu clave.");
-            }
-
-            const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${apiKey}`;
-
-            const payload = {
-                contents: historyWithInventory,
-                systemInstruction: {
-                    parts: [{ text: contextualSystemPrompt }]
-                },
-                safetySettings: [
-                    { category: 'HARM_CATEGORY_HARASSMENT', threshold: 'BLOCK_MEDIUM_AND_ABOVE' },
-                    { category: 'HARM_CATEGORY_HATE_SPEECH', threshold: 'BLOCK_MEDIUM_AND_ABOVE' },
-                    { category: 'HARM_CATEGORY_SEXUALLY_EXPLICIT', threshold: 'BLOCK_MEDIUM_AND_ABOVE' },
-                    { category: 'HARM_CATEGORY_DANGEROUS_CONTENT', threshold: 'BLOCK_MEDIUM_AND_ABOVE' },
-                ],
-                generationConfig: {}
-            };
-            
-            try {
-                const response = await fetch(apiUrl, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(payload)
-                });
-
-                if (!response.ok) {
-                    const errorBody = await response.json();
-                    console.error("Error en la API de IA (Respuesta no OK):", errorBody);
-                    const errorMessage = errorBody.error?.message || `Error ${response.status}`;
-                    throw new Error(errorMessage);
-                }
-                
-                const result = await response.json();
-
-                if (result.candidates && result.candidates[0].content && result.candidates[0].content.parts[0].text) {
-                    return result.candidates[0].content.parts[0].text;
-                } else {
-                    if (result.candidates && result.candidates[0].finishReason === 'SAFETY') {
-                        throw new Error("Respuesta bloqueada por políticas de seguridad.");
-                    }
-                    console.error("Respuesta inesperada de la IA:", result);
-                    throw new Error("Respuesta inválida de la IA.");
-                }
-            } catch (error) {
-                console.error("Error al llamar a getAiChatResponse:", error);
-                throw error;
-            }
-        }
-
-        /**
-         * Orquesta la respuesta de la IA y procesa las etiquetas especiales.
-         */
-        async function handleAiResponse() {
-            isAiThinking = true;
-            addLoadingBubble();
-            if(aiChatError) aiChatError.classList.add('hidden');
-            if(aiChatSubmit) aiChatSubmit.disabled = true;
-
-            // (MODIFICADO) Asegurarse que el cerebro esté listo antes de llamar
-            if (!dynamicSystemPrompt) {
-                console.log("El cerebro de la IA no estaba listo, construyéndolo ahora...");
-                await buildDynamicSystemPrompt(); // Esto fallará si allSoftware está vacío
-                if (!dynamicSystemPrompt) {
-                     console.error("¡FALLO CRÍTICO! No se pudo construir el cerebro de la IA.");
-                     // (Aquí se podría poner un prompt de fallback)
-                }
-            }
-            
-            try {
-                const aiText = await getAiChatResponse([...aiChatHistory]);
-                
-                aiChatHistory.push({ role: 'model', parts: [{ text: aiText }] });
-                
-                let processedText = aiText;
-
-                // Procesar etiquetas [LINK:...]
-                processedText = processedText.replace(/\[LINK:([^\]]+)\]/g, (match, cardId) => {
-                    const item = allSoftware.find(i => i.id === cardId);
-                    const title = item ? item.title : 'ver detalles';
-                    return ` <a href="#" class="chat-link font-bold text-blue-600 underline" data-card-id="${cardId}">${title}</a>`;
-                });
-                
-                // Procesar etiquetas [ADD_TO_BOARD:...]
-                const boardMatch = processedText.match(/\[ADD_TO_BOARD:([^\]]+)\]/);
-                if (boardMatch && boardMatch[1]) {
-                    const softwareName = boardMatch[1];
-                    await addSoftwareRequest(softwareName); // Añadir a Firebase
-                    processedText = processedText.replace(boardMatch[0], ''); // Quitar la etiqueta
-                }
-                
-                removeLoadingBubble();
-                const aiBubble = addMessageToChat('ai', processedText);
-                
-                speak(processedText);
-
-            } catch (error) {
-                console.error("Error en handleAiResponse:", error);
-                removeLoadingBubble();
-                const errorMsg = `¡Uy! Algo salió mal. Error de API: ${error.message}. Por favor, inténtalo de nuevo.`;
-                addMessageToChat('ai', errorMsg);
-                speak("¡Uy! Algo salió mal.");
-                
-                if(aiChatError) {
-                    aiChatError.textContent = errorMsg;
-                    aiChatError.classList.remove('hidden');
-                }
-                if (aiChatHistory.length > 0 && aiChatHistory[aiChatHistory.length - 1].role === 'user') {
-                    aiChatHistory.pop();
-                }
-
-            } finally {
-                isAiThinking = false;
-                if(aiChatSubmit) aiChatSubmit.disabled = false;
-                
-                // Añadir listeners a los nuevos links del chat
-                document.querySelectorAll('.chat-link').forEach(link => {
-                    link.replaceWith(link.cloneNode(true));
-                });
-                
-                document.querySelectorAll('.chat-link').forEach(link => {
-                    link.addEventListener('click', (e) => {
-                        e.preventDefault();
-                        const cardId = e.currentTarget.dataset.cardId;
-                        if(aiChatModal) aiChatModal.classList.remove('open');
-                        handleTopDownloadClick(null, cardId);
-                    });
-                });
-            }
-        }
-
-
-        // =================================================================
-        // ===== SECCIÓN 3: LÓGICA PRINCIPAL (Carga y Eventos) =====
-        // =================================================================
-
-        /**
-         * (NUEVO)
-         * Carga todo el software y categorías desde Firebase al iniciar.
-         */
-        async function loadSoftwareAndCategoriesFromFirebase() {
-            if (!db) {
-                console.error("Firestore (db) no está inicializado.");
-                return;
-            }
-
-            const contentGridPc = document.getElementById('content-grid-pc');
-            if (contentGridPc) contentGridPc.innerHTML = '<p class="text-slate-500 text-sm">Cargando software...</p>';
-            const contentGridMobile = document.getElementById('content-grid-mobile');
-            if (contentGridMobile) contentGridMobile.innerHTML = '<p class="text-slate-500 text-sm">Cargando software...</p>';
-            const topDownloadsList = document.getElementById('top-downloads-list');
-            if (topDownloadsList) topDownloadsList.innerHTML = '<p class="text-slate-500 text-sm">Cargando ranking...</p>';
-
-            try {
-                const itemsCollection = collection(db, `artifacts/${appId}/public/data/software-items`);
-                const snapshot = await getDocs(itemsCollection);
-
-                if (snapshot.empty) {
-                    console.warn("No se encontró software en la base de datos.");
-                    if (contentGridPc) contentGridPc.innerHTML = '<p class="text-red-500 text-lg">No se encontró software. ¿El admin ya migró los datos?</p>';
-                    return;
-                }
-
-                const tempSoftware = [];
-                const tempCategories = new Map(); // Usar un Map para categorías únicas
-                
-                // Añadir 'Home' por defecto
-                tempCategories.set('home', { id: 'home', name: 'Home', count: 0, submenus: [] }); 
-
-                snapshot.forEach(doc => {
-                    const item = doc.data();
-                    const itemId = doc.id;
-                    tempSoftware.push({ id: itemId, ...item });
-                    
-                    // (MODIFICADO) Llenar categorías dinámicamente
-                    if (item.category && item.platform === 'pc') {
-                        if (!tempCategories.has(item.category)) {
-                            // Crear categoría si no existe
-                            tempCategories.set(item.category, { 
-                                id: item.category, 
-                                name: item.category.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase()), // "premiere-pro" -> "Premiere Pro"
-                                count: 1, 
-                                submenus: [] 
-                            });
-                        } else {
-                            // Incrementar contador si ya existe
-                            tempCategories.get(item.category).count++;
-                        }
-                    }
-                });
-
-                // Asignar a variables globales
-                allSoftware = tempSoftware;
-                allCategories = Array.from(tempCategories.values());
-                
-                console.log(`Cargados ${allSoftware.length} items de software.`);
-                
-                // (MODIFICADO) Ahora que tenemos datos, podemos ejecutar todo lo demás
-                buildDynamicSystemPrompt(); // Construir cerebro de IA
-                generateNav(allCategories); // Construir menú
-                updateView(); // Renderizar tarjetas
-                loadTopDownloads(); // Cargar ranking
-                loadGeneralRequests(); // Cargar pizarra de pedidos
-
-            } catch (error) {
-                console.error("Error fatal al cargar software desde Firebase:", error);
-                if (contentGridPc) contentGridPc.innerHTML = `<p class="text-red-500 text-lg">Error al cargar datos: ${error.message}</p>`;
-            }
-        }
-        
-        /**
-         * (NUEVO)
-         * Construye el systemPrompt de la IA usando la lista de software cargada.
-         */
-        function buildDynamicSystemPrompt() {
-            if (allSoftware.length === 0) {
-                console.warn("No hay software para construir el prompt de la IA.");
-                dynamicSystemPrompt = systemPrompt.replace("{INVENTORY_PLACEHOLDER}", "No hay software en el inventario en este momento.");
-                return;
-            }
-            
-            const inventoryList = allSoftware
-                .map(item => {
-                    return `- ID: "${item.id}", Título: "${item.title}", Keywords: "${item.keywords || ''}"`;
-                })
-                .join('\n');
-                
-            dynamicSystemPrompt = systemPrompt.replace("{INVENTORY_PLACEHOLDER}", inventoryList);
-            console.log("Cerebro de la IA construido dinámicamente.");
-        }
-
-        /**
-         * (MODIFICADO)
-         * Genera la navegación principal. Ahora es dinámico.
-         */
-        function generateNav(categories) {
-            const navContainer = document.getElementById('nav-container');
-            if (!navContainer) return;
-            
-            const navUl = document.createElement('ul');
-            navUl.className = 'flex flex-wrap items-center justify-center gap-4 sm:gap-6';
-
-            // (MODIFICADO) Ya no hay menú estático, se basa en las categorías de Firebase
-            categories.sort((a, b) => {
-                if (a.id === 'home') return -1; // 'Home' siempre primero
-                if (b.id === 'home') return 1;
-                return a.name.localeCompare(b.name); // Ordenar alfabéticamente
-            });
-
-            categories.forEach(item => {
-                const li = document.createElement('li');
-                if (item.submenus && item.submenus.length > 0) {
-                    // (Lógica de submenús, si la hubiera en el futuro)
-                    li.className = 'group relative pb-4 -mb-4';
-                    let submenusHTML = item.submenus.map(sub => 
-                        `<a href="#" class="nav-link dropdown-item" data-category="${sub.id}">${sub.name}</a>`
-                    ).join('');
-                    li.innerHTML = `
-                        <button class="nav-link-parent flex items-center gap-1 font-medium text-slate-600 hover:text-blue-600 transition-colors" data-category-parent="${item.name}">
-                            ${item.name}
-                            <svg class="h-4 w-4 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
-                        </button>
-                        <div class="dropdown">${submenusHTML}</div>
-                    `;
-                } else {
-                    // Enlace simple
-                    li.innerHTML = `<a href="#" class="nav-link font-medium text-slate-600 hover:text-blue-600 transition-colors" data-category="${item.id}">${item.name}</a>`;
-                }
-                navUl.appendChild(li);
-            });
-            navContainer.innerHTML = ''; // Limpiar "Cargando..."
-            navContainer.appendChild(navUl);
-        }
-
-        /**
-         * (MODIFICADO)
-         * Renderiza la vista principal. Ahora lee de `allSoftware`.
-         */
-        function updateView() {
-            const contentGridPc = document.getElementById('content-grid-pc');
-            const contentGridMobile = document.getElementById('content-grid-mobile');
-            const noResultsPc = document.getElementById('no-results-pc');
-            const noResultsMobile = document.getElementById('no-results-mobile');
-            const navContainer = document.getElementById('nav-container');
-
-            // Limpiar listeners antiguos
-            Object.values(downloadListeners).forEach(unsubscribe => unsubscribe());
-            Object.values(likeListeners).forEach(unsubscribe => unsubscribe());
-            downloadListeners = {};
-            likeListeners = {};
-
-            if (activeTab === 'pc') {
-                let filteredItems = allSoftware.filter(item => item.platform === 'pc');
-                if (currentCategory !== 'home') {
-                    filteredItems = filteredItems.filter(item => item.category === currentCategory);
-                }
-                if (currentSearchTerm) {
-                    filteredItems = filteredItems.filter(item => 
-                        (item.title && item.title.toLowerCase().includes(currentSearchTerm)) ||
-                        (item.description && item.description.toLowerCase().includes(currentSearchTerm)) ||
-                        (item.keywords && item.keywords.toLowerCase().includes(currentSearchTerm))
-                    );
-                }
-                renderCards(filteredItems, contentGridPc, noResultsPc);
-                if (navContainer) navContainer.classList.remove('hidden');
-            } else {
-                let filteredItems = allSoftware.filter(item => item.platform === 'mobile');
-                if (currentSearchTerm) {
-                     filteredItems = filteredItems.filter(item => 
-                        (item.title && item.title.toLowerCase().includes(currentSearchTerm)) ||
-                        (item.description && item.description.toLowerCase().includes(currentSearchTerm)) ||
-                        (item.keywords && item.keywords.toLowerCase().includes(currentSearchTerm))
-                    );
-                }
-                renderCards(filteredItems, contentGridMobile, noResultsMobile);
-                if (navContainer) navContainer.classList.add('hidden');
-            }
-            updateActiveLink();
-        }
-
-        /**
-         * (MODIFICADO)
-         * Carga el Top 5. Ahora lee de `allSoftware`.
-         */
-        async function loadTopDownloads() {
-            const topDownloadsList = document.getElementById('top-downloads-list');
-            if (!topDownloadsList) return;
-            
-            if (allSoftware.length === 0) {
-                 topDownloadsList.innerHTML = '<p class="text-slate-500 text-sm">Aún no hay datos para un ranking.</p>';
-                 return;
-            }
-
-            let mergedItems = allSoftware.map(item => ({ ...item, displayDownloads: item.downloads || 0 }));
-            
-            mergedItems.sort((a, b) => b.displayDownloads - a.displayDownloads);
-            const top5 = mergedItems.slice(0, 5);
-
-            if (top5.length === 0) {
-                topDownloadsList.innerHTML = '<p class="text-slate-500 text-sm">Aún no hay suficientes datos para un ranking.</p>';
-                return;
-            }
-            topDownloadsList.innerHTML = '';
-            let rank = 1;
-            top5.forEach(itemDetails => {
-                const itemEl = document.createElement('a');
-                itemEl.href = `#card-${itemDetails.id}`;
-                itemEl.className = 'flex items-center gap-3 bg-slate-50 p-3 rounded-lg border border-slate-200 hover:bg-slate-100 hover:shadow-sm transition-all';
-                itemEl.dataset.itemId = itemDetails.id;
-                itemEl.addEventListener('click', (e) => handleTopDownloadClick(e));
-                
-                itemEl.innerHTML = `
-                    <span class="text-lg font-bold text-slate-400">#${rank}</span>
-                    <img src="${itemDetails.imageUrl || 'https://placehold.co/40x40/e2e8f0/94a3b8?text=?'}" alt="" class="w-10 h-10 rounded-md object-cover flex-shrink-0">
-                    <div class="overflow-hidden">
-                        <p class="text-sm font-semibold text-slate-800 truncate" title=""></p>
-                        <p class="text-xs text-blue-600 font-medium">${itemDetails.displayDownloads.toLocaleString('es-ES')} descargas</p>
-                    </div>
-                `;
-                // Asignación segura
-                itemEl.querySelector('img').alt = itemDetails.title;
-                itemEl.querySelector('p.text-sm').textContent = itemDetails.title;
-                itemEl.querySelector('p.text-sm').title = itemDetails.title;
-
-                topDownloadsList.appendChild(itemEl);
-                rank++;
-            });
-        }
-
-
-        // =================================================================
-        // ===== PUNTO DE ENTRADA PRINCIPAL (NUEVO MOTOR) =====
-        // =================================================================
-        
-        // (MODIFICADO) Quitado el 'DOMContentLoaded' para evitar conflictos.
-        // El script se ejecuta al final del <body>, por lo que el DOM ya está listo.
-
-        // --- Asignar elementos del Chat de IA ---
-        aiChatModal = document.getElementById('ai-chat-modal');
-        aiChatForm = document.getElementById('ai-chat-form');
-        aiChatInput = document.getElementById('ai-chat-input');
-        aiChatSubmit = document.getElementById('ai-chat-submit');
-        aiChatMessages = document.getElementById('ai-chat-messages');
-        aiChatError = document.getElementById('ai-chat-error');
-
-        // Obtener referencias a elementos
-        const navContainer = document.getElementById('nav-container');
-        const howToDownloadBtn = document.getElementById('how-to-download-btn');
-        const howToDownloadModal = document.getElementById('how-to-download-modal');
-        const tabPc = document.getElementById('tab-pc');
-        const tabMobile = document.getElementById('tab-mobile');
-        const contentPc = document.getElementById('content-pc');
-        const contentMobile = document.getElementById('content-mobile');
-        const yapeModal = document.getElementById('yape-modal');
-        const yapeModalOpenBtn = document.getElementById('yape-modal-open');
-        const yapeModalCloseBtn = document.getElementById('yape-modal-close');
-        const openYapeBtn = document.getElementById('open-yape-btn');
-        const commentsModal = document.getElementById('comments-modal');
-        const commentsModalCloseBtn = document.getElementById('comments-modal-close');
-        const submitCommentBtn = document.getElementById('submit-comment-btn');
-        const downloadGuideModal = document.getElementById('download-guide-modal');
-        const downloadGuideModalCloseBtn = document.getElementById('download-guide-modal-close');
-        const downloadGuideContinueBtn = document.getElementById('download-guide-continue-btn');
-        const adminLoginBtn = document.getElementById('admin-login-btn');
-        const adminStatus = document.getElementById('admin-status');
-        const commentInput = document.getElementById('comment-input');
-
-        // (NUEVO) AJUSTE VISUAL INICIAL DE PESTAÑAS
-        // Si detectamos móvil, cambiamos los colores de las pestañas y la visibilidad antes de cargar nada
-        if (activeTab === 'mobile') {
-            // Cambiar pestaña PC a inactiva
-            if(tabPc) {
-                tabPc.classList.replace('text-blue-700', 'text-slate-500');
-                tabPc.classList.replace('bg-blue-100', 'bg-slate-100');
-                tabPc.classList.replace('border-blue-600', 'border-transparent');
-            }
-            // Cambiar pestaña Móvil a activa
-            if(tabMobile) {
-                tabMobile.classList.replace('text-slate-500', 'text-green-700');
-                tabMobile.classList.replace('bg-slate-100', 'bg-green-100');
-                tabMobile.classList.replace('border-transparent', 'border-green-600');
-            }
-            // Mostrar contenido móvil y ocultar PC
-            if(contentPc) contentPc.classList.add('hidden');
-            if(contentMobile) contentMobile.classList.remove('hidden');
-        }
-
-        // --- ASIGNACIÓN DE EVENTOS ---
-        const openAiChatBtn = document.getElementById('open-ai-chat-btn');
-        if (openAiChatBtn) {
-            openAiChatBtn.addEventListener('click', () => {
-                if (aiChatModal) aiChatModal.classList.add('open');
-                if (aiChatInput) aiChatInput.focus();
-            });
-        }
-        
-        const aiChatModalCloseBtn = document.getElementById('ai-chat-modal-close');
-        const aiSpeakerToggle = document.getElementById('ai-speaker-toggle');
-        const speakerOnIcon = document.getElementById('speaker-on');
-        const speakerOffIcon = document.getElementById('speaker-off');
-        const aiChatMicBtn = document.getElementById('ai-chat-mic');
-
-        if (aiChatModalCloseBtn) {
-            aiChatModalCloseBtn.addEventListener('click', () => {
-                if (aiChatModal) aiChatModal.classList.remove('open');
-                synth.cancel();
-            });
-        }
-
-        if (aiSpeakerToggle && speakerOnIcon && speakerOffIcon) {
-            aiSpeakerToggle.addEventListener('click', () => {
-                isSpeechEnabled = !isSpeechEnabled;
-                if (isSpeechEnabled) {
-                    speakerOnIcon.classList.remove('hidden');
-                    speakerOffIcon.classList.add('hidden');
-                    speak("Altavoz activado.");
-                } else {
-                    speakerOnIcon.classList.add('hidden');
-                    speakerOffIcon.classList.remove('hidden');
-                    synth.cancel();
-                }
-            });
-        }
-
-        if (aiChatMicBtn && recognition) {
-            aiChatMicBtn.addEventListener('click', () => {
-                if (isListening) {
-                    recognition.stop();
-                } else {
-                    try {
-                        if(aiChatError) aiChatError.classList.add('hidden');
-                        recognition.start();
-                    } catch(e) {
-                        console.error("Error al iniciar reconocimiento:", e);
-                        if(aiChatError) {
-                            aiChatError.textContent = `Error de micrófono. ¿Ya diste permiso?`;
-                            aiChatError.classList.remove('hidden');
-                        }
-                    }
-                }
-            });
-        } else if (aiChatMicBtn) {
-            aiChatMicBtn.style.display = 'none';
-        }
-
-        if (aiChatModal) {
-            aiChatModal.addEventListener('click', (e) => {
-                if (e.target === aiChatModal) {
-                    aiChatModal.classList.remove('open');
-                }
-            });
-        }
-
-        if (aiChatForm) {
-            aiChatForm.addEventListener('submit', (e) => {
-                e.preventDefault();
-                if (!aiChatInput) return;
-                const userText = aiChatInput.value.trim();
-                if (!userText || isAiThinking) return;
-                aiChatInput.value = '';
-                addMessageToChat('user', userText);
-                aiChatHistory.push({ role: 'user', parts: [{ text: userText }] });
-                handleAiResponse();
-            });
-        }
-
-        if (tabPc) {
-            tabPc.addEventListener('click', () => {
-                activeTab = 'pc';
-                currentCategory = 'home';
-                if (contentMobile) contentMobile.classList.add('hidden');
-                if (contentPc) contentPc.classList.remove('hidden');
-                tabPc.classList.replace('text-slate-500', 'text-blue-700');
-                tabPc.classList.replace('bg-slate-100', 'bg-blue-100');
-                tabPc.classList.replace('border-transparent', 'border-blue-600');
-                if (tabMobile) {
-                    tabMobile.classList.replace('text-green-700', 'text-slate-500');
-                    tabMobile.classList.replace('bg-green-100', 'bg-slate-100');
-                    tabMobile.classList.replace('border-green-600', 'border-transparent');
-                }
-                updateView();
-            });
-        }
-
-        if (tabMobile) {
-            tabMobile.addEventListener('click', () => {
-                activeTab = 'mobile';
-                if (contentPc) contentPc.classList.add('hidden');
-                if (contentMobile) contentMobile.classList.remove('hidden');
-                tabMobile.classList.replace('text-slate-500', 'text-green-700');
-                tabMobile.classList.replace('bg-slate-100', 'bg-green-100');
-                tabMobile.classList.replace('border-transparent', 'border-green-600');
-                if (tabPc) {
-                    tabPc.classList.replace('text-blue-700', 'text-slate-500');
-                    tabPc.classList.replace('bg-blue-100', 'bg-slate-100');
-                    tabPc.classList.replace('border-blue-600', 'border-transparent');
-                }
-                updateView();
-            });
-        }
-
-        if (navContainer) {
-            navContainer.addEventListener('click', (e) => {
-                const link = e.target.closest('.nav-link');
-                const parentLink = e.target.closest('.nav-link-parent');
-                
-                if (link && link.dataset.category) {
-                    e.preventDefault();
-                    currentCategory = link.dataset.category;
-                    if (activeTab !== 'pc') {
-                        if(tabPc) tabPc.click();
-                    } else {
-                        updateView();
-                    }
-                    document.querySelectorAll('.dropdown.open').forEach(menu => menu.classList.remove('open'));
-                } else if (parentLink) {
-                    e.preventDefault();
-                    const dropdown = parentLink.nextElementSibling;
-                    document.querySelectorAll('.dropdown.open').forEach(menu => {
-                        if (menu !== dropdown) menu.classList.remove('open');
-                    });
-                    if (dropdown) dropdown.classList.toggle('open');
-                }
-            });
-        }
-
-        document.addEventListener('click', (e) => {
-            const nav = document.getElementById('nav-container');
-            if (nav && !nav.contains(e.target)) {
-                document.querySelectorAll('.dropdown.open').forEach(menu => menu.classList.remove('open'));
-            }
-        });
-
-        if (howToDownloadBtn) {
-            howToDownloadBtn.addEventListener('click', () => { if (howToDownloadModal) howToDownloadModal.classList.add('open'); });
-        }
-        if (howToDownloadModal) {
-            howToDownloadModal.addEventListener('click', (e) => {
-                if (e.target === howToDownloadModal) {
-                    howToDownloadModal.classList.remove('open');
-                }
-            });
-        }
-
-        if (yapeModalOpenBtn) yapeModalOpenBtn.addEventListener('click', () => { if (yapeModal) yapeModal.classList.add('open'); });
-        if (yapeModalCloseBtn) yapeModalCloseBtn.addEventListener('click', () => { if (yapeModal) yapeModal.classList.remove('open'); });
-        if (yapeModal) yapeModal.addEventListener('click', (e) => { if (e.target === yapeModal) yapeModal.classList.remove('open'); });
-
-        if (commentsModalCloseBtn) {
-            commentsModalCloseBtn.addEventListener('click', () => {
-                if (commentsModal) commentsModal.classList.remove('open');
-                if (commentsUnsubscribe) {
-                    commentsUnsubscribe();
-                    commentsUnsubscribe = null;
-                }
-                currentItem = null;
-            });
-        }
-        if (commentsModal) commentsModal.addEventListener('click', (e) => { if (e.target === commentsModal) commentsModal.classList.remove('open'); });
-
-        if (submitCommentBtn) {
-            submitCommentBtn.addEventListener('click', () => {
-                if (currentItem && commentInput) {
-                    const commentsCollection = collection(db, `artifacts/${appId}/public/data/comments`, currentItem.id, "messages");
-                    submitComment(commentInput, submitCommentBtn, commentsCollection);
-                }
-            });
-        }
-
-        if (downloadGuideModalCloseBtn) {
-            downloadGuideModalCloseBtn.addEventListener('click', () => {
-                if (downloadGuideModal) downloadGuideModal.classList.remove('open');
-                currentDownloadLink = null;
-            });
-        }
-        if (downloadGuideModal) downloadGuideModal.addEventListener('click', (e) => { if (e.target === downloadGuideModal) downloadGuideModal.classList.remove('open'); });
-
-        if (downloadGuideContinueBtn) {
-            downloadGuideContinueBtn.addEventListener('click', () => {
-                if (downloadGuideModal) downloadGuideModal.classList.remove('open');
-                if (currentDownloadLink) {
-                    window.open(currentDownloadLink, '_blank');
-                    currentDownloadLink = null;
-                }
-            });
-        }
-
-        if (adminLoginBtn) {
-            adminLoginBtn.addEventListener('click', async () => {
-                if (!auth) return;
-                const provider = new GoogleAuthProvider();
-                try {
-                    const result = await signInWithPopup(auth, provider);
-                } catch (error) {
-                    console.error("Error al iniciar sesión con Google:", error);
-                    if (adminStatus) {
-                        adminStatus.textContent = "Error al iniciar sesión.";
-                        adminStatus.classList.remove('hidden');
-                    }
-                }
-            });
-        }
-
-        // --- INICIALIZACIÓN DE FIREBASE (NUEVO FLUJO) ---
-        try {
-            app = initializeApp(firebaseConfig);
-            db = getFirestore(app);
-            auth = getAuth(app);
-
-            onAuthStateChanged(auth, async (user) => {
-                const aiChatGreeting = document.getElementById('ai-chat-greeting');
-                const aiChatSubGreeting = document.getElementById('ai-chat-subgreeting');
-
-                if (user) {
-                    console.log("Usuario detectado:", user.uid, "Anónimo:", user.isAnonymous);
-                    if (user.uid === ADMIN_ID && adminStatus) {
-                        adminStatus.textContent = `¡Bienvenido, Admin! (${user.displayName || 'Admin'})`;
-                        adminStatus.classList.remove('hidden');
-                    }
-                    
-                    if (!user.isAnonymous && aiChatGreeting && aiChatSubGreeting) {
-                        aiChatGreeting.textContent = `¡Hola, ${user.displayName || 'Usuario'}! 👋`;
-                        aiChatSubGreeting.textContent = `Tu asistente IA-Lahs está lista.`;
-                    } else if (aiChatGreeting && aiChatSubGreeting) {
-                        aiChatGreeting.textContent = `¡Hola! 👋`;
-                        aiChatSubGreeting.textContent = `Inicia sesión para una mejor experiencia.`;
-                    }
-
-                } else {
-                    console.log("Sin usuario. Iniciando sesión anónima.");
-                    await signInAnonymously(auth);
-                    if (aiChatGreeting && aiChatSubGreeting) {
-                        aiChatGreeting.textContent = `¡Hola! 👋`;
-                        aiChatSubGreeting.textContent = `Inicia sesión para una mejor experiencia.`;
-                    }
-                }
-                
-                // (MODIFICADO) Solo cargar datos DESPUÉS de que la autenticación esté lista
-                if (!authReady) {
-                    authReady = true;
-                    // ¡Este es el inicio! Cargar todo desde Firebase.
-                    await loadSoftwareAndCategoriesFromFirebase(); 
-                    document.dispatchEvent(new Event('firebaseAuthReady'));
-                }
-            });
-
-        } catch (e) {
-            console.error("Error fatal al inicializar Firebase:", e);
-            const contentGridPc = document.getElementById('content-grid-pc');
-            if (contentGridPc) contentGridPc.innerHTML = `<p class="text-red-500 text-lg">Error fatal al inicializar Firebase: ${e.message}</p>`;
-            if (!authReady) {
-                authReady = true; 
-                document.dispatchEvent(new Event('firebaseAuthReady'));
-            }
-        }
-        
-        if (isMobileDevice()) {
-            const mobileAd = document.getElementById('mobile-ad-top');
-            if (mobileAd) mobileAd.classList.remove('hidden');
-        }
-
-    </script>
-    <!-- =================================================================================== -->
-    <!-- ===== FIN DEL NUEVO MOTOR JAVASCRIPT ===== -->
-    <!-- =================================================================================== -->
+        // =================================================================
+        // ===== SECCIÓN 1: FUNCIONES AUXILIARES (Ayudantes) =====
+        // =================================================================
+        
+        /**
+         * Actualiza el enlace activo en la barra de navegación.
+         */
+        function updateActiveLink() {
+            document.querySelectorAll('.nav-link, .nav-link-parent').forEach(link => link.classList.remove('active'));
+            const activeLink = document.querySelector(`.nav-link[data-category="${currentCategory}"]`);
+            if (activeLink) {
+                activeLink.classList.add('active');
+                const parentGroup = activeLink.closest('.group');
+                if (parentGroup) {
+                    const parentBtn = parentGroup.querySelector('.nav-link-parent');
+                    if (parentBtn) parentBtn.classList.add('active');
+                }
+            } else if (currentCategory === 'home') {
+                const homeLink = document.querySelector(`.nav-link[data-category="home"]`);
+                if (homeLink) homeLink.classList.add('active');
+            }
+        }
+
+        /**
+         * (MODIFICADO)
+         * Renderiza las tarjetas de software. Ahora es más seguro y previene XSS.
+         */
+        function renderCards(items, targetGridElement, noResultsElement) {
+            // Verificación de seguridad (causa del error anterior)
+            if (!targetGridElement || !noResultsElement) {
+                console.error("Error en renderCards: targetGridElement o noResultsElement es nulo.");
+                return;
+            }
+            
+            targetGridElement.innerHTML = ''; // Limpiar
+            if (items.length === 0) {
+                noResultsElement.classList.remove('hidden');
+                targetGridElement.classList.add('hidden');
+            } else {
+                noResultsElement.classList.add('hidden');
+                targetGridElement.classList.remove('hidden');
+            }
+            
+            // Ordenar por fecha (más nuevo primero)
+            const sortedItems = items.sort((a, b) => {
+                const dateA = a.date ? new Date(a.date) : new Date(0);
+                const dateB = b.date ? new Date(b.date) : new Date(0);
+                return dateB - dateA;
+            });
+
+            sortedItems.forEach(item => {
+                let placeholderColor = 'e2e8f0/94a3b8';
+                if (activeTab === 'mobile') placeholderColor = '16a34a/ffffff';
+                if (item.category && (item.category.includes('adobe') || item.category.includes('photoshop') || item.category.includes('premiere'))) placeholderColor = '1e40af/ffffff';
+                
+                const passwordHtml = (item.platform === 'pc') ? `<span class="text-xs text-slate-500 text-center mt-2">Contraseña: taiwebs.com</span>` : '';
+                
+                const userHasLiked = userLikes[item.id] || false;
+                const likeButtonClass = userHasLiked ? 'like-btn liked' : 'like-btn';
+
+                const card = document.createElement('div');
+                card.className = 'bg-white rounded-xl shadow-sm overflow-hidden border border-slate-200 hover:shadow-lg hover:border-blue-300 transition-all duration-300 transform hover:-translate-y-1';
+                card.id = `card-${item.id}`;
+                
+                // Usar innerHTML para la estructura, pero rellenar con textContent para seguridad
+                card.innerHTML = `
+                    <img class="h-48 w-full object-cover" src="" alt=""> <!-- src y alt se asignan abajo -->
+                    <div class="p-5">
+                        <div class="flex justify-between items-center mb-1">
+                            <p class="text-xs text-slate-500"></p> <!-- fecha -->
+                            <span id="download-count-${item.id}" class="inline-flex items-center gap-1 text-xs text-blue-600 font-medium bg-blue-50 px-2 py-0.5 rounded-full" title="Descargas">
+                                <svg class="h-3 w-3" fill="currentColor" viewBox="0 0 20 20"><path d="M10.75 2.75a.75.75 0 00-1.5 0v8.614L6.295 8.23a.75.75 0 00-1.09 1.03l4.25 4.5a.75.75 0 001.09 0l4.25-4.5a.75.75 0 00-1.09-1.03l-2.905 3.084V2.75z"></path><path d="M3.5 12.75a.75.75 0 00-1.5 0v2.5A2.75 2.75 0 004.75 18h10.5A2.75 2.75 0 0018 15.25v-2.5a.75.75 0 00-1.5 0v2.5a1.25 1.25 0 01-1.25 1.25H4.75a1.25 1.25 0 01-1.25-1.25v-2.5z"></path></svg>
+                                0 <!-- contador de descargas -->
+                            </span>
+                        </div>
+                        <h3 class="text-lg font-bold text-slate-900 mb-2 truncate" title=""></h3> <!-- título -->
+                        <p class="text-slate-600 text-sm mb-4 h-20 overflow-hidden"></p> <!-- descripción -->
+                        <div class="flex flex-col sm:flex-row gap-3">
+                            <div class="flex-grow flex flex-col">
+                                <button class="download-btn w-full inline-block text-center bg-blue-600 text-white font-semibold py-2.5 px-4 rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors ${item.downloadLink === '#' ? 'opacity-50 cursor-not-allowed' : ''}" 
+                                    data-item-id="${item.id}" data-download-link="">Descargar</button>
+                                ${passwordHtml}
+                            </div>
+                            <div class="flex-shrink-0 flex items-center justify-center gap-3">
+                                <button aria-label="Me gusta" class="${likeButtonClass} flex items-center flex-shrink-0 p-2.5 rounded-lg transition-colors" data-item-id="${item.id}">
+                                    <svg class="h-5 w-5" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z" clip-rule="evenodd"></path></svg>
+                                    <!-- contador de likes (se añade dinámicamente) -->
+                                </button>
+                                <button aria-label="Comentarios" class="comment-btn flex items-center flex-shrink-0 bg-slate-100 text-slate-600 p-2.5 rounded-lg hover:bg-slate-200 transition-colors" data-item-id="${item.id}">
+                                    <svg class="h-5 w-5" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 2c-4.42 0-8 3.134-8 7 0 2.653 1.606 4.935 3.999 6.136.002.001.005.003.007.004l.004.002c.002.001.004.002.006.003l.003.001.002.001.002.001.001.001c.001 0 .002.001.003.001.001 0 .002.001.002.001l.001.001c.001 0 .002 0 .003.001.001 0 .002 0 .002.001l.002.001c.001 0 .001 0 .002.001.001 0 .001 0 .002.001h.001l.001.001h.001c.001 0 .001 0 .002 0h.001l.001 0h.001l.002 0 .001 0 .002 0 .001 0 .002 0 .001 0h.001c.001 0 .002 0 .003 0h.001l.002 0 .001 0 .002 0 .001 0c.001 0 .002 0 .003 0l.002 0 .002 0 .003 0A6.98 6.98 0 0010 18a.75.75 0 00.75-.75V15.12c0-.28.124-.54.33-.733l.002-.002.002-.002.003-.003.004-.003.003-.003.002-.002.002-.002.001-.001c.001 0 .002-.001.002-.001.001 0 .002-.001.002-.001l.001-.001c.001 0 .002-.001.003-.001.001 0 .002-.001.003-.001l.001-.001.002-.001.002-.001.002-.001.003-.001c.001 0 .002-.001.004-.001.001 0 .002-.001.003-.001.218-.088.428-.19.63-.309l.002-.001c.001 0 .003-.001.004-.002.001 0 .002-.001.004-.002.002-.001.003-.002.005-.003.001 0 .002-.001.003-.002l.003-.002.001-.001.001-.001c0 0 .001-.001.001-.001L13.05 14a6.96 6.96 0 003.95-6C17 5.134 13.42 2 10 2z" clip-rule="evenodd"></path></svg>
+                                </button>
+                                <button aria-label="Compartir" class="share-btn flex-shrink-0 bg-slate-100 text-slate-600 p-2.5 rounded-lg hover:bg-slate-200 transition-colors" data-title="" data-url="">
+                                    <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6L15 7.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 0a3 3 0 105.367 2.684 3 3 0 00-5.367-2.684zm-7.316 2.684l6.632 3.316"></path></svg>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                
+                // Asignación segura de atributos y textContent
+                const img = card.querySelector('img');
+                img.src = item.imageUrl || `https://placehold.co/600x400/${placeholderColor}?text=Imagen+no+disponible`;
+                img.alt = item.title || "Imagen de software";
+                img.onerror = function() {
+                    this.onerror=null;
+                    this.src=`https://placehold.co/600x400/${placeholderColor}?text=${encodeURIComponent(item.title || 'Error')}`;
+                };
+                
+                const titleEl = card.querySelector('h3');
+                titleEl.textContent = item.title || "Sin Título";
+                titleEl.title = item.title || "Sin Título";
+                
+                card.querySelector('p.text-slate-500').textContent = new Date(item.date || Date.now()).toLocaleDateString('es-ES', { year: 'numeric', month: 'long', day: 'numeric' });
+                card.querySelector('p.text-slate-600').textContent = item.description || "Sin descripción.";
+                card.querySelector('.download-btn').dataset.downloadLink = item.downloadLink || "#";
+                
+                const shareBtn = card.querySelector('.share-btn');
+                shareBtn.dataset.title = item.title || "Descargar Ultima Version";
+                shareBtn.dataset.url = `${window.location.origin}${window.location.pathname}?item=${encodeURIComponent(item.id)}`;
+                
+                targetGridElement.appendChild(card);
+            });
+
+            // Re-vincular eventos (¡IMPORTANTE!)
+            targetGridElement.querySelectorAll('.share-btn').forEach(button => button.addEventListener('click', handleShare));
+            targetGridElement.querySelectorAll('.comment-btn').forEach(button => button.addEventListener('click', openCommentsModal));
+            targetGridElement.querySelectorAll('.like-btn').forEach(button => button.addEventListener('click', handleLike));
+            targetGridElement.querySelectorAll('.download-btn').forEach(button => button.addEventListener('click', (e) => {
+                const { itemId, downloadLink } = e.currentTarget.dataset;
+                handleDownloadClick(e, itemId, downloadLink);
+            }));
+
+            // Actualizar contadores
+            items.forEach(item => {
+                updateLikeCount(item.id, item.likes || 0);
+                updateDownloadCount(item.id, item.downloads || 0);
+            });
+        }
+
+        /**
+         * Maneja el clic en el botón de descarga, mostrando la guía si es móvil.
+         */
+        async function handleDownloadClick(event, itemId, downloadLink) {
+            event.preventDefault();
+            const downloadGuideModal = document.getElementById('download-guide-modal');
+            
+            if (downloadLink && downloadLink !== "#") {
+                currentDownloadLink = downloadLink;
+                
+                if (isMobileDevice() && downloadGuideModal) {
+                    downloadGuideModal.classList.add('open');
+                } else {
+                    // Si es PC o no hay modal, va directo
+                    window.open(currentDownloadLink, '_blank');
+                    currentDownloadLink = null;
+                }
+                
+                if (db) {
+                    await incrementDownloadCount(itemId);
+                }
+            } else {
+                console.warn("Enlace de descarga aún no disponible.");
+            }
+        }
+        
+        /**
+         * Verifica si el dispositivo es móvil.
+         */
+        function isMobileDevice() {
+            return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+        }
+
+        /**
+         * (MODIFICADO)
+         * Incrementa el contador de descargas en Firebase.
+         */
+        async function incrementDownloadCount(itemId) {
+            if (!db) return;
+            // (MODIFICADO) La ruta ahora es 'software-items'
+            const itemRef = doc(db, `artifacts/${appId}/public/data/software-items`, itemId);
+            try {
+                // (MODIFICADO) El campo se llama 'downloads'
+                await updateDoc(itemRef, { downloads: increment(1) });
+            } catch (error) {
+                console.error("Error al incrementar descargas: ", error);
+            }
+        }
+
+        /**
+         * (MODIFICADO)
+         * Actualiza el contador de descargas en la UI en tiempo real.
+         */
+        function updateDownloadCount(itemId, staticCount) {
+            if (!db || downloadListeners[itemId]) return;
+            const itemRef = doc(db, `artifacts/${appId}/public/data/software-items`, itemId);
+            
+            downloadListeners[itemId] = onSnapshot(itemRef, (doc) => {
+                const countEl = document.getElementById(`download-count-${itemId}`);
+                if (!countEl) return;
+                
+                let count = staticCount;
+                if (doc.exists() && doc.data().downloads !== undefined) {
+                    count = doc.data().downloads;
+                }
+                
+                // Limpiar y rellenar de forma segura
+                countEl.innerHTML = ''; // Limpiar
+                countEl.appendChild(document.querySelector('.like-btn svg').cloneNode(true)); // Re-añadir icono
+                countEl.appendChild(document.createTextNode(` ${count.toLocaleString('es-ES')}`));
+            }, (error) => {
+                console.error(`Error en listener de descargas (${itemId}):`, error);
+            });
+        }
+
+        /**
+         * (MODIFICADO)
+         * Navega a una tarjeta específica (usado por el ranking y la IA).
+         */
+        function handleTopDownloadClick(e, cardId) {
+            if (e) e.preventDefault();
+            const itemId = cardId || (e ? e.currentTarget.dataset.itemId : null);
+            if (!itemId) return;
+
+            // (MODIFICADO) Busca en la lista global 'allSoftware'
+            let item = allSoftware.find(i => i.id === itemId);
+            if (!item) {
+                console.warn(`No se encontró el item ${itemId} en allSoftware.`);
+                return;
+            }
+
+            let itemTab = item.platform || 'pc'; // 'platform' viene de Firebase
+            
+            if (activeTab !== itemTab) {
+                const tabToClick = (itemTab === 'pc') ? document.getElementById('tab-pc') : document.getElementById('tab-mobile');
+                if (tabToClick) tabToClick.click();
+            }
+
+            setTimeout(() => {
+                const cardElement = document.getElementById(`card-${item.id}`);
+                if (cardElement) {
+                    cardElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    cardElement.classList.add('card-highlight');
+                    setTimeout(() => {
+                        cardElement.classList.remove('card-highlight');
+                    }, 1500);
+                }
+            }, 100);
+        }
+
+        /**
+         * Maneja la función de compartir (Nativo o Copiar al portapapeles).
+         */
+        function handleShare(e) {
+            const title = e.currentTarget.dataset.title;
+            const url = e.currentTarget.dataset.url;
+            if (navigator.share) {
+                navigator.share({ title, url }).catch(console.error);
+            } else {
+                try {
+                    // Fallback para copiar (requiere un input temporal)
+                    const tempInput = document.createElement('input');
+                    document.body.appendChild(tempInput);
+                    tempInput.value = url;
+                    tempInput.select();
+                    document.execCommand('copy');
+                    document.body.removeChild(tempInput);
+                    console.log("Enlace copiado: " + url);
+                    // (Aquí se podría mostrar un toast de "Copiado")
+                } catch (err) {
+                    console.error("No se pudo copiar el enlace: ", err);
+                }
+            }
+        }
+
+        /**
+         * Asegura que haya un usuario (Anónimo o Logueado)
+         */
+        async function ensureUserIsLoggedIn() {
+            if (!auth) return null;
+            if (auth.currentUser) {
+                return auth.currentUser;
+            }
+            try {
+                // Si no hay usuario, intenta un login anónimo
+                const userCredential = await signInAnonymously(auth);
+                return userCredential.user;
+            } catch (error) {
+                console.error("Error al iniciar sesión anónima sobre la marcha:", error);
+                return null;
+            }
+        }
+
+        /**
+         * (MODIFICADO)
+         * Abre el modal de comentarios.
+         */
+        function openCommentsModal(e) {
+            const button = e.currentTarget;
+            const itemId = button.dataset.itemId;
+            currentItem = allSoftware.find(i => i.id === itemId); // Busca en la lista global
+            if (!currentItem) return;
+            
+            const commentsModal = document.getElementById('comments-modal');
+            const commentsModalTitle = document.getElementById('comments-modal-title');
+            const commentInput = document.getElementById('comment-input');
+            const commentsList = document.getElementById('comments-list');
+
+            commentsModalTitle.textContent = `Comentarios de "${currentItem.title}"`;
+            commentInput.value = '';
+            commentsList.innerHTML = '<p class="text-slate-500 text-sm">Cargando comentarios...</p>';
+            if (commentsModal) commentsModal.classList.add('open');
+            loadComments(currentItem);
+        }
+
+        /**
+         * Carga los comentarios de un item desde Firebase.
+         */
+        function loadComments(item) {
+            if (commentsUnsubscribe) commentsUnsubscribe();
+            if (!db) return;
+            const commentsList = document.getElementById('comments-list');
+            const commentsCollection = collection(db, `artifacts/${appId}/public/data/comments`, item.id, "messages");
+            const q = query(commentsCollection, orderBy("timestamp", "desc"));
+            
+            commentsUnsubscribe = onSnapshot(q, (snapshot) => {
+                commentsList.innerHTML = '';
+                
+                if (item.staticComment) {
+                    const staticCommentEl = document.createElement('div');
+                    staticCommentEl.className = 'comment';
+                    staticCommentEl.innerHTML = `<p></p><span class="block text-right">hace tiempo</span>`;
+                    staticCommentEl.querySelector('p').textContent = item.staticComment; // Asignación segura
+                    commentsList.appendChild(staticCommentEl);
+                }
+                
+                if (snapshot.empty && !item.staticComment) {
+                    commentsList.innerHTML = '<p class="text-slate-500 text-sm">No hay comentarios. ¡Sé el primero!</p>';
+                    return;
+                }
+                
+                snapshot.forEach(doc => {
+                    const comment = doc.data();
+                    const date = comment.timestamp ? comment.timestamp.toDate().toLocaleString('es-ES') : 'Justo ahora';
+                    const isAdmin = comment.uid === ADMIN_ID;
+                    const commentEl = document.createElement('div');
+                    commentEl.className = isAdmin ? 'comment admin-comment' : 'comment';
+                    
+                    const displayName = isAdmin ? `<strong>[ADMIN]</strong> ${comment.displayName || 'Admin'}` : (comment.displayName || 'Anónimo');
+                    
+                    commentEl.innerHTML = `<p></p><span class="block text-right">Por: ${displayName} - ${date}</span>`;
+                    commentEl.querySelector('p').textContent = comment.text; // Asignación segura (previene XSS)
+                    
+                    commentsList.appendChild(commentEl);
+                });
+            }, (error) => {
+                console.error("Error al cargar comentarios: ", error);
+                commentsList.innerHTML = '<p class="text-red-500 text-sm">Error al cargar comentarios.</p>';
+            });
+        }
+
+        /**
+         * Envía un nuevo comentario a Firebase.
+         */
+        async function submitComment(textArea, button, collectionRef) {
+            const commentText = textArea.value.trim();
+            if (!commentText) return;
+            const user = await ensureUserIsLoggedIn();
+            if (!user) {
+                console.error("No se pudo obtener usuario para comentar.");
+                return;
+            }
+            button.disabled = true;
+            button.textContent = 'Enviando...';
+            try {
+                await addDoc(collectionRef, {
+                    text: commentText,
+                    timestamp: serverTimestamp(),
+                    uid: user.uid,
+                    displayName: (user.uid === ADMIN_ID) ? (user.displayName || 'Admin') : (user.isAnonymous ? 'Anónimo' : (user.displayName || 'Usuario'))
+                });
+                textArea.value = '';
+            } catch (error) {
+                console.error("Error al enviar comentario: ", error);
+            } finally {
+                button.disabled = false;
+                button.textContent = 'Enviar Comentario';
+            }
+        }
+
+        // --- FUNCIONES DE LA PIZARRA DE PEDIDOS ---
+
+        /**
+         * Añade un nuevo pedido de software a Firebase (si no existe).
+         */
+        async function addSoftwareRequest(softwareName) {
+            if (!db) return;
+            const user = await ensureUserIsLoggedIn();
+            if (!user) return;
+            
+            const requestsCollection = collection(db, `artifacts/${appId}/public/data/general-requests`);
+            
+            // Evitar duplicados (insensible a mayúsculas/minúsculas)
+            const lowerCaseName = softwareName.toLowerCase().trim();
+            const q = query(requestsCollection, where("lowerCaseName", "==", lowerCaseName));
+            const existing = await getDocs(q);
+            
+            if (existing.empty) {
+                try {
+                    const newRequestRef = await addDoc(requestsCollection, {
+                        text: softwareName,
+                        lowerCaseName: lowerCaseName,
+                        timestamp: serverTimestamp(),
+                        uid: user.uid,
+                        displayName: (user.uid === ADMIN_ID) ? 'Admin' : (user.isAnonymous ? 'Anónimo' : (user.displayName || 'Usuario')),
+                        votes: 1 // Empezar con 1 voto (el del solicitante)
+                    });
+                    // Marcar como votado
+                    userVotes[newRequestRef.id] = true;
+                    localStorage.setItem('userVotes', JSON.stringify(userVotes));
+                } catch (e) {
+                    console.error("Error al añadir pedido:", e);
+                }
+            } else {
+                console.log("El pedido ya existe:", softwareName);
+            }
+        }
+
+        /**
+         * Carga la pizarra de pedidos desde Firebase.
+         */
+        function loadGeneralRequests() {
+            const generalRequestsList = document.getElementById('general-requests-list');
+            if (!generalRequestsList || !db) return; 
+            
+            generalRequestsList.innerHTML = '<p class="text-slate-500 text-sm p-4 text-center">Cargando pedidos...</p>';
+            
+            if (generalRequestsUnsubscribe) generalRequestsUnsubscribe();
+            
+            const requestsCollection = collection(db, `artifacts/${appId}/public/data/general-requests`);
+            
+            // (MODIFICADO) Quitar 'orderBy' de la consulta de Firebase
+            const q = query(requestsCollection);
+
+            generalRequestsUnsubscribe = onSnapshot(q, (snapshot) => {
+                generalRequestsList.innerHTML = '';
+                if (snapshot.empty) {
+                    generalRequestsList.innerHTML = '<p class="text-slate-500 text-sm p-4 text-center">Aún no hay pedidos. ¡Pídele a la IA!</p>';
+                    return;
+                }
+                
+                // Convertir a array para ordenar en JS
+                const requests = [];
+                snapshot.forEach(doc => {
+                    requests.push({ id: doc.id, data: doc.data() });
+                });
+
+                // Ordenar en JavaScript (Primero por votos, luego por fecha)
+                requests.sort((a, b) => {
+                    const votesDiff = (b.data.votes || 0) - (a.data.votes || 0);
+                    if (votesDiff !== 0) {
+                        return votesDiff;
+                    }
+                    const dateA = (a.data.timestamp && a.data.timestamp.toMillis) ? a.data.timestamp.toMillis() : 0;
+                    const dateB = (b.data.timestamp && b.data.timestamp.toMillis) ? b.data.timestamp.toMillis() : 0;
+                    return dateB - dateA;
+                });
+                
+                requests.forEach(doc => {
+                    const request = doc.data;
+                    const requestId = doc.id;
+                    const date = request.timestamp ? request.timestamp.toDate().toLocaleDateString('es-ES') : 'reciente';
+                    const userHasVoted = userVotes[requestId] || false;
+                    const voteButtonClass = userHasVoted ? 'vote-btn voted' : 'vote-btn';
+                    
+                    const requestEl = document.createElement('div');
+                    requestEl.className = 'request-board-item';
+                    
+                    requestEl.innerHTML = `
+                        <div class="request-text">
+                            <strong></strong>
+                            <span>Pedido por: ${request.displayName || 'Anónimo'} - ${date}</span>
+                        </div>
+                        <button class="${voteButtonClass}" data-request-id="${requestId}">
+                            ▲ <span id="vote-count-${requestId}">${request.votes || 0}</span>
+                        </button>
+                    `;
+                    requestEl.querySelector('strong').textContent = request.text; // Asignación segura
+                    
+                    generalRequestsList.appendChild(requestEl);
+                    
+                    requestEl.querySelector('.vote-btn').addEventListener('click', handleVote);
+                });
+            }, (error) => {
+                console.error("Error al cargar pedidos: ", error);
+                generalRequestsList.innerHTML = `<p class="text-red-500 text-sm p-4 text-center">Error al cargar pedidos: ${error.message}</p>`;
+            });
+        }
+
+        /**
+         * Maneja un voto (arriba o abajo) en la pizarra de pedidos.
+         */
+        async function handleVote(e) {
+            const button = e.currentTarget;
+            const requestId = button.dataset.requestId;
+            const user = await ensureUserIsLoggedIn();
+            if (!user) return;
+            
+            const hasVoted = userVotes[requestId] || false;
+            const requestRef = doc(db, `artifacts/${appId}/public/data/general-requests`, requestId);
+            
+            try {
+                await runTransaction(db, async (transaction) => {
+                    const requestDoc = await transaction.get(requestRef);
+                    if (!requestDoc.exists()) return;
+                    
+                    const currentVotes = requestDoc.data().votes || 0;
+                    let newVoteCount = currentVotes;
+
+                    if (hasVoted) {
+                        newVoteCount = currentVotes > 0 ? currentVotes - 1 : 0;
+                        userVotes[requestId] = false;
+                    } else {
+                        newVoteCount = currentVotes + 1;
+                        userVotes[requestId] = true;
+                    }
+                    transaction.update(requestRef, { votes: newVoteCount });
+                });
+                
+                localStorage.setItem('userVotes', JSON.stringify(userVotes));
+                
+            } catch (error) {
+                console.error("Error al votar:", error);
+                // Revertir el estado local si la transacción falla
+                userVotes[requestId] = hasVoted;
+                localStorage.setItem('userVotes', JSON.stringify(userVotes));
+            }
+        }
+        
+        /**
+         * (MODIFICADO)
+         * Maneja un "Me Gusta" en una tarjeta de software.
+         */
+        async function handleLike(e) {
+            const button = e.currentTarget;
+            const itemId = button.dataset.itemId;
+            const user = await ensureUserIsLoggedIn();
+            if (!user) {
+                console.error("No se pudo obtener usuario para dar like.");
+                return;
+            }
+            // (MODIFICADO) Ruta de la base de datos
+            const itemRef = doc(db, `artifacts/${appId}/public/data/software-items`, itemId);
+            const userHasLiked = userLikes[itemId] || false;
+            
+            try {
+                await runTransaction(db, async (transaction) => {
+                    const itemDoc = await transaction.get(itemRef);
+                    if (!itemDoc.exists()) return;
+                    
+                    // (MODIFICADO) Campo 'likes'
+                    const currentLikes = itemDoc.data().likes || 0;
+                    
+                    if (!userHasLiked) {
+                        transaction.update(itemRef, { likes: currentLikes + 1 });
+                        userLikes[itemId] = true;
+                        button.classList.add('liked');
+                    } else {
+                        transaction.update(itemRef, { likes: currentLikes > 0 ? currentLikes - 1 : 0 });
+                        userLikes[itemId] = false;
+                        button.classList.remove('liked');
+                    }
+                });
+                localStorage.setItem('userLikes', JSON.stringify(userLikes)); // Guardar en localStorage
+            } catch (error) {
+                console.error("Error al dar like: ", error);
+            }
+        }
+
+        /**
+         * (MODIFICADO)
+         * Actualiza el contador de "Me Gusta" en tiempo real.
+         */
+        function updateLikeCount(itemId, staticLikes) {
+            if (!db || likeListeners[itemId]) return;
+            const itemRef = doc(db, `artifacts/${appId}/public/data/software-items`, itemId);
+            
+            likeListeners[itemId] = onSnapshot(itemRef, (doc) => {
+                // (MODIFICADO) Campo 'likes'
+                const likeCount = (doc.exists() && doc.data().likes !== undefined) ? doc.data().likes : staticLikes;
+                
+                const button = document.querySelector(`.like-btn[data-item-id="${itemId}"]`);
+                if (!button) return;
+                
+                let countSpan = button.querySelector('span');
+                if (!countSpan) {
+                    countSpan = document.createElement('span');
+                    countSpan.className = 'ml-1 text-sm font-medium';
+                    button.appendChild(countSpan);
+                }
+                countSpan.textContent = likeCount;
+            }, (error) => {
+                console.error(`Error en listener de likes (${itemId}):`, error);
+            });
+        }
+        
+        // =================================================================
+        // ===== SECCIÓN 2: LÓGICA DEL CHAT DE IA =====
+        // =================================================================
+
+        // --- INICIO FUNCIONES DE VOZ (TTS Y STT) ---
+        const synth = window.speechSynthesis;
+        let voices = [];
+        
+        function loadVoices() {
+            voices = synth.getVoices();
+        }
+        
+        loadVoices();
+        if (synth.onvoiceschanged !== undefined) {
+            synth.onvoiceschanged = loadVoices;
+        }
+
+        function speak(text) {
+            if (!isSpeechEnabled || !text || synth.speaking) {
+                return;
+            }
+            const cleanText = text.replace(/\[LINK:[^\]]+\]/g, '')
+                                .replace(/\[ADD_TO_BOARD:[^\]]+\]/g, '')
+                                .replace(/<[^>]+>/g, ''); // Quitar HTML
+
+            const utterThis = new SpeechSynthesisUtterance(cleanText);
+            utterThis.onerror = (event) => {
+                console.error('SpeechSynthesisUtterance.onerror', event);
+            };
+            
+            // (MODIFICADO) Prioriza Español Latinoamericano
+            let spanishVoice = voices.find(voice => voice.lang === 'es-419') // Específico de Chrome
+                                || voices.find(voice => voice.lang === 'es-MX') // México
+                                || voices.find(voice => voice.lang === 'es-US') // US
+                                || voices.find(voice => voice.lang.startsWith('es-')); // Cualquiera
+            
+            if (spanishVoice) {
+                utterThis.voice = spanishVoice;
+            } else {
+                utterThis.lang = 'es-419'; // Fallback
+            }
+            
+            synth.speak(utterThis);
+        }
+
+        const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+        let isListening = false;
+        
+        if (SpeechRecognition) {
+            recognition = new SpeechRecognition();
+            recognition.continuous = false;
+            recognition.lang = 'es-ES';
+            recognition.interimResults = false;
+            recognition.maxAlternatives = 1;
+
+            recognition.onresult = (event) => {
+                const speechResult = event.results[0][0].transcript;
+                if(aiChatInput) aiChatInput.value = speechResult;
+            };
+
+            recognition.onspeechend = () => {
+                recognition.stop();
+            };
+
+            recognition.onstart = () => {
+                isListening = true;
+                const micIcon = document.getElementById('mic-icon');
+                const micListening = document.getElementById('mic-listening');
+                if(micIcon) micIcon.classList.add('hidden');
+                if(micListening) micListening.classList.remove('hidden');
+            };
+
+            recognition.onend = () => {
+                isListening = false;
+                const micIcon = document.getElementById('mic-icon');
+                const micListening = document.getElementById('mic-listening');
+                if(micIcon) micIcon.classList.remove('hidden');
+                if(micListening) micListening.classList.add('hidden');
+            };
+
+            recognition.onerror = (event) => {
+                console.error("Error de reconocimiento de voz:", event.error);
+                if(aiChatError) {
+                    aiChatError.textContent = `Error de micrófono: ${event.error}. Asegúrate de dar permiso.`;
+                    aiChatError.classList.remove('hidden');
+                }
+            };
+
+        } else {
+            console.warn("Reconocimiento de voz no soportado en este navegador.");
+        }
+        // --- FIN FUNCIONES DE VOZ ---
+
+        /**
+         * Añade un mensaje (usuario o IA) al DOM del chat.
+         */
+        function addMessageToChat(role, text) {
+            if (!aiChatMessages) return;
+
+            const bubble = document.createElement('div');
+            bubble.classList.add('ai-chat-bubble', role);
+
+            if (role === 'user') {
+                bubble.textContent = text;
+            } else {
+                bubble.innerHTML = text.replace(/\n/g, "<br>");
+            }
+            
+            aiChatMessages.appendChild(bubble);
+            aiChatMessages.scrollTop = aiChatMessages.scrollHeight;
+            return bubble;
+        }
+
+        /**
+         * Muestra la burbuja de "escribiendo..."
+         */
+        function addLoadingBubble() {
+            if (!aiChatMessages) return;
+            const bubble = document.createElement('div');
+            bubble.id = 'ai-loading-bubble';
+            bubble.classList.add('ai-chat-bubble', 'ai', 'loading');
+            bubble.innerHTML = `
+                <span class="typing-dot"></span>
+                <span class="typing-dot"></span>
+                <span class="typing-dot"></span>
+            `;
+            aiChatMessages.appendChild(bubble);
+            aiChatMessages.scrollTop = aiChatMessages.scrollHeight;
+        }
+
+        /**
+         * Quita la burbuja de "escribiendo..."
+         */
+        function removeLoadingBubble() {
+            const loadingBubble = document.getElementById('ai-loading-bubble');
+            if (loadingBubble) {
+                loadingBubble.remove();
+            }
+        }
+
+        /**
+         * Llama a la API de Gemini (IA Chat).
+         */
+        async function getAiChatResponse(history) {
+            const device = isMobileDevice() ? 'Móvil (Android o iPhone)' : 'PC (Windows o Mac)';
+            const contextualSystemPrompt = `CONTEXTO DEL DISPOSITIVO: El usuario está actualmente en un dispositivo: ${device}. Ten esto en cuenta para tus guías de descarga.\n\n${dynamicSystemPrompt}`;
+            
+            const historyWithInventory = [...history]; // Copia
+            
+            if (!dynamicSystemPrompt) {
+                 console.warn("¡El prompt dinámico de la IA aún no está listo!");
+            }
+
+            // =================================================================
+            // ===== ¡PASO 3: TU CLAVE DE IA (GEMINI) VA AQUÍ! =====
+            // (Esta es la que creaste en AI Studio, la que termina en ...UMCw)
+            // =================================================================
+            const apiKey = "AIzaSyC2eih2fC7lR3VA9Uv1zOWbxy7egX9UMCw";
+            // =================================================================
+            
+            if (apiKey.includes("AQUI_VA_TU")) {
+                throw new Error("API Key de IA (Gemini) no configurada. Por favor, edita el script y añade tu clave.");
+            }
+
+            const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${apiKey}`;
+
+            const payload = {
+                contents: historyWithInventory,
+                systemInstruction: {
+                    parts: [{ text: contextualSystemPrompt }]
+                },
+                safetySettings: [
+                    { category: 'HARM_CATEGORY_HARASSMENT', threshold: 'BLOCK_MEDIUM_AND_ABOVE' },
+                    { category: 'HARM_CATEGORY_HATE_SPEECH', threshold: 'BLOCK_MEDIUM_AND_ABOVE' },
+                    { category: 'HARM_CATEGORY_SEXUALLY_EXPLICIT', threshold: 'BLOCK_MEDIUM_AND_ABOVE' },
+                    { category: 'HARM_CATEGORY_DANGEROUS_CONTENT', threshold: 'BLOCK_MEDIUM_AND_ABOVE' },
+                ],
+                generationConfig: {}
+            };
+            
+            try {
+                const response = await fetch(apiUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+
+                if (!response.ok) {
+                    const errorBody = await response.json();
+                    console.error("Error en la API de IA (Respuesta no OK):", errorBody);
+                    const errorMessage = errorBody.error?.message || `Error ${response.status}`;
+                    throw new Error(errorMessage);
+                }
+                
+                const result = await response.json();
+
+                if (result.candidates && result.candidates[0].content && result.candidates[0].content.parts[0].text) {
+                    return result.candidates[0].content.parts[0].text;
+                } else {
+                    if (result.candidates && result.candidates[0].finishReason === 'SAFETY') {
+                        throw new Error("Respuesta bloqueada por políticas de seguridad.");
+                    }
+                    console.error("Respuesta inesperada de la IA:", result);
+                    throw new Error("Respuesta inválida de la IA.");
+                }
+            } catch (error) {
+                console.error("Error al llamar a getAiChatResponse:", error);
+                throw error;
+            }
+        }
+
+        /**
+         * Orquesta la respuesta de la IA y procesa las etiquetas especiales.
+         */
+        async function handleAiResponse() {
+            isAiThinking = true;
+            addLoadingBubble();
+            if(aiChatError) aiChatError.classList.add('hidden');
+            if(aiChatSubmit) aiChatSubmit.disabled = true;
+
+            // (MODIFICADO) Asegurarse que el cerebro esté listo antes de llamar
+            if (!dynamicSystemPrompt) {
+                console.log("El cerebro de la IA no estaba listo, construyéndolo ahora...");
+                await buildDynamicSystemPrompt(); // Esto fallará si allSoftware está vacío
+                if (!dynamicSystemPrompt) {
+                     console.error("¡FALLO CRÍTICO! No se pudo construir el cerebro de la IA.");
+                     // (Aquí se podría poner un prompt de fallback)
+                }
+            }
+            
+            try {
+                const aiText = await getAiChatResponse([...aiChatHistory]);
+                
+                aiChatHistory.push({ role: 'model', parts: [{ text: aiText }] });
+                
+                let processedText = aiText;
+
+                // Procesar etiquetas [LINK:...]
+                processedText = processedText.replace(/\[LINK:([^\]]+)\]/g, (match, cardId) => {
+                    const item = allSoftware.find(i => i.id === cardId);
+                    const title = item ? item.title : 'ver detalles';
+                    return ` <a href="#" class="chat-link font-bold text-blue-600 underline" data-card-id="${cardId}">${title}</a>`;
+                });
+                
+                // Procesar etiquetas [ADD_TO_BOARD:...]
+                const boardMatch = processedText.match(/\[ADD_TO_BOARD:([^\]]+)\]/);
+                if (boardMatch && boardMatch[1]) {
+                    const softwareName = boardMatch[1];
+                    await addSoftwareRequest(softwareName); // Añadir a Firebase
+                    processedText = processedText.replace(boardMatch[0], ''); // Quitar la etiqueta
+                }
+                
+                removeLoadingBubble();
+                const aiBubble = addMessageToChat('ai', processedText);
+                
+                speak(processedText);
+
+            } catch (error) {
+                console.error("Error en handleAiResponse:", error);
+                removeLoadingBubble();
+                const errorMsg = `¡Uy! Algo salió mal. Error de API: ${error.message}. Por favor, inténtalo de nuevo.`;
+                addMessageToChat('ai', errorMsg);
+                speak("¡Uy! Algo salió mal.");
+                
+                if(aiChatError) {
+                    aiChatError.textContent = errorMsg;
+                    aiChatError.classList.remove('hidden');
+                }
+                if (aiChatHistory.length > 0 && aiChatHistory[aiChatHistory.length - 1].role === 'user') {
+                    aiChatHistory.pop();
+                }
+
+            } finally {
+                isAiThinking = false;
+                if(aiChatSubmit) aiChatSubmit.disabled = false;
+                
+                // Añadir listeners a los nuevos links del chat
+                document.querySelectorAll('.chat-link').forEach(link => {
+                    link.replaceWith(link.cloneNode(true));
+                });
+                
+                document.querySelectorAll('.chat-link').forEach(link => {
+                    link.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        const cardId = e.currentTarget.dataset.cardId;
+                        if(aiChatModal) aiChatModal.classList.remove('open');
+                        handleTopDownloadClick(null, cardId);
+                    });
+                });
+            }
+        }
+
+
+        // =================================================================
+        // ===== SECCIÓN 3: LÓGICA PRINCIPAL (Carga y Eventos) =====
+        // =================================================================
+
+        /**
+         * (NUEVO)
+         * Carga todo el software y categorías desde Firebase al iniciar.
+         */
+        async function loadSoftwareAndCategoriesFromFirebase() {
+            if (!db) {
+                console.error("Firestore (db) no está inicializado.");
+                return;
+            }
+
+            const contentGridPc = document.getElementById('content-grid-pc');
+            if (contentGridPc) contentGridPc.innerHTML = '<p class="text-slate-500 text-sm">Cargando software...</p>';
+            const contentGridMobile = document.getElementById('content-grid-mobile');
+            if (contentGridMobile) contentGridMobile.innerHTML = '<p class="text-slate-500 text-sm">Cargando software...</p>';
+            const topDownloadsList = document.getElementById('top-downloads-list');
+            if (topDownloadsList) topDownloadsList.innerHTML = '<p class="text-slate-500 text-sm">Cargando ranking...</p>';
+
+            try {
+                const itemsCollection = collection(db, `artifacts/${appId}/public/data/software-items`);
+                const snapshot = await getDocs(itemsCollection);
+
+                if (snapshot.empty) {
+                    console.warn("No se encontró software en la base de datos.");
+                    if (contentGridPc) contentGridPc.innerHTML = '<p class="text-red-500 text-lg">No se encontró software. ¿El admin ya migró los datos?</p>';
+                    return;
+                }
+
+                const tempSoftware = [];
+                const tempCategories = new Map(); // Usar un Map para categorías únicas
+                
+                // Añadir 'Home' por defecto
+                tempCategories.set('home', { id: 'home', name: 'Home', count: 0, submenus: [] }); 
+
+                snapshot.forEach(doc => {
+                    const item = doc.data();
+                    const itemId = doc.id;
+                    tempSoftware.push({ id: itemId, ...item });
+                    
+                    // (MODIFICADO) Llenar categorías dinámicamente
+                    if (item.category && item.platform === 'pc') {
+                        if (!tempCategories.has(item.category)) {
+                            // Crear categoría si no existe
+                            tempCategories.set(item.category, { 
+                                id: item.category, 
+                                name: item.category.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase()), // "premiere-pro" -> "Premiere Pro"
+                                count: 1, 
+                                submenus: [] 
+                            });
+                        } else {
+                            // Incrementar contador si ya existe
+                            tempCategories.get(item.category).count++;
+                        }
+                    }
+                });
+
+                // Asignar a variables globales
+                allSoftware = tempSoftware;
+                allCategories = Array.from(tempCategories.values());
+                
+                console.log(`Cargados ${allSoftware.length} items de software.`);
+                
+                // (MODIFICADO) Ahora que tenemos datos, podemos ejecutar todo lo demás
+                buildDynamicSystemPrompt(); // Construir cerebro de IA
+                generateNav(allCategories); // Construir menú
+                updateView(); // Renderizar tarjetas
+                loadTopDownloads(); // Cargar ranking
+                loadGeneralRequests(); // Cargar pizarra de pedidos
+
+            } catch (error) {
+                console.error("Error fatal al cargar software desde Firebase:", error);
+                if (contentGridPc) contentGridPc.innerHTML = `<p class="text-red-500 text-lg">Error al cargar datos: ${error.message}</p>`;
+            }
+        }
+        
+        /**
+         * (NUEVO)
+         * Construye el systemPrompt de la IA usando la lista de software cargada.
+         */
+        function buildDynamicSystemPrompt() {
+            if (allSoftware.length === 0) {
+                console.warn("No hay software para construir el prompt de la IA.");
+                dynamicSystemPrompt = systemPrompt.replace("{INVENTORY_PLACEHOLDER}", "No hay software en el inventario en este momento.");
+                return;
+            }
+            
+            const inventoryList = allSoftware
+                .map(item => {
+                    return `- ID: "${item.id}", Título: "${item.title}", Keywords: "${item.keywords || ''}"`;
+                })
+                .join('\n');
+                
+            dynamicSystemPrompt = systemPrompt.replace("{INVENTORY_PLACEHOLDER}", inventoryList);
+            console.log("Cerebro de la IA construido dinámicamente.");
+        }
+
+        /**
+         * (MODIFICADO)
+         * Genera la navegación principal. Ahora es dinámico.
+         */
+        function generateNav(categories) {
+            const navContainer = document.getElementById('nav-container');
+            if (!navContainer) return;
+            
+            const navUl = document.createElement('ul');
+            navUl.className = 'flex flex-wrap items-center justify-center gap-4 sm:gap-6';
+
+            // (MODIFICADO) Ya no hay menú estático, se basa en las categorías de Firebase
+            categories.sort((a, b) => {
+                if (a.id === 'home') return -1; // 'Home' siempre primero
+                if (b.id === 'home') return 1;
+                return a.name.localeCompare(b.name); // Ordenar alfabéticamente
+            });
+
+            categories.forEach(item => {
+                const li = document.createElement('li');
+                if (item.submenus && item.submenus.length > 0) {
+                    // (Lógica de submenús, si la hubiera en el futuro)
+                    li.className = 'group relative pb-4 -mb-4';
+                    let submenusHTML = item.submenus.map(sub => 
+                        `<a href="#" class="nav-link dropdown-item" data-category="${sub.id}">${sub.name}</a>`
+                    ).join('');
+                    li.innerHTML = `
+                        <button class="nav-link-parent flex items-center gap-1 font-medium text-slate-600 hover:text-blue-600 transition-colors" data-category-parent="${item.name}">
+                            ${item.name}
+                            <svg class="h-4 w-4 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                        </button>
+                        <div class="dropdown">${submenusHTML}</div>
+                    `;
+                } else {
+                    // Enlace simple
+                    li.innerHTML = `<a href="#" class="nav-link font-medium text-slate-600 hover:text-blue-600 transition-colors" data-category="${item.id}">${item.name}</a>`;
+                }
+                navUl.appendChild(li);
+            });
+            navContainer.innerHTML = ''; // Limpiar "Cargando..."
+            navContainer.appendChild(navUl);
+        }
+
+        /**
+         * (MODIFICADO)
+         * Renderiza la vista principal. Ahora lee de `allSoftware`.
+         */
+        function updateView() {
+            const contentGridPc = document.getElementById('content-grid-pc');
+            const contentGridMobile = document.getElementById('content-grid-mobile');
+            const noResultsPc = document.getElementById('no-results-pc');
+            const noResultsMobile = document.getElementById('no-results-mobile');
+            const navContainer = document.getElementById('nav-container');
+
+            // Limpiar listeners antiguos
+            Object.values(downloadListeners).forEach(unsubscribe => unsubscribe());
+            Object.values(likeListeners).forEach(unsubscribe => unsubscribe());
+            downloadListeners = {};
+            likeListeners = {};
+
+            if (activeTab === 'pc') {
+                let filteredItems = allSoftware.filter(item => item.platform === 'pc');
+                if (currentCategory !== 'home') {
+                    filteredItems = filteredItems.filter(item => item.category === currentCategory);
+                }
+                if (currentSearchTerm) {
+                    filteredItems = filteredItems.filter(item => 
+                        (item.title && item.title.toLowerCase().includes(currentSearchTerm)) ||
+                        (item.description && item.description.toLowerCase().includes(currentSearchTerm)) ||
+                        (item.keywords && item.keywords.toLowerCase().includes(currentSearchTerm))
+                    );
+                }
+                renderCards(filteredItems, contentGridPc, noResultsPc);
+                if (navContainer) navContainer.classList.remove('hidden');
+            } else {
+                let filteredItems = allSoftware.filter(item => item.platform === 'mobile');
+                if (currentSearchTerm) {
+                     filteredItems = filteredItems.filter(item => 
+                        (item.title && item.title.toLowerCase().includes(currentSearchTerm)) ||
+                        (item.description && item.description.toLowerCase().includes(currentSearchTerm)) ||
+                        (item.keywords && item.keywords.toLowerCase().includes(currentSearchTerm))
+                    );
+                }
+                renderCards(filteredItems, contentGridMobile, noResultsMobile);
+                if (navContainer) navContainer.classList.add('hidden');
+            }
+            updateActiveLink();
+        }
+
+        /**
+         * (MODIFICADO)
+         * Carga el Top 5. Ahora lee de `allSoftware`.
+         */
+        async function loadTopDownloads() {
+            const topDownloadsList = document.getElementById('top-downloads-list');
+            if (!topDownloadsList) return;
+            
+            if (allSoftware.length === 0) {
+                 topDownloadsList.innerHTML = '<p class="text-slate-500 text-sm">Aún no hay datos para un ranking.</p>';
+                 return;
+            }
+
+            let mergedItems = allSoftware.map(item => ({ ...item, displayDownloads: item.downloads || 0 }));
+            
+            mergedItems.sort((a, b) => b.displayDownloads - a.displayDownloads);
+            const top5 = mergedItems.slice(0, 5);
+
+            if (top5.length === 0) {
+                topDownloadsList.innerHTML = '<p class="text-slate-500 text-sm">Aún no hay suficientes datos para un ranking.</p>';
+                return;
+            }
+            topDownloadsList.innerHTML = '';
+            let rank = 1;
+            top5.forEach(itemDetails => {
+                const itemEl = document.createElement('a');
+                itemEl.href = `#card-${itemDetails.id}`;
+                itemEl.className = 'flex items-center gap-3 bg-slate-50 p-3 rounded-lg border border-slate-200 hover:bg-slate-100 hover:shadow-sm transition-all';
+                itemEl.dataset.itemId = itemDetails.id;
+                itemEl.addEventListener('click', (e) => handleTopDownloadClick(e));
+                
+                itemEl.innerHTML = `
+                    <span class="text-lg font-bold text-slate-400">#${rank}</span>
+                    <img src="${itemDetails.imageUrl || 'https://placehold.co/40x40/e2e8f0/94a3b8?text=?'}" alt="" class="w-10 h-10 rounded-md object-cover flex-shrink-0">
+                    <div class="overflow-hidden">
+                        <p class="text-sm font-semibold text-slate-800 truncate" title=""></p>
+                        <p class="text-xs text-blue-600 font-medium">${itemDetails.displayDownloads.toLocaleString('es-ES')} descargas</p>
+                    </div>
+                `;
+                // Asignación segura
+                itemEl.querySelector('img').alt = itemDetails.title;
+                itemEl.querySelector('p.text-sm').textContent = itemDetails.title;
+                itemEl.querySelector('p.text-sm').title = itemDetails.title;
+
+                topDownloadsList.appendChild(itemEl);
+                rank++;
+            });
+        }
+
+
+        // =================================================================
+        // ===== PUNTO DE ENTRADA PRINCIPAL (NUEVO MOTOR) =====
+        // =================================================================
+        
+        // (MODIFICADO) Quitado el 'DOMContentLoaded' para evitar conflictos.
+        // El script se ejecuta al final del <body>, por lo que el DOM ya está listo.
+
+        // --- Asignar elementos del Chat de IA ---
+        aiChatModal = document.getElementById('ai-chat-modal');
+        aiChatForm = document.getElementById('ai-chat-form');
+        aiChatInput = document.getElementById('ai-chat-input');
+        aiChatSubmit = document.getElementById('ai-chat-submit');
+        aiChatMessages = document.getElementById('ai-chat-messages');
+        aiChatError = document.getElementById('ai-chat-error');
+
+        // Obtener referencias a elementos
+        const navContainer = document.getElementById('nav-container');
+        const howToDownloadBtn = document.getElementById('how-to-download-btn');
+        const howToDownloadModal = document.getElementById('how-to-download-modal');
+        const tabPc = document.getElementById('tab-pc');
+        const tabMobile = document.getElementById('tab-mobile');
+        const contentPc = document.getElementById('content-pc');
+        const contentMobile = document.getElementById('content-mobile');
+        const yapeModal = document.getElementById('yape-modal');
+        const yapeModalOpenBtn = document.getElementById('yape-modal-open');
+        const yapeModalCloseBtn = document.getElementById('yape-modal-close');
+        const openYapeBtn = document.getElementById('open-yape-btn');
+        const commentsModal = document.getElementById('comments-modal');
+        const commentsModalCloseBtn = document.getElementById('comments-modal-close');
+        const submitCommentBtn = document.getElementById('submit-comment-btn');
+        const downloadGuideModal = document.getElementById('download-guide-modal');
+        const downloadGuideModalCloseBtn = document.getElementById('download-guide-modal-close');
+        const downloadGuideContinueBtn = document.getElementById('download-guide-continue-btn');
+        const adminLoginBtn = document.getElementById('admin-login-btn');
+        const adminStatus = document.getElementById('admin-status');
+        const commentInput = document.getElementById('comment-input');
+
+        // (NUEVO) AJUSTE VISUAL INICIAL DE PESTAÑAS
+        // Si detectamos móvil, cambiamos los colores de las pestañas y la visibilidad antes de cargar nada
+        if (activeTab === 'mobile') {
+            // Cambiar pestaña PC a inactiva
+            if(tabPc) {
+                tabPc.classList.replace('text-blue-700', 'text-slate-500');
+                tabPc.classList.replace('bg-blue-100', 'bg-slate-100');
+                tabPc.classList.replace('border-blue-600', 'border-transparent');
+            }
+            // Cambiar pestaña Móvil a activa
+            if(tabMobile) {
+                tabMobile.classList.replace('text-slate-500', 'text-green-700');
+                tabMobile.classList.replace('bg-slate-100', 'bg-green-100');
+                tabMobile.classList.replace('border-transparent', 'border-green-600');
+            }
+            // Mostrar contenido móvil y ocultar PC
+            if(contentPc) contentPc.classList.add('hidden');
+            if(contentMobile) contentMobile.classList.remove('hidden');
+        }
+
+        // --- ASIGNACIÓN DE EVENTOS ---
+        const openAiChatBtn = document.getElementById('open-ai-chat-btn');
+        if (openAiChatBtn) {
+            openAiChatBtn.addEventListener('click', () => {
+                if (aiChatModal) aiChatModal.classList.add('open');
+                if (aiChatInput) aiChatInput.focus();
+            });
+        }
+        
+        const aiChatModalCloseBtn = document.getElementById('ai-chat-modal-close');
+        const aiSpeakerToggle = document.getElementById('ai-speaker-toggle');
+        const speakerOnIcon = document.getElementById('speaker-on');
+        const speakerOffIcon = document.getElementById('speaker-off');
+        const aiChatMicBtn = document.getElementById('ai-chat-mic');
+
+        if (aiChatModalCloseBtn) {
+            aiChatModalCloseBtn.addEventListener('click', () => {
+                if (aiChatModal) aiChatModal.classList.remove('open');
+                synth.cancel();
+            });
+        }
+
+        if (aiSpeakerToggle && speakerOnIcon && speakerOffIcon) {
+            aiSpeakerToggle.addEventListener('click', () => {
+                isSpeechEnabled = !isSpeechEnabled;
+                if (isSpeechEnabled) {
+                    speakerOnIcon.classList.remove('hidden');
+                    speakerOffIcon.classList.add('hidden');
+                    speak("Altavoz activado.");
+                } else {
+                    speakerOnIcon.classList.add('hidden');
+                    speakerOffIcon.classList.remove('hidden');
+                    synth.cancel();
+                }
+            });
+        }
+
+        if (aiChatMicBtn && recognition) {
+            aiChatMicBtn.addEventListener('click', () => {
+                if (isListening) {
+                    recognition.stop();
+                } else {
+                    try {
+                        if(aiChatError) aiChatError.classList.add('hidden');
+                        recognition.start();
+                    } catch(e) {
+                        console.error("Error al iniciar reconocimiento:", e);
+                        if(aiChatError) {
+                            aiChatError.textContent = `Error de micrófono. ¿Ya diste permiso?`;
+                            aiChatError.classList.remove('hidden');
+                        }
+                    }
+                }
+            });
+        } else if (aiChatMicBtn) {
+            aiChatMicBtn.style.display = 'none';
+        }
+
+        if (aiChatModal) {
+            aiChatModal.addEventListener('click', (e) => {
+                if (e.target === aiChatModal) {
+                    aiChatModal.classList.remove('open');
+                }
+            });
+        }
+
+        if (aiChatForm) {
+            aiChatForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                if (!aiChatInput) return;
+                const userText = aiChatInput.value.trim();
+                if (!userText || isAiThinking) return;
+                aiChatInput.value = '';
+                addMessageToChat('user', userText);
+                aiChatHistory.push({ role: 'user', parts: [{ text: userText }] });
+                handleAiResponse();
+            });
+        }
+
+        if (tabPc) {
+            tabPc.addEventListener('click', () => {
+                activeTab = 'pc';
+                currentCategory = 'home';
+                if (contentMobile) contentMobile.classList.add('hidden');
+                if (contentPc) contentPc.classList.remove('hidden');
+                tabPc.classList.replace('text-slate-500', 'text-blue-700');
+                tabPc.classList.replace('bg-slate-100', 'bg-blue-100');
+                tabPc.classList.replace('border-transparent', 'border-blue-600');
+                if (tabMobile) {
+                    tabMobile.classList.replace('text-green-700', 'text-slate-500');
+                    tabMobile.classList.replace('bg-green-100', 'bg-slate-100');
+                    tabMobile.classList.replace('border-green-600', 'border-transparent');
+                }
+                updateView();
+            });
+        }
+
+        if (tabMobile) {
+            tabMobile.addEventListener('click', () => {
+                activeTab = 'mobile';
+                if (contentPc) contentPc.classList.add('hidden');
+                if (contentMobile) contentMobile.classList.remove('hidden');
+                tabMobile.classList.replace('text-slate-500', 'text-green-700');
+                tabMobile.classList.replace('bg-slate-100', 'bg-green-100');
+                tabMobile.classList.replace('border-transparent', 'border-green-600');
+                if (tabPc) {
+                    tabPc.classList.replace('text-blue-700', 'text-slate-500');
+                    tabPc.classList.replace('bg-blue-100', 'bg-slate-100');
+                    tabPc.classList.replace('border-blue-600', 'border-transparent');
+                }
+                updateView();
+            });
+        }
+
+        if (navContainer) {
+            navContainer.addEventListener('click', (e) => {
+                const link = e.target.closest('.nav-link');
+                const parentLink = e.target.closest('.nav-link-parent');
+                
+                if (link && link.dataset.category) {
+                    e.preventDefault();
+                    currentCategory = link.dataset.category;
+                    if (activeTab !== 'pc') {
+                        if(tabPc) tabPc.click();
+                    } else {
+                        updateView();
+                    }
+                    document.querySelectorAll('.dropdown.open').forEach(menu => menu.classList.remove('open'));
+                } else if (parentLink) {
+                    e.preventDefault();
+                    const dropdown = parentLink.nextElementSibling;
+                    document.querySelectorAll('.dropdown.open').forEach(menu => {
+                        if (menu !== dropdown) menu.classList.remove('open');
+                    });
+                    if (dropdown) dropdown.classList.toggle('open');
+                }
+            });
+        }
+
+        document.addEventListener('click', (e) => {
+            const nav = document.getElementById('nav-container');
+            if (nav && !nav.contains(e.target)) {
+                document.querySelectorAll('.dropdown.open').forEach(menu => menu.classList.remove('open'));
+            }
+        });
+
+        if (howToDownloadBtn) {
+            howToDownloadBtn.addEventListener('click', () => { if (howToDownloadModal) howToDownloadModal.classList.add('open'); });
+        }
+        if (howToDownloadModal) {
+            howToDownloadModal.addEventListener('click', (e) => {
+                if (e.target === howToDownloadModal) {
+                    howToDownloadModal.classList.remove('open');
+                }
+            });
+        }
+
+        if (yapeModalOpenBtn) yapeModalOpenBtn.addEventListener('click', () => { if (yapeModal) yapeModal.classList.add('open'); });
+        if (yapeModalCloseBtn) yapeModalCloseBtn.addEventListener('click', () => { if (yapeModal) yapeModal.classList.remove('open'); });
+        if (yapeModal) yapeModal.addEventListener('click', (e) => { if (e.target === yapeModal) yapeModal.classList.remove('open'); });
+
+        if (commentsModalCloseBtn) {
+            commentsModalCloseBtn.addEventListener('click', () => {
+                if (commentsModal) commentsModal.classList.remove('open');
+                if (commentsUnsubscribe) {
+                    commentsUnsubscribe();
+                    commentsUnsubscribe = null;
+                }
+                currentItem = null;
+            });
+        }
+        if (commentsModal) commentsModal.addEventListener('click', (e) => { if (e.target === commentsModal) commentsModal.classList.remove('open'); });
+
+        if (submitCommentBtn) {
+            submitCommentBtn.addEventListener('click', () => {
+                if (currentItem && commentInput) {
+                    const commentsCollection = collection(db, `artifacts/${appId}/public/data/comments`, currentItem.id, "messages");
+                    submitComment(commentInput, submitCommentBtn, commentsCollection);
+                }
+            });
+        }
+
+        if (downloadGuideModalCloseBtn) {
+            downloadGuideModalCloseBtn.addEventListener('click', () => {
+                if (downloadGuideModal) downloadGuideModal.classList.remove('open');
+                currentDownloadLink = null;
+            });
+        }
+        if (downloadGuideModal) downloadGuideModal.addEventListener('click', (e) => { if (e.target === downloadGuideModal) downloadGuideModal.classList.remove('open'); });
+
+        if (downloadGuideContinueBtn) {
+            downloadGuideContinueBtn.addEventListener('click', () => {
+                if (downloadGuideModal) downloadGuideModal.classList.remove('open');
+                if (currentDownloadLink) {
+                    window.open(currentDownloadLink, '_blank');
+                    currentDownloadLink = null;
+                }
+            });
+        }
+
+        if (adminLoginBtn) {
+            adminLoginBtn.addEventListener('click', async () => {
+                if (!auth) return;
+                const provider = new GoogleAuthProvider();
+                try {
+                    const result = await signInWithPopup(auth, provider);
+                } catch (error) {
+                    console.error("Error al iniciar sesión con Google:", error);
+                    if (adminStatus) {
+                        adminStatus.textContent = "Error al iniciar sesión.";
+                        adminStatus.classList.remove('hidden');
+                    }
+                }
+            });
+        }
+
+        // --- INICIALIZACIÓN DE FIREBASE (NUEVO FLUJO) ---
+        try {
+            app = initializeApp(firebaseConfig);
+            db = getFirestore(app);
+            auth = getAuth(app);
+
+            onAuthStateChanged(auth, async (user) => {
+                const aiChatGreeting = document.getElementById('ai-chat-greeting');
+                const aiChatSubGreeting = document.getElementById('ai-chat-subgreeting');
+
+                if (user) {
+                    console.log("Usuario detectado:", user.uid, "Anónimo:", user.isAnonymous);
+                    if (user.uid === ADMIN_ID && adminStatus) {
+                        adminStatus.textContent = `¡Bienvenido, Admin! (${user.displayName || 'Admin'})`;
+                        adminStatus.classList.remove('hidden');
+                    }
+                    
+                    if (!user.isAnonymous && aiChatGreeting && aiChatSubGreeting) {
+                        aiChatGreeting.textContent = `¡Hola, ${user.displayName || 'Usuario'}! 👋`;
+                        aiChatSubGreeting.textContent = `Tu asistente IA-Lahs está lista.`;
+                    } else if (aiChatGreeting && aiChatSubGreeting) {
+                        aiChatGreeting.textContent = `¡Hola! 👋`;
+                        aiChatSubGreeting.textContent = `Inicia sesión para una mejor experiencia.`;
+                    }
+
+                } else {
+                    console.log("Sin usuario. Iniciando sesión anónima.");
+                    await signInAnonymously(auth);
+                    if (aiChatGreeting && aiChatSubGreeting) {
+                        aiChatGreeting.textContent = `¡Hola! 👋`;
+                        aiChatSubGreeting.textContent = `Inicia sesión para una mejor experiencia.`;
+                    }
+                }
+                
+                // (MODIFICADO) Solo cargar datos DESPUÉS de que la autenticación esté lista
+                if (!authReady) {
+                    authReady = true;
+                    // ¡Este es el inicio! Cargar todo desde Firebase.
+                    await loadSoftwareAndCategoriesFromFirebase(); 
+                    document.dispatchEvent(new Event('firebaseAuthReady'));
+                }
+            });
+
+        } catch (e) {
+            console.error("Error fatal al inicializar Firebase:", e);
+            const contentGridPc = document.getElementById('content-grid-pc');
+            if (contentGridPc) contentGridPc.innerHTML = `<p class="text-red-500 text-lg">Error fatal al inicializar Firebase: ${e.message}</p>`;
+            if (!authReady) {
+                authReady = true; 
+                document.dispatchEvent(new Event('firebaseAuthReady'));
+            }
+        }
+        
+        if (isMobileDevice()) {
+            const mobileAd = document.getElementById('mobile-ad-top');
+            if (mobileAd) mobileAd.classList.remove('hidden');
+        }
+
+    </script>
+    <!-- =================================================================================== -->
+    <!-- ===== FIN DEL NUEVO MOTOR JAVASCRIPT ===== -->
+    <!-- =================================================================================== -->
 
 <!-- Banner en el footer (PC y móvil) -->
 <div class="flex justify-center my-6">
-  <div class="rounded-xl overflow-hidden shadow-sm border border-slate-200 bg-white/80 p-2">
+  <div class="rounded-xl overflow-hidden shadow-sm border border-slate-200 bg-white/80 p-2">
 <script type="text/javascript">
 	atOptions = {
 		'key' : '982a5d0f66cf17a976727779b97a1183',
@@ -2305,27 +2067,27 @@ Este es el software que SÍ TENEMOS. Conoce sus IDs y títulos:
 		'params' : {}
 	};
 </script>
-<script type="text/javascript" src="//honeywhyvowel.com/982a5d0f66cf17a976727779b97a1183/invoke.js"></script>  
+<script type="text/javascript" src="//honeywhyvowel.com/982a5d0f66cf17a976727779b97a1183/invoke.js"></script>  
 </div>
 </div>
 <!-- Fin del banner en el footer -->
-    <!-- Widget de Traducción de Google (Contenedor) -->
-    <div id="google_translate_element_wrapper">
-        <div id="google_translate_element"></div>
-    </div>
+    <!-- Widget de Traducción de Google (Contenedor) -->
+    <div id="google_translate_element_wrapper">
+        <div id="google_translate_element"></div>
+    </div>
 
-    <!-- Script de Google Translate -->
-    <script type="text/javascript">
-    function googleTranslateElementInit() {
-      new google.translate.TranslateElement({
-        pageLanguage: 'es',
-        includedLanguages: 'es,en,pt,de,fr,ru,id,hi,ar,tr,vi,pl,it,th',
-        layout: google.translate.TranslateElement.InlineLayout.SIMPLE,
-        autoDisplay: true // Muestra banner de traducción automático
-      }, 'google_translate_element');
-    }
-    </script>
-    <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+    <!-- Script de Google Translate -->
+    <script type="text/javascript">
+    function googleTranslateElementInit() {
+      new google.translate.TranslateElement({
+        pageLanguage: 'es',
+        includedLanguages: 'es,en,pt,de,fr,ru,id,hi,ar,tr,vi,pl,it,th',
+        layout: google.translate.TranslateElement.InlineLayout.SIMPLE,
+        autoDisplay: true // Muestra banner de traducción automático
+      }, 'google_translate_element');
+    }
+    </script>
+    <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
 
 </body>
-</html>
+</html>´´´ quiero que carge normalmente y no ver aqui en este esas estrellas y figuras horribles
