@@ -7,23 +7,14 @@
 
     <!-- ================================================================== -->
     <!-- 🛡️ ESCUDO ANTI-FALLOS (ESTILOS CRÍTICOS) 🛡️                       -->
-    <!-- Garantiza la estructura visual incluso si falla la carga externa    -->
     <!-- ================================================================== -->
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         /* Reset básico y fuentes */
         body { font-family: 'Inter', sans-serif; background-color: #f8fafc; margin: 0; }
-        
-        /* Forzar ocultamiento de elementos con clase hidden */
         .hidden { display: none !important; }
-        
-        /* Control estricto de iconos SVG para evitar que sean gigantes */
         svg { width: 24px; height: 24px; max-width: 100%; display: inline-block; vertical-align: middle; }
-        
-        /* Control de imágenes */
         img { max-width: 100%; height: auto; display: block; }
-
-        /* Logo */
         .logo { width: 48px; height: 48px; display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, #38bdf8, #3b82f6); border-radius: 12px; color: white; font-weight: 800; font-size: 28px; transform: rotate(-15deg); }
         
         /* Grid de tarjetas */
@@ -64,17 +55,17 @@
             body { padding-top: 60px; }
         }
         
-        /* Estilos NUEVOS para Comentarios (Legibilidad) */
+        /* Estilos para Comentarios (Legibilidad) */
         .comment { 
-            background-color: #f8fafc !important; /* Fondo muy claro */
+            background-color: #f8fafc !important; 
             border: 1px solid #e2e8f0; 
             padding: 12px; 
             border-radius: 8px; 
             margin-bottom: 10px;
         }
-        .comment p { color: #334155 !important; font-size: 0.95rem; line-height: 1.5; } /* Texto oscuro */
+        .comment p { color: #334155 !important; font-size: 0.95rem; line-height: 1.5; } 
         .comment span { color: #94a3b8; font-size: 0.75rem; }
-        .comment.admin-comment { background-color: #f0f9ff !important; border-color: #bae6fd; } /* Azulito para admin */
+        .comment.admin-comment { background-color: #f0f9ff !important; border-color: #bae6fd; }
 
         /* Detalles Desplegables */
         details > summary { list-style: none; outline: none; cursor: pointer; }
@@ -392,7 +383,7 @@
         let currentSearchTerm = '';
         let userLikes = JSON.parse(localStorage.getItem('userLikes') || '{}');
         let userVotes = JSON.parse(localStorage.getItem('userVotes') || '{}');
-        let recognition = null; // INICIALIZACIÓN EXPLÍCITA
+        let recognition = null; // INICIALIZACIÓN EXPLÍCITA PARA EVITAR ERRORES
         
         // Referencias UI
         const tabPc = document.getElementById('tab-pc');
@@ -451,7 +442,7 @@
         const modalMap = {
             'how-to-download-btn': 'how-to-download-modal',
             'yape-modal-open': 'yape-modal',
-            'open-yape-btn': 'yape-modal',
+            // El botón interno open-yape-btn ahora tiene lógica específica abajo
             'open-ai-chat-btn': 'ai-chat-modal'
         };
         
@@ -459,6 +450,19 @@
             const btn = document.getElementById(btnId);
             if(btn) btn.addEventListener('click', () => openModal(modalMap[btnId]));
         });
+        
+        // LÓGICA DEL BOTÓN YAPE (SOLUCIÓN DIRECTA)
+        const openYapeBtn = document.getElementById('open-yape-btn');
+        if(openYapeBtn) {
+            openYapeBtn.addEventListener('click', () => {
+                // Intenta abrir la app Yape usando su esquema URL
+                window.location.href = "yape://"; 
+                // Fallback visual o mensaje si no abre (opcional)
+                setTimeout(() => {
+                     console.log("Si no abrió Yape, es posible que no esté instalado.");
+                }, 500);
+            });
+        }
 
         ['how-to-download-modal', 'yape-modal', 'comments-modal', 'download-guide-modal', 'ai-chat-modal'].forEach(modalId => {
             const modal = document.getElementById(modalId);
@@ -489,6 +493,22 @@
                     e.preventDefault();
                     currentCategory = link.dataset.category;
                     updateView();
+                }
+            });
+        }
+
+        // --- DELEGACIÓN DE EVENTOS PARA EL CHAT ---
+        // (Esto arregla los enlaces de la IA)
+        const chatMessages = document.getElementById('ai-chat-messages');
+        if (chatMessages) {
+            chatMessages.addEventListener('click', (e) => {
+                if (e.target.classList.contains('chat-link')) {
+                    e.preventDefault();
+                    const cardId = e.target.dataset.cardId;
+                    // 1. Cerrar modal
+                    closeModal('ai-chat-modal');
+                    // 2. Ir a la tarjeta
+                    handleTopDownloadClick(null, cardId);
                 }
             });
         }
@@ -807,7 +827,10 @@
                 3. SI PIDEN ALGO QUE NO TIENES:
                    - Ofrece algo similar del inventario si existe.
                    - SI NO, di: "No lo tengo, pero lo anoto en la pizarra" y usa el formato [ADD_TO_BOARD:NombreDelSoftware].
-                4. IMPORTANTE: Jamás inventes enlaces. Usa solo los IDs del inventario.
+                4. SI PREGUNTAN CÓMO DESCARGAR: Explica que deben saltar la publicidad de exe.io. 
+                   - PC: Cerrar pestañas nuevas hasta ver el captcha.
+                   - MÓVIL: Advertir sobre bloqueo de popups y decir que vean el video amarillo.
+                5. IMPORTANTE: Jamás inventes enlaces. Usa solo los IDs del inventario.
                 `;
 
                 const apiKey = "AIzaSyC2eih2fC7lR3VA9Uv1zOWbxy7egX9UMCw"; 
@@ -837,15 +860,6 @@
 
                     msgs.innerHTML += `<div class="ai-chat-bubble ai">${reply}</div>`;
                     speak(reply.replace(/<[^>]+>/g, '')); // Leer sin etiquetas HTML
-
-                    // Reactivar listeners de enlaces
-                    document.querySelectorAll('.chat-link').forEach(link => {
-                        link.addEventListener('click', (e) => {
-                            e.preventDefault(); 
-                            handleTopDownloadClick(null, e.currentTarget.dataset.cardId);
-                            if(aiChatModal) aiChatModal.classList.remove('open');
-                        });
-                    });
 
                 } catch(err) {
                     msgs.innerHTML += `<div class="ai-chat-bubble ai">Error de conexión.</div>`;
@@ -1031,6 +1045,27 @@
         }
 
         loadGeneralRequests();
+
+        function handleTopDownloadClick(e, cardId) {
+             if (e) e.preventDefault();
+            const itemId = cardId || (e ? e.currentTarget.dataset.itemId : null);
+            if (!itemId) return;
+            let item = allSoftware.find(i => i.id === itemId);
+            if (!item) return;
+            let itemTab = item.platform || 'pc'; 
+            if (activeTab !== itemTab) {
+                const tabToClick = (itemTab === 'pc') ? document.getElementById('tab-pc') : document.getElementById('tab-mobile');
+                if (tabToClick) tabToClick.click();
+            }
+            setTimeout(() => {
+                const cardElement = document.getElementById(`card-${item.id}`);
+                if (cardElement) {
+                    cardElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    cardElement.classList.add('card-highlight');
+                    setTimeout(() => { cardElement.classList.remove('card-highlight'); }, 1500);
+                }
+            }, 100);
+        }
 
     </script>
 </body>
