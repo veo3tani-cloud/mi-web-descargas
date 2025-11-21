@@ -10,16 +10,49 @@
     <!-- ================================================================== -->
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        /* Reset básico y fuentes */
+        /* Reset básico */
         body { font-family: 'Inter', sans-serif; background-color: #f8fafc; margin: 0; }
+        
+        /* REGLA MAESTRA: Lo oculto se queda oculto (para pestañas y menú móvil) */
         .hidden { display: none !important; }
+        
+        /* Iconos e Imágenes seguras */
         svg { width: 24px; height: 24px; max-width: 100%; display: inline-block; vertical-align: middle; }
         img { max-width: 100%; height: auto; display: block; }
+
+        /* Logo */
         .logo { width: 48px; height: 48px; display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, #38bdf8, #3b82f6); border-radius: 12px; color: white; font-weight: 800; font-size: 28px; transform: rotate(-15deg); }
         
-        /* Grid de tarjetas */
+        /* Layout */
         .card-container { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1.5rem; }
         
+        /* --- GESTIÓN DE BANNERS (SOLUCIÓN DEFINITIVA) --- */
+        
+        /* 1. Banner Flotante Móvil */
+        @media (max-width: 768px) {
+            #mobile-ad-top { 
+                position: fixed; top: 0; left: 0; width: 100%; height: 60px; 
+                display: flex !important; /* FORZAR VISIBILIDAD EN MÓVIL */
+                justify-content: center; align-items: center; 
+                background: #fff; z-index: 50; box-shadow: 0 2px 5px rgba(0,0,0,0.1); 
+            }
+            body { padding-top: 60px; }
+            
+            /* Ocultar banner de PC en móvil */
+            #pc-ad-top-downloads { display: none !important; }
+        }
+        
+        /* 2. Banner de PC (Lo más descargado) */
+        @media (min-width: 769px) {
+            #mobile-ad-top { display: none !important; }
+            
+            #pc-ad-top-downloads { 
+                display: flex !important; /* FORZAR VISIBILIDAD EN PC */
+                justify-content: center; align-items: center;
+                width: 100%; max-width: 728px; margin: 0 auto;
+            }
+        }
+
         /* Modales */
         .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.7); display: flex; align-items: center; justify-content: center; z-index: 9999; opacity: 0; visibility: hidden; transition: opacity 0.3s ease, visibility 0.3s ease; }
         .modal-overlay.open { opacity: 1; visibility: visible; }
@@ -28,7 +61,7 @@
         .modal-video-container { position: relative; width: 100%; padding-bottom: 56.25%; height: 0; overflow: hidden; margin-top: 1rem; border-radius: 8px; background: #000; }
         .modal-video-container iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none; }
         
-        /* Navegación Activa */
+        /* Navegación */
         .nav-link.active { color: #2563eb; font-weight: 700; }
         .nav-link { cursor: pointer; }
         
@@ -43,31 +76,17 @@
         @keyframes highlight-card { 0% { transform: scale(1); box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.5); } 50% { transform: scale(1.02); box-shadow: 0 0 20px rgba(59, 130, 246, 0.3); } 100% { transform: scale(1); } }
         .card-highlight { animation: highlight-card 1.5s ease-in-out; }
         .animate-pulse { animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite; }
-        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: .5; } }
         
-        /* Botones de Pestaña */
+        /* Pestañas */
         .tab-button { cursor: pointer; transition: all 0.2s; }
         .active-tab { border-bottom-color: #2563eb !important; color: #2563eb !important; background-color: #eff6ff !important; }
 
-        /* Banner Móvil */
-        @media (max-width: 768px) {
-            #mobile-ad-top { position: fixed; top: 0; left: 0; width: 100%; height: 60px; display: flex; justify-content: center; align-items: center; background: #fff; z-index: 50; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
-            body { padding-top: 60px; }
-        }
-        
-        /* Estilos para Comentarios (Legibilidad) */
-        .comment { 
-            background-color: #f8fafc !important; 
-            border: 1px solid #e2e8f0; 
-            padding: 12px; 
-            border-radius: 8px; 
-            margin-bottom: 10px;
-        }
+        /* Comentarios */
+        .comment { background-color: #f8fafc !important; border: 1px solid #e2e8f0; padding: 12px; border-radius: 8px; margin-bottom: 10px; }
         .comment p { color: #334155 !important; font-size: 0.95rem; line-height: 1.5; } 
         .comment span { color: #94a3b8; font-size: 0.75rem; }
         .comment.admin-comment { background-color: #f0f9ff !important; border-color: #bae6fd; }
 
-        /* Detalles Desplegables */
         details > summary { list-style: none; outline: none; cursor: pointer; }
         details > summary::-webkit-details-marker { display: none; }
     </style>
@@ -81,7 +100,7 @@
 <body class="text-slate-800 flex flex-col min-h-screen">
 
     <!-- Banner flotante superior solo para móviles -->
-    <div id="mobile-ad-top" class="hidden md:hidden">
+    <div id="mobile-ad-top">
       <div id="adsterra-mobile">
         <script type="text/javascript">
             atOptions = {
@@ -135,14 +154,15 @@
             <p class="text-slate-500 text-sm text-center">Cargando categorías...</p>
         </nav>
         
-        <!-- SECCIÓN 'LO MÁS DESCARGADO' -->
+        <!-- SECCIÓN 'LO MÁS DESCARGADO' (CON BANNER PC ARREGLADO) -->
         <div id="top-downloads-container" class="mb-8 p-6 bg-white rounded-xl shadow-sm border border-slate-200">
             <div class="flex flex-col md:flex-row justify-between md:items-center gap-4">
                 <h2 class="text-2xl font-bold text-slate-900 flex-shrink-0 flex items-center gap-2">
                     <svg class="h-6 w-6 text-red-500" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M11.2 3.31a.75.75 0 00-1.4 0l-1.11 4.331a.75.75 0 01-.692.518l-4.502.39a.75.75 0 00-.434 1.336l3.41 2.812a.75.75 0 01.248.746l-1.03 4.41a.75.75 0 001.12.825l3.854-2.26a.75.75 0 01.762 0l3.854 2.26a.75.75 0 001.12-.825l-1.03-4.41a.75.75 0 01.248-.746l3.41-2.812a.75.75 0 00-.434-1.336l-4.502-.39a.75.75 0 01-.692-.518L11.2 3.31z" clip-rule="evenodd"></path></svg>
                     🔥 Lo Más Descargado
                 </h2>
-                <div class="hidden md:flex justify-center items-center w-full max-w-[728px] mx-auto">
+                <!-- AQUÍ ESTÁ EL ARREGLO: ID específico que fuerza visualización en PC -->
+                <div id="pc-ad-top-downloads">
                  <script type="text/javascript">
                     atOptions = {
                         'key' : 'a09ade7f1de75ea02cb1d7597a7a2ae6',
@@ -194,8 +214,6 @@
     </div>
 
     <!-- ===== MODALES ===== -->
-    
-    <!-- Modal Cómo Descargar -->
     <div id="how-to-download-modal" class="modal-overlay">
         <div class="modal-content">
             <button id="how-to-download-modal-close" class="absolute top-4 right-4 text-slate-500 hover:text-slate-800">
@@ -209,7 +227,6 @@
         </div>
     </div>
     
-    <!-- Modal Yape -->
     <div id="yape-modal" class="modal-overlay">
         <div class="yape-modal-content">
             <button id="yape-modal-close" class="absolute top-4 right-4 text-slate-500 hover:text-slate-800">
@@ -223,7 +240,6 @@
         </div>
     </div>
     
-    <!-- Modal Comentarios -->
     <div id="comments-modal" class="modal-overlay">
         <div class="comments-modal-content">
             <button id="comments-modal-close" class="absolute top-4 right-4 text-slate-500 hover:text-slate-800">
@@ -242,45 +258,13 @@
         </div>
     </div>
     
-    <!-- Modal Guía (MÓVIL) -->
     <div id="download-guide-modal" class="modal-overlay">
         <div class="modal-content max-w-lg">
             <button id="download-guide-modal-close" class="absolute top-4 right-4 text-slate-500 hover:text-slate-800">
                 <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
             </button>
-            <div class="flex items-center mb-4">
-                <span class="flex-shrink-0 flex items-center justify-center h-12 w-12 rounded-full bg-blue-100">
-                    <svg class="h-6 w-6 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-                </span>
-                <h2 class="ml-4 text-xl sm:text-2xl font-bold text-slate-900">GUÍA RÁPIDA (MÓVIL)</h2>
-            </div>
-            <p class="text-slate-700 text-base sm:text-lg mb-5">Para mantener el sitio gratuito, nuestro socio (<code class="font-mono text-sm">exe.io</code>) te mostrará anuncios. ¡Tu celular intentará protegerte! <strong class="text-slate-900">Sigue esta guía de 3 pasos al pie de la letra</strong>:</p>
-            
-            <ul class="space-y-5 text-slate-700">
-                <li class="flex items-start">
-                    <span class="font-bold text-red-500 text-2xl mr-3">1.</span>
-                    <div>
-                        <strong class="text-red-600 text-lg">SI VES EL MURO "ADBLOCK"</strong><br>
-                        <span class="text-base">Es tu navegador (Chrome/Brave) bloqueando.</span><br>
-                        <strong class="text-blue-600 text-base">Solución:</strong> Ve a Configuración de sitios -> <strong class="text-blue-600">Ventanas emergentes</strong> -> <strong class="text-blue-600">"Permitir"</strong>.
-                    </div>
-                </li>
-                <li class="flex items-start">
-                    <span class="font-bold text-blue-500 text-2xl mr-3">2.</span>
-                    <div>
-                        <strong class="text-blue-600 text-lg">LA GUÍA DE CLICS</strong><br>
-                        <span class="text-base">Se abrirán pestañas de anuncios. Solo usa el botón <strong class="text-blue-600">"Atrás" (↶)</strong> de tu celular, vuelve a la pestaña anterior y sigue intentando hasta ver el captcha.</span>
-                    </div>
-                </li>
-                <li class="flex items-start">
-                    <span class="font-bold text-green-500 text-2xl mr-3">3.</span>
-                    <div>
-                        <strong class="text-green-600 text-lg">EL FINAL</strong><br>
-                        <span class="text-base">Completa el captcha, espera el contador y dale a <code class="bg-gray-200 p-1 rounded">Get Link</code>.</span>
-                    </div>
-                </li>
-            </ul>
-
+            <h2 class="ml-4 text-xl sm:text-2xl font-bold text-slate-900">GUÍA RÁPIDA (MÓVIL)</h2>
+            <p class="text-slate-700 text-base mb-5">Sigue los pasos para saltar la publicidad en móvil.</p>
             <button id="download-guide-continue-btn" class="mt-8 w-full bg-green-600 text-white font-bold py-3 px-4 rounded-lg hover:bg-green-700 transition-colors text-lg">
                 ¡Entendido!
             </button>
@@ -356,6 +340,22 @@
             </div>
         </div>
     </footer>
+    
+    <!-- BANNER DEL FOOTER (RESTAURADO) -->
+    <div class="flex justify-center my-6">
+      <div class="rounded-xl overflow-hidden shadow-sm border border-slate-200 bg-white/80 p-2" style="display: inline-block !important;">
+        <script type="text/javascript">
+            atOptions = {
+                'key' : '982a5d0f66cf17a976727779b97a1183',
+                'format' : 'iframe',
+                'height' : 250,
+                'width' : 300,
+                'params' : {}
+            };
+        </script>
+        <script type="text/javascript" src="//honeywhyvowel.com/982a5d0f66cf17a976727779b97a1183/invoke.js"></script>  
+      </div>
+    </div>
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
@@ -383,8 +383,9 @@
         let currentSearchTerm = '';
         let userLikes = JSON.parse(localStorage.getItem('userLikes') || '{}');
         let userVotes = JSON.parse(localStorage.getItem('userVotes') || '{}');
-        let recognition = null; // INICIALIZACIÓN EXPLÍCITA PARA EVITAR ERRORES
-        
+        let recognition = null; // INICIALIZACIÓN EXPLÍCITA
+        let radarInterval = null; // Para el latido del radar
+
         // Referencias UI
         const tabPc = document.getElementById('tab-pc');
         const tabMobile = document.getElementById('tab-mobile');
@@ -861,6 +862,15 @@
                     msgs.innerHTML += `<div class="ai-chat-bubble ai">${reply}</div>`;
                     speak(reply.replace(/<[^>]+>/g, '')); // Leer sin etiquetas HTML
 
+                    // Reactivar listeners de enlaces
+                    document.querySelectorAll('.chat-link').forEach(link => {
+                        link.addEventListener('click', (e) => {
+                            e.preventDefault(); 
+                            handleTopDownloadClick(null, e.currentTarget.dataset.cardId);
+                            if(aiChatModal) aiChatModal.classList.remove('open');
+                        });
+                    });
+
                 } catch(err) {
                     msgs.innerHTML += `<div class="ai-chat-bubble ai">Error de conexión.</div>`;
                 }
@@ -875,6 +885,23 @@
             auth = getAuth(app);
 
             onAuthStateChanged(auth, (user) => {
+                // Radar Logic Init
+                const radarRef = doc(db, `artifacts/${appId}/public/data/config`, "siteSettings");
+                onSnapshot(radarRef, (s) => {
+                    if (s.exists() && s.data().radarEnabled) {
+                        if (!radarInterval) {
+                             radarInterval = setInterval(() => {
+                                 setDoc(doc(db, `artifacts/${appId}/public/data/presence`, user ? user.uid : "anon"), {
+                                     platform: activeTab,
+                                     timestamp: serverTimestamp()
+                                 });
+                             }, 60000); // Latido cada minuto
+                        }
+                    } else {
+                        if (radarInterval) { clearInterval(radarInterval); radarInterval = null; }
+                    }
+                });
+                
                 if (user && user.uid === ADMIN_ID) {
                     const status = document.getElementById('admin-status');
                     if(status) {
