@@ -95,10 +95,10 @@
                         <div class="logo">D</div>
                         <h1 class="text-2xl sm:text-3xl font-bold text-slate-900">Descargar Ultima Version</h1>
                     </div>
-                    <!-- ===== BOTÓN 'CÓMO DESCARGAR' ===== -->
+                    <!-- ===== BOTÓN 'CÓMO DESCARGAR' MODIFICADO ===== -->
                     <button id="how-to-download-btn" class="flex items-center gap-2 text-white font-bold mt-2 sm:mt-0 px-4 py-2 bg-red-600 rounded-full transition-colors hover:bg-red-700 animate-pulse shadow-md border-2 border-red-500">
                         <svg style="width: 22px; height: 22px;" class="h-6 w-6" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clip-rule="evenodd"></path></svg>
-                        ¿Cómo descargar nuestros archivos?
+                        ¿Como descargar nuestros archivos?
                     </button>
                 </div>
                 <div class="relative w-full sm:max-w-md">
@@ -203,7 +203,7 @@
         <div class="modal-content max-w-lg">
             <button id="download-guide-modal-close" class="absolute top-4 right-4 text-slate-500 hover:text-slate-800"><svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg></button>
             <h2 class="ml-4 text-xl sm:text-2xl font-bold text-slate-900">GUÍA RÁPIDA (MÓVIL)</h2>
-            <p class="text-slate-700 text-base mb-5">Sigue los pasos para saltar la publicidad en móvil.</p>
+            <p class="text-slate-700 text-base mb-5">Sigue los pasos en el video de arriba para saltar la publicidad en móvil.</p>
             <button id="download-guide-continue-btn" class="mt-8 w-full bg-green-600 text-white font-bold py-3 px-4 rounded-lg hover:bg-green-700 transition-colors text-lg">¡Entendido!</button>
         </div>
     </div>
@@ -224,14 +224,14 @@
             <!-- PUBLICIDAD ESPOSA (DEFAULT = THALIA CAKES) -->
             <div id="ai-chat-ad-container" class="bg-pink-50 border-b border-pink-200 p-3 flex items-center gap-3 cake-ad-anim shadow-sm">
                  <div class="flex-shrink-0 bg-white p-1 rounded-full shadow border border-pink-100">
-                     <!-- Icono de Pastel -->
-                     <svg class="w-8 h-8 text-pink-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 15.546c-.523 0-1.046.151-1.5.454a2.704 2.704 0 01-3 0 2.704 2.704 0 00-3 0 2.704 2.704 0 01-3 0 2.704 2.704 0 00-3 0 2.704 2.704 0 01-3 0 2.701 2.701 0 00-1.5-.454M9 6v2m3-2v2m3-2v2M9 3h.01M12 3h.01M15 3h.01M21 21v-7a2 2 0 00-2-2H5a2 2 0 00-2 2v7h18zm-3-9v-2a2 2 0 00-2-2H8a2 2 0 00-2 2v2h12z"/></svg>
+                     <!-- IMAGEN DEL LOGO (CON FALLBACK A PLACEHOLDER) -->
+                     <img src="imagenes/Thaliacakes.png" class="w-12 h-12 rounded-full object-cover shadow-sm border border-pink-200" alt="Thalia Cakes" onerror="this.src='https://placehold.co/100x100/pink/white?text=TC'">
                  </div>
                  <div class="flex-grow text-left">
                      <h3 class="font-bold text-pink-600 text-sm leading-tight">Thalia Cakes 🎂</h3>
                      <p class="text-xs text-slate-600">¡Dulzura hecha con amor para ti!</p>
                  </div>
-                 <a href="#" class="bg-gradient-to-r from-pink-500 to-purple-500 hover:from-pink-600 hover:to-purple-600 text-white text-xs font-bold py-1.5 px-3 rounded-full transition shadow-sm transform hover:scale-105">Ver más</a>
+                 <a href="https://www.facebook.com/share/1GY4SEQJTx/" class="bg-gradient-to-r from-pink-500 to-purple-500 hover:from-pink-600 hover:to-purple-600 text-white text-xs font-bold py-1.5 px-3 rounded-full transition shadow-sm transform hover:scale-105">Ver más</a>
             </div>
 
             <div id="ai-chat-messages" class="flex-grow flex flex-col p-4 space-y-2 overflow-y-auto bg-white">
@@ -669,7 +669,6 @@
             const inventoryList = allSoftware.map(s => `- ID: ${s.id} | NOMBRE: ${s.title}`).join('\n');
             const user = auth.currentUser;
             const userName = user && !user.isAnonymous ? (user.displayName || 'Amigo') : 'Amigo';
-            // PROMPT ACTUALIZADO CON "Thalia Cakes"
             const finalPrompt = `
                 ACTÚA COMO: DUV (Inteligencia Artificial de Descargar Ultima Version), un experto amigable.
                 TONO: Natural, breve, jovial. Nunca hables como robot.
@@ -771,11 +770,13 @@
                                 const data = s.data();
                                 if (data.aiChatAd && data.aiChatAd.trim() !== "") {
                                     adContainer.innerHTML = data.aiChatAd; adContainer.classList.remove('hidden');
-                                } else adContainer.classList.add('hidden'); // Mantenemos oculto por defecto si DB vacío, aunque HTML tiene Thalia
-                                // Para que Thalia se vea por defecto si la DB está vacía o no tiene el campo, deberíamos cambiar la lógica.
-                                // Pero el usuario pidió que si no pone nada, salga Thalia. 
-                                // En el HTML ya está Thalia. Si la DB viene vacía, NO debemos ocultarlo.
-                                if (!data.aiChatAd) adContainer.classList.remove('hidden');
+                                } else {
+                                    // Si no hay anuncio en DB, usar el de Thalia (ya en HTML), por lo que removemos hidden.
+                                    adContainer.classList.remove('hidden'); 
+                                }
+                            } else {
+                                // Si no existe config, mostramos Thalia por defecto
+                                if(adContainer) adContainer.classList.remove('hidden');
                             }
                         });
                     }
@@ -833,9 +834,7 @@
                         });
                     }
                     
-                    if(!requestsUnsubscribe) {
-                         loadGeneralRequests();
-                    }
+                    if(!requestsUnsubscribe) loadGeneralRequests();
 
                     if (user.uid === ADMIN_ID) {
                         const status = document.getElementById('admin-status');
