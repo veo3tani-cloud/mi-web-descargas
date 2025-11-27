@@ -6,16 +6,16 @@
     <title>Descargar Ultima Version - Software y Juegos Full</title>
 
     <!-- ================================================================== -->
-    <!-- 🌍 BLOQUE DE VIRALIDAD Y SEO MUNDIAL (AGREGADO) 🌍                 -->
-    <!-- Este bloque hace que tu página sea visible globalmente             -->
+    <!-- 🌍 BLOQUE DE VIRALIDAD Y SEO MUNDIAL (VERIFICADO) 🌍               -->
     <!-- ================================================================== -->
     <meta name="description" content="Descarga las últimas versiones de tu software favorito. Adobe, 3ds Max, Blender, Office y más. Versiones full, verificadas y actualizadas diariamente.">
+    <!-- TU LLAVE DE GOOGLE -->
     <meta name="google-site-verification" content="QKoomqLzQqAgclq1tgbxrJG3aaRX4iiIrPCp0XP4yRE" />
     <meta name="keywords" content="descargar, software, ultima version, full, adobe, blender, office, photoshop, premiere, apk mod, android, pc, free download">
     <meta name="author" content="Descargar Ultima Version">
     <meta name="robots" content="index, follow">
 
-    <!-- 1. Pasaporte Mundial (Idiomas Objetivo) -->
+    <!-- Pasaporte Mundial -->
     <link rel="alternate" hreflang="es" href="https://mi-web-descargas.vercel.app/" />
     <link rel="alternate" hreflang="en" href="https://mi-web-descargas.vercel.app/" />
     <link rel="alternate" hreflang="pt" href="https://mi-web-descargas.vercel.app/" />
@@ -24,7 +24,7 @@
     <link rel="alternate" hreflang="hi" href="https://mi-web-descargas.vercel.app/" />
     <link rel="alternate" hreflang="x-default" href="https://mi-web-descargas.vercel.app/" />
 
-    <!-- 2. Tarjeta de Presentación Viral (Redes Sociales) -->
+    <!-- Tarjeta Viral -->
     <meta property="og:title" content="Descargar Última Versión - Software Seguro y Full">
     <meta property="og:description" content="¿Buscas software sin virus? Aquí publicamos lo que pasa nuestros filtros de seguridad. Adobe, Office, Juegos y más. ¡Entra ya!">
     <meta property="og:image" content="https://mi-web-descargas.vercel.app/imagen-preview.jpg">
@@ -36,8 +36,7 @@
     <meta name="twitter:description" content="Descargas directas y verificadas de software y juegos.">
     <meta name="twitter:image" content="https://mi-web-descargas.vercel.app/imagen-preview.jpg">
 
-
-    <!-- 3. Código de Autoridad (Schema.org para Google) -->
+    <!-- Autoridad -->
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
@@ -52,7 +51,6 @@
       "description": "El mejor repositorio de software verificado y seguro para PC y Móvil."
     }
     </script>
-    <!-- ================================================================== -->
 
     <!-- 🛡️ ESCUDO ANTI-FALLOS 🛡️ -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -85,7 +83,7 @@
         
         /* Animaciones */
         @keyframes highlight-card { 0% { transform: scale(1); box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.5); } 50% { transform: scale(1.02); box-shadow: 0 0 20px rgba(59, 130, 246, 0.3); } 100% { transform: scale(1); } }
-        .card-highlight { animation: highlight-card 1.5s ease-in-out; }
+        .card-highlight { animation: highlight-card 2s ease-in-out; border-color: #2563eb; z-index: 10; position: relative; }
         .animate-pulse { animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite; }
         @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: .5; } }
         
@@ -177,7 +175,7 @@
                         <div class="logo">D</div>
                         <h1 class="text-2xl sm:text-3xl font-bold text-slate-900">Descargar Ultima Version</h1>
                     </div>
-                    <!-- ===== BOTÓN 'CÓMO DESCARGAR' ===== -->
+                    <!-- ===== BOTÓN 'CÓMO DESCARGAR' (ROJO GIGANTE) ===== -->
                     <button id="how-to-download-btn" class="flex items-center gap-4 text-white font-bold mt-2 sm:mt-0 px-6 py-4 bg-red-600 rounded-full transition-colors hover:bg-red-700 animate-pulse shadow-lg border-4 border-red-500 sm:text-lg">
                         <!-- ÍCONO PLAY GIGANTE -->
                         <svg style="width: 48px; height: 48px;" class="h-12 w-12 sm:h-16 sm:w-16 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clip-rule="evenodd"></path></svg>
@@ -207,7 +205,7 @@
             <p class="text-slate-500 text-sm text-center">Cargando categorías...</p>
         </nav>
         
-        <!-- SECCIÓN 'LO MÁS DESCARGADO' -->
+        <!-- SECCIÓN 'LO MÁS DESCARGADO' (TOP 14 CARRUSEL) -->
         <div id="top-downloads-container" class="mb-8 p-6 bg-white rounded-xl shadow-sm border border-slate-200">
             <div class="flex flex-col md:flex-row justify-between md:items-center gap-4 mb-4">
                 <h2 class="text-2xl font-bold text-slate-900 flex-shrink-0 flex items-center gap-2">
@@ -223,7 +221,7 @@
                 </div>
             </div>
             
-            <!-- Carrusel Horizontal (Top 14) -->
+            <!-- Carrusel Horizontal -->
             <div id="top-downloads-list" class="flex overflow-x-auto pb-4 gap-4 snap-x snap-mandatory scroll-container">
                 <p class="text-slate-500 text-sm w-full text-center py-4">Cargando ranking...</p>
             </div>
@@ -609,10 +607,20 @@
                     </div>`;
                 container.appendChild(card);
             });
-            container.querySelectorAll('.download-btn-action').forEach(b => b.addEventListener('click', handleDownloadAction));
-            container.querySelectorAll('.like-btn-action').forEach(b => b.addEventListener('click', handleLikeAction));
-            container.querySelectorAll('.comment-btn-action').forEach(b => b.addEventListener('click', handleCommentAction));
-            container.querySelectorAll('.share-btn-action').forEach(b => b.addEventListener('click', handleShareAction));
+            
+            // PROTECCIÓN PARA EVENTOS DE BOTONES DINÁMICOS
+            container.querySelectorAll('.download-btn-action').forEach(b => {
+                if (b) b.addEventListener('click', handleDownloadAction);
+            });
+            container.querySelectorAll('.like-btn-action').forEach(b => {
+                if (b) b.addEventListener('click', handleLikeAction);
+            });
+            container.querySelectorAll('.comment-btn-action').forEach(b => {
+                if (b) b.addEventListener('click', handleCommentAction);
+            });
+            container.querySelectorAll('.share-btn-action').forEach(b => {
+                if (b) b.addEventListener('click', handleShareAction);
+            });
         }
 
         function updateView() {
@@ -677,6 +685,28 @@
             else navigator.clipboard.writeText(url).then(() => alert("Copiado!"));
         }
         
+        // SE MOVIÓ AQUÍ LA DEFINICIÓN (Fuera de otras funciones)
+        function handleTopDownloadClick(e, cardId) {
+             if (e) e.preventDefault();
+            const itemId = cardId || (e ? e.currentTarget.dataset.itemId : null);
+            if (!itemId) return;
+            let item = allSoftware.find(i => i.id === itemId);
+            if (!item) return;
+            let itemTab = item.platform || 'pc'; 
+            if (activeTab !== itemTab) {
+                const tabToClick = (itemTab === 'pc') ? document.getElementById('tab-pc') : document.getElementById('tab-mobile');
+                if (tabToClick) tabToClick.click();
+            }
+            setTimeout(() => {
+                const cardElement = document.getElementById(`card-${item.id}`);
+                if (cardElement) {
+                    cardElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    cardElement.classList.add('card-highlight');
+                    setTimeout(() => { cardElement.classList.remove('card-highlight'); }, 1500);
+                }
+            }, 100);
+        }
+
         function loadComments(id) {
             const list = document.getElementById('comments-list');
             list.innerHTML = '<p class="text-center text-gray-500">Cargando...</p>';
@@ -695,16 +725,20 @@
             });
         }
 
-        document.getElementById('submit-comment-btn').addEventListener('click', async () => {
-            const input = document.getElementById('comment-input');
-            const text = input.value.trim();
-            if(!text || !currentItemId) return;
-            const user = auth.currentUser || (await signInAnonymously(auth)).user;
-            await addDoc(collection(db, `artifacts/${appId}/public/data/comments`, currentItemId, 'messages'), {
-                text: text, uid: user.uid, displayName: user.uid === ADMIN_ID ? 'Admin' : 'Usuario', timestamp: serverTimestamp()
+        // PROTECCIÓN: Botón de comentario
+        const submitCommentBtn = document.getElementById('submit-comment-btn');
+        if (submitCommentBtn) {
+            submitCommentBtn.addEventListener('click', async () => {
+                const input = document.getElementById('comment-input');
+                const text = input.value.trim();
+                if(!text || !currentItemId) return;
+                const user = auth.currentUser || (await signInAnonymously(auth)).user;
+                await addDoc(collection(db, `artifacts/${appId}/public/data/comments`, currentItemId, 'messages'), {
+                    text: text, uid: user.uid, displayName: user.uid === ADMIN_ID ? 'Admin' : 'Usuario', timestamp: serverTimestamp()
+                });
+                input.value = '';
             });
-            input.value = '';
-        });
+        }
 
         // --- CHAT IA (AUDIO & VOZ) ---
         const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
@@ -732,12 +766,16 @@
             try { recognition.start(); document.getElementById('mic-icon').classList.add('hidden'); document.getElementById('mic-listening').classList.remove('hidden'); } catch (e) { console.error(e); }
         });
 
-        document.getElementById('ai-speaker-toggle').addEventListener('click', () => {
-            isSpeechEnabled = !isSpeechEnabled;
-            document.getElementById('speaker-on').classList.toggle('hidden');
-            document.getElementById('speaker-off').classList.toggle('hidden');
-            if(!isSpeechEnabled) window.speechSynthesis.cancel();
-        });
+        // PROTECCIÓN: Botón de parlante
+        const speakerToggle = document.getElementById('ai-speaker-toggle');
+        if(speakerToggle) {
+            speakerToggle.addEventListener('click', () => {
+                isSpeechEnabled = !isSpeechEnabled;
+                document.getElementById('speaker-on').classList.toggle('hidden');
+                document.getElementById('speaker-off').classList.toggle('hidden');
+                if(!isSpeechEnabled) window.speechSynthesis.cancel();
+            });
+        }
 
         function speak(text) {
             if(!isSpeechEnabled) return;
@@ -746,70 +784,74 @@
             window.speechSynthesis.speak(utterance);
         }
 
-        document.getElementById('ai-chat-form').addEventListener('submit', async (e) => {
-            e.preventDefault();
-            const input = document.getElementById('ai-chat-input');
-            const text = input.value.trim();
-            if(!text) return;
-            const msgs = document.getElementById('ai-chat-messages');
-            msgs.innerHTML += `<div class="ai-chat-bubble user">${text}</div>`;
-            input.value = '';
-            msgs.scrollTop = msgs.scrollHeight;
-            
-            const inventoryList = allSoftware.map(s => `- ID: ${s.id} | NOMBRE: ${s.title}`).join('\n');
-            const user = auth.currentUser;
-            const userName = user && !user.isAnonymous ? (user.displayName || 'Amigo') : 'Amigo';
-            const finalPrompt = `
-                ACTÚA COMO: DUV (Inteligencia Artificial de Descargar Ultima Version), un experto amigable.
-                TONO: Natural, breve, jovial. Nunca hables como robot.
-                NOMBRE DEL USUARIO: ${userName}
+        // PROTECCIÓN: Formulario de chat
+        const aiChatForm = document.getElementById('ai-chat-form');
+        if(aiChatForm) {
+            aiChatForm.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const input = document.getElementById('ai-chat-input');
+                const text = input.value.trim();
+                if(!text) return;
+                const msgs = document.getElementById('ai-chat-messages');
+                msgs.innerHTML += `<div class="ai-chat-bubble user">${text}</div>`;
+                input.value = '';
+                msgs.scrollTop = msgs.scrollHeight;
                 
-                TU CONOCIMIENTO (INVENTARIO REAL):
-                ${inventoryList}
+                const inventoryList = allSoftware.map(s => `- ID: ${s.id} | NOMBRE: ${s.title}`).join('\n');
+                const user = auth.currentUser;
+                const userName = user && !user.isAnonymous ? (user.displayName || 'Amigo') : 'Amigo';
+                const finalPrompt = `
+                    ACTÚA COMO: DUV (Inteligencia Artificial de Descargar Ultima Version), un experto amigable.
+                    TONO: Natural, breve, jovial. Nunca hables como robot.
+                    NOMBRE DEL USUARIO: ${userName}
+                    
+                    TU CONOCIMIENTO (INVENTARIO REAL):
+                    ${inventoryList}
 
-                TU CONOCIMIENTO EXTRA (NEGOCIO FAMILIAR):
-                - Si preguntan por "Thalia Cakes" o "tortas", responde con mucho entusiasmo.
-                - Diles que es la mejor pastelería, propiedad de la talentosa Thalia Alday.
-                - Hacen tortas para bodas, cumpleaños, bocaditos y diseños personalizados.
-                - Invítalos a hacer clic en el botón "Ver más" que aparece arriba en el chat.
+                    TU CONOCIMIENTO EXTRA (NEGOCIO FAMILIAR):
+                    - Si preguntan por "Thalia Cakes" o "tortas", responde con mucho entusiasmo.
+                    - Diles que es la mejor pastelería, propiedad de la talentosa Thalia Alday.
+                    - Hacen tortas para bodas, cumpleaños, bocaditos y diseños personalizados.
+                    - Invítalos a hacer clic en el botón "Ver más" que aparece arriba en el chat.
 
-                REGLAS:
-                1. SI EL USUARIO SALUDA: Responde corto y amable usando su nombre si lo tienes. NO listes el software.
-                2. SI PIDEN ALGO QUE TIENES: Responde "¡Lo tengo!" y usa el formato [LINK:ID_DEL_SOFTWARE].
-                3. SI PIDEN ALGO QUE NO TIENES:
-                   - Primero VERIFICA en tu conocimiento general si ese software realmente existe.
-                   - Si existe pero no lo tenemos: "No lo tengo, pero lo anoto en la pizarra" y usa [ADD_TO_BOARD:NombreDelSoftware].
-                   - Si NO existe o es un nombre inventado/raro: Di que no lo conoces y pregunta si escribieron bien el nombre.
-                4. SI PREGUNTAN CÓMO DESCARGAR: Explica que deben saltar la publicidad de exe.io. 
-                   - PC: Cerrar pestañas nuevas hasta ver el captcha.
-                   - MÓVIL: Advertir sobre bloqueo de popups y decir que vean el video amarillo.
-                5. IMPORTANTE: Jamás inventes enlaces. Usa solo los IDs del inventario.
-            `;
-            const apiKey = "AIzaSyC2eih2fC7lR3VA9Uv1zOWbxy7egX9UMCw"; 
-            try {
-                 const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${apiKey}`, {
-                    method: 'POST', headers: {'Content-Type': 'application/json'},
-                    body: JSON.stringify({ contents: [{parts: [{text: text}]}], systemInstruction: { parts: [{ text: finalPrompt }] } })
-                });
-                const data = await response.json();
-                let reply = data.candidates[0].content.parts[0].text;
-                reply = reply.replace(/\[LINK:([^\]]+)\]/g, (match, cardId) => {
-                    const item = allSoftware.find(i => i.id === cardId);
-                    return ` <a href="#" class="chat-link font-bold text-blue-600 underline" data-card-id="${cardId}">${item ? item.title : 'ver'}</a>`;
-                });
-                reply = reply.replace(/\[ADD_TO_BOARD:([^\]]+)\]/g, (match, name) => {
-                    addSoftwareRequest(name); return ` <em>(Añadido a pizarra: ${name})</em>`;
-                });
-                msgs.innerHTML += `<div class="ai-chat-bubble ai">${reply}</div>`;
-                speak(reply.replace(/<[^>]+>/g, ''));
-                document.querySelectorAll('.chat-link').forEach(link => {
-                    link.addEventListener('click', (e) => {
-                        e.preventDefault(); handleTopDownloadClick(null, e.currentTarget.dataset.cardId); closeModal('ai-chat-modal');
+                    REGLAS:
+                    1. SI EL USUARIO SALUDA: Responde corto y amable usando su nombre si lo tienes. NO listes el software.
+                    2. SI PIDEN ALGO QUE TIENES: Responde "¡Lo tengo!" y usa el formato [LINK:ID_DEL_SOFTWARE].
+                    3. SI PIDEN ALGO QUE NO TIENES:
+                       - Primero VERIFICA en tu conocimiento general si ese software realmente existe.
+                       - Si existe pero no lo tenemos: "No lo tengo, pero lo anoto en la pizarra" y usa [ADD_TO_BOARD:NombreDelSoftware].
+                       - Si NO existe o es un nombre inventado/raro: Di que no lo conoces y pregunta si escribieron bien el nombre.
+                    4. SI PREGUNTAN CÓMO DESCARGAR: Explica que deben saltar la publicidad de exe.io. 
+                       - PC: Cerrar pestañas nuevas hasta ver el captcha.
+                       - MÓVIL: Advertir sobre bloqueo de popups y decir que vean el video amarillo.
+                    5. IMPORTANTE: Jamás inventes enlaces. Usa solo los IDs del inventario.
+                `;
+                const apiKey = "AIzaSyC2eih2fC7lR3VA9Uv1zOWbxy7egX9UMCw"; 
+                try {
+                     const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${apiKey}`, {
+                        method: 'POST', headers: {'Content-Type': 'application/json'},
+                        body: JSON.stringify({ contents: [{parts: [{text: text}]}], systemInstruction: { parts: [{ text: finalPrompt }] } })
                     });
-                });
-            } catch(err) { msgs.innerHTML += `<div class="ai-chat-bubble ai">Error conexión.</div>`; }
-            msgs.scrollTop = msgs.scrollHeight;
-        });
+                    const data = await response.json();
+                    let reply = data.candidates[0].content.parts[0].text;
+                    reply = reply.replace(/\[LINK:([^\]]+)\]/g, (match, cardId) => {
+                        const item = allSoftware.find(i => i.id === cardId);
+                        return ` <a href="#" class="chat-link font-bold text-blue-600 underline" data-card-id="${cardId}">${item ? item.title : 'ver'}</a>`;
+                    });
+                    reply = reply.replace(/\[ADD_TO_BOARD:([^\]]+)\]/g, (match, name) => {
+                        addSoftwareRequest(name); return ` <em>(Añadido a pizarra: ${name})</em>`;
+                    });
+                    msgs.innerHTML += `<div class="ai-chat-bubble ai">${reply}</div>`;
+                    speak(reply.replace(/<[^>]+>/g, ''));
+                    document.querySelectorAll('.chat-link').forEach(link => {
+                        link.addEventListener('click', (e) => {
+                            e.preventDefault(); handleTopDownloadClick(null, e.currentTarget.dataset.cardId); closeModal('ai-chat-modal');
+                        });
+                    });
+                } catch(err) { msgs.innerHTML += `<div class="ai-chat-bubble ai">Error conexión.</div>`; }
+                msgs.scrollTop = msgs.scrollHeight;
+            });
+        }
 
         // --- INIT & AUTH ---
         try {
@@ -817,16 +859,27 @@
             db = getFirestore(app);
             auth = getAuth(app);
             
+            // --- AUTH SIMPLE DIRECTO ---
             const initAuth = async () => {
-                if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) await signInWithCustomToken(auth, __initial_auth_token);
-                else await signInAnonymously(auth);
+                try {
+                    // Intentar primero con token si existe (para entornos preview)
+                    if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
+                        await signInWithCustomToken(auth, __initial_auth_token);
+                    } else {
+                        throw new Error("No token");
+                    }
+                } catch (e) {
+                    // Si falla CUALQUIER COSA, usar anónimo (Red de Seguridad)
+                    console.log("Usando acceso anónimo de respaldo...");
+                    await signInAnonymously(auth);
+                }
             };
             initAuth();
 
             onAuthStateChanged(auth, (user) => {
                 if (user) {
-                    // TICKER - Aumentamos el límite a 10 para mostrar más items en el carrusel también si quisiéramos, pero esto es para el ticker de noticias
-                    onSnapshot(query(collection(db, `artifacts/${appId}/public/data/software-items`), orderBy("createdAt", "desc"), limit(5)), (snapshot) => {
+                    // TICKER
+                    onSnapshot(query(collection(db, `artifacts/${appId}/public/data/software-items`), orderBy("createdAt", "desc"), limit(14)), (snapshot) => {
                         const ticker = document.getElementById('news-ticker-content');
                         if (ticker) {
                             let html = '';
@@ -915,26 +968,6 @@
 
         } catch (e) { console.error("Error Firebase:", e); }
 
-        function handleTopDownloadClick(e, cardId) {
-             if (e) e.preventDefault();
-            const itemId = cardId || (e ? e.currentTarget.dataset.itemId : null);
-            if (!itemId) return;
-            let item = allSoftware.find(i => i.id === itemId);
-            if (!item) return;
-            let itemTab = item.platform || 'pc'; 
-            if (activeTab !== itemTab) {
-                const tabToClick = (itemTab === 'pc') ? document.getElementById('tab-pc') : document.getElementById('tab-mobile');
-                if (tabToClick) tabToClick.click();
-            }
-            setTimeout(() => {
-                const cardElement = document.getElementById(`card-${item.id}`);
-                if (cardElement) {
-                    cardElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                    cardElement.classList.add('card-highlight');
-                    setTimeout(() => { cardElement.classList.remove('card-highlight'); }, 1500);
-                }
-            }, 100);
-        }
         
         async function addSoftwareRequest(softwareName) {
             if (!db) return;
@@ -1039,6 +1072,4 @@
 
     </script>
 </body>
-
 </html>
-
