@@ -6,11 +6,13 @@
     <title>Descargar Ultima Version - Software y Juegos Full</title>
 
     <!-- ================================================================== -->
-    <!-- 🌍 BLOQUE DE VIRALIDAD Y SEO MUNDIAL (VERIFICADO) 🌍               -->
+    <!-- 🌍 BLOQUE DE VIRALIDAD Y SEO MUNDIAL (OPTIMIZADO) 🌍               -->
     <!-- ================================================================== -->
     <meta name="description" content="Descarga las últimas versiones de tu software favorito. Adobe, 3ds Max, Blender, Office y más. Versiones full, verificadas y actualizadas diariamente.">
-    <!-- TU LLAVE DE GOOGLE -->
+    
+    <!-- TU LLAVE DE GOOGLE (NO BORRAR) -->
     <meta name="google-site-verification" content="QKoomqLzQqAgclq1tgbxrJG3aaRX4iiIrPCp0XP4yRE" />
+    
     <meta name="keywords" content="descargar, software, ultima version, full, adobe, blender, office, photoshop, premiere, apk mod, android, pc, free download">
     <meta name="author" content="Descargar Ultima Version">
     <meta name="robots" content="index, follow">
@@ -24,17 +26,25 @@
     <link rel="alternate" hreflang="hi" href="https://mi-web-descargas.vercel.app/" />
     <link rel="alternate" hreflang="x-default" href="https://mi-web-descargas.vercel.app/" />
 
-    <!-- Tarjeta Viral -->
+    <!-- Tarjeta Viral (WhatsApp / Facebook) -->
     <meta property="og:title" content="Descargar Última Versión - Software Seguro y Full">
     <meta property="og:description" content="¿Buscas software sin virus? Aquí publicamos lo que pasa nuestros filtros de seguridad. Adobe, Office, Juegos y más. ¡Entra ya!">
-    <meta property="og:image" content="https://mi-web-descargas.vercel.app/imagen-preview.jpg">
+    
+    <!-- TRUCO ANTI-CACHÉ: ?v=1 obliga a WhatsApp a recargar la imagen -->
+    <meta property="og:image" content="https://mi-web-descargas.vercel.app/imagen-preview.jpg?v=1">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:image:type" content="image/jpeg">
+    
     <meta property="og:url" content="https://mi-web-descargas.vercel.app/">
     <meta property="og:type" content="website">
     <meta property="og:site_name" content="Descargar Ultima Version">
+    
+    <!-- Twitter Cards -->
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="Descargar Última Versión - Software Seguro">
     <meta name="twitter:description" content="Descargas directas y verificadas de software y juegos.">
-    <meta name="twitter:image" content="https://mi-web-descargas.vercel.app/imagen-preview.jpg">
+    <meta name="twitter:image" content="https://mi-web-descargas.vercel.app/imagen-preview.jpg?v=1">
 
     <!-- Autoridad -->
     <script type="application/ld+json">
@@ -108,9 +118,9 @@
         .comment span { color: #94a3b8; font-size: 0.75rem; }
         .comment.admin-comment { background-color: #f0f9ff !important; border-color: #bae6fd; }
         
-        /* Ticker */
+        /* Ticker - MÁS LENTO Y LEGIBLE (80s) */
         .ticker-wrap { width: 100%; overflow: hidden; background-color: #1e293b; color: white; padding: 8px 0; font-size: 0.9rem; white-space: nowrap; box-sizing: border-box; }
-        .ticker { display: inline-block; padding-left: 100%; animation: ticker 35s linear infinite; }
+        .ticker { display: inline-block; padding-left: 100%; animation: ticker 80s linear infinite; }
         @keyframes ticker { 0% { transform: translate3d(0, 0, 0); } 100% { transform: translate3d(-100%, 0, 0); } }
         .ticker-item { display: inline-block; padding: 0 2rem; font-weight: 600; }
         .ticker-highlight { color: #fbbf24; text-shadow: 0 0 5px rgba(251, 191, 36, 0.3); }
@@ -422,6 +432,7 @@
         let currentDownloadLink = null;
         window.commentsUnsubscribe = null;
         window.generalRequestsUnsubscribe = null;
+        let isFirstLoad = true; // FLAG PARA DEEP LINKING
 
         // UI
         const tabPc = document.getElementById('tab-pc');
@@ -685,26 +696,30 @@
             else navigator.clipboard.writeText(url).then(() => alert("Copiado!"));
         }
         
-        // SE MOVIÓ AQUÍ LA DEFINICIÓN (Fuera de otras funciones)
+        // --- DEEP LINKING LOGIC (MOVIDO AQUÍ) ---
         function handleTopDownloadClick(e, cardId) {
              if (e) e.preventDefault();
             const itemId = cardId || (e ? e.currentTarget.dataset.itemId : null);
             if (!itemId) return;
             let item = allSoftware.find(i => i.id === itemId);
             if (!item) return;
+            
+            // 1. Detectar y Cambiar Pestaña
             let itemTab = item.platform || 'pc'; 
             if (activeTab !== itemTab) {
                 const tabToClick = (itemTab === 'pc') ? document.getElementById('tab-pc') : document.getElementById('tab-mobile');
                 if (tabToClick) tabToClick.click();
             }
+            
+            // 2. Esperar renderizado y Scroll suave con Iluminación
             setTimeout(() => {
                 const cardElement = document.getElementById(`card-${item.id}`);
                 if (cardElement) {
                     cardElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
                     cardElement.classList.add('card-highlight');
-                    setTimeout(() => { cardElement.classList.remove('card-highlight'); }, 1500);
+                    setTimeout(() => { cardElement.classList.remove('card-highlight'); }, 2000);
                 }
-            }, 100);
+            }, 300);
         }
 
         function loadComments(id) {
@@ -879,7 +894,7 @@
             onAuthStateChanged(auth, (user) => {
                 if (user) {
                     // TICKER
-                    onSnapshot(query(collection(db, `artifacts/${appId}/public/data/software-items`), orderBy("createdAt", "desc"), limit(14)), (snapshot) => {
+                    onSnapshot(query(collection(db, `artifacts/${appId}/public/data/software-items`), orderBy("createdAt", "desc"), limit(5)), (snapshot) => {
                         const ticker = document.getElementById('news-ticker-content');
                         if (ticker) {
                             let html = '';
@@ -950,8 +965,21 @@
                             
                             // LOAD TOP DOWNLOADS (CAROUSEL TOP 14)
                             loadTopDownloads();
-
                             updateView();
+                            
+                            // --- DEEP LINKING: AUTO-ENFOQUE AL CARGAR ---
+                            // Detecta si alguien compartió un link específico
+                            if (isFirstLoad) {
+                                const urlParams = new URLSearchParams(window.location.search);
+                                const sharedItem = urlParams.get('item');
+                                if (sharedItem) {
+                                    // Esperamos un momento a que todo cargue para hacer el scroll
+                                    setTimeout(() => {
+                                        handleTopDownloadClick(null, sharedItem);
+                                        isFirstLoad = false;
+                                    }, 1500);
+                                }
+                            }
                         });
                     }
                     
