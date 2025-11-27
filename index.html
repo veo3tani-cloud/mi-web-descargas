@@ -6,13 +6,11 @@
     <title>Descargar Ultima Version - Software y Juegos Full</title>
 
     <!-- ================================================================== -->
-    <!-- 🌍 BLOQUE DE VIRALIDAD Y SEO MUNDIAL (OPTIMIZADO) 🌍               -->
+    <!-- 🌍 BLOQUE DE VIRALIDAD Y SEO MUNDIAL (VERIFICADO) 🌍               -->
     <!-- ================================================================== -->
     <meta name="description" content="Descarga las últimas versiones de tu software favorito. Adobe, 3ds Max, Blender, Office y más. Versiones full, verificadas y actualizadas diariamente.">
-    
-    <!-- TU LLAVE DE GOOGLE (NO BORRAR) -->
+    <!-- TU LLAVE DE GOOGLE -->
     <meta name="google-site-verification" content="QKoomqLzQqAgclq1tgbxrJG3aaRX4iiIrPCp0XP4yRE" />
-    
     <meta name="keywords" content="descargar, software, ultima version, full, adobe, blender, office, photoshop, premiere, apk mod, android, pc, free download">
     <meta name="author" content="Descargar Ultima Version">
     <meta name="robots" content="index, follow">
@@ -26,11 +24,9 @@
     <link rel="alternate" hreflang="hi" href="https://mi-web-descargas.vercel.app/" />
     <link rel="alternate" hreflang="x-default" href="https://mi-web-descargas.vercel.app/" />
 
-    <!-- Tarjeta Viral (WhatsApp / Facebook) -->
+    <!-- Tarjeta Viral -->
     <meta property="og:title" content="Descargar Última Versión - Software Seguro y Full">
     <meta property="og:description" content="¿Buscas software sin virus? Aquí publicamos lo que pasa nuestros filtros de seguridad. Adobe, Office, Juegos y más. ¡Entra ya!">
-    
-    <!-- TRUCO ANTI-CACHÉ: ?v=1 obliga a WhatsApp a recargar la imagen -->
     <meta property="og:image" content="https://mi-web-descargas.vercel.app/imagen-preview.jpg?v=1">
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="630">
@@ -314,7 +310,6 @@
             </div>
             
             <!-- PUBLICIDAD ESPOSA (DEFAULT = THALIA CAKES) -->
-            <!-- Usamos ./ para asegurar la ruta relativa -->
             <div id="ai-chat-ad-container" class="bg-pink-50 border-b border-pink-200 p-3 flex items-center gap-3 cake-ad-anim shadow-sm">
                  <div class="flex-shrink-0 bg-white p-1 rounded-full shadow border border-pink-100">
                      <!-- IMAGEN DEL LOGO -->
@@ -382,14 +377,21 @@
         </div>
     </footer>
     
-    <!-- BANNER DEL FOOTER -->
-    <div class="flex justify-center my-6">
-      <div class="rounded-xl overflow-hidden shadow-sm border border-slate-200 bg-white/80 p-2" style="display: inline-block !important;">
-        <script type="text/javascript">
-            atOptions = { 'key' : '982a5d0f66cf17a976727779b97a1183', 'format' : 'iframe', 'height' : 250, 'width' : 300, 'params' : {} };
-        </script>
-        <script type="text/javascript" src="//honeywhyvowel.com/982a5d0f66cf17a976727779b97a1183/invoke.js"></script>  
-      </div>
+    <!-- BANNER DEL FOOTER (ACTUALIZADO CON SOCIO) -->
+    <div class="flex flex-col items-center justify-center my-8 px-4">
+        <!-- Mensaje Persuasivo -->
+        <div class="max-w-md text-center mb-3 bg-gradient-to-r from-green-50 to-emerald-50 border border-green-200 p-3 rounded-xl shadow-sm animate-pulse">
+            <p class="text-slate-800 font-medium text-sm">
+                🤑 <strong>Descubre la Máquina de Ingresos</strong><br>
+                Este socio secreto financia <em>Descargar Última Versión</em>.<br>
+                <span class="text-green-600 font-bold">Haz clic en la imagen</span> y activa tu propia fuente de dinero ahora. ⚡
+            </p>
+        </div>
+        
+        <!-- Banner Code -->
+        <div class="rounded-xl overflow-hidden shadow-md border-2 border-green-500/30 bg-white p-1 hover:scale-105 transition-transform duration-300">
+             <a href="https://exe.io/ref/lahsvergon" target="_blank"><img src="https://exe.io/img/ref/r1.gif" title="¡Gana dinero acortando enlaces!" alt="Exe.io Banner" class="max-w-full h-auto rounded-lg" /></a>
+        </div>
     </div>
 
     <script type="module">
@@ -413,7 +415,7 @@
 
         const firebaseConfig = envConfig || userConfig;
         const appId = envAppId || "descargar-ultima-version"; 
-        const ADMIN_ID = "GL22tXZLqzcCRpfvNxAoO3sbFt03";
+        const ADMIN_ID = "lQ5NWvUJqNXg7KpPQSvqmoB3TU12";
 
         // --- ESTADO GLOBAL ---
         let app, db, auth;
@@ -894,7 +896,7 @@
             onAuthStateChanged(auth, (user) => {
                 if (user) {
                     // TICKER
-                    onSnapshot(query(collection(db, `artifacts/${appId}/public/data/software-items`), orderBy("createdAt", "desc"), limit(5)), (snapshot) => {
+                    onSnapshot(query(collection(db, `artifacts/${appId}/public/data/software-items`), orderBy("createdAt", "desc"), limit(14)), (snapshot) => {
                         const ticker = document.getElementById('news-ticker-content');
                         if (ticker) {
                             let html = '';
