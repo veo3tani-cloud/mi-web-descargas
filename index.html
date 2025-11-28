@@ -65,6 +65,7 @@
         .hidden { display: none !important; }
         svg { width: 24px; height: 24px; max-width: 100%; display: inline-block; vertical-align: middle; }
         img { max-width: 100%; height: auto; display: block; }
+        
         /* LOGO GRANDE Y ELEGANTE */
         .logo { width: 56px; height: 56px; display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, #38bdf8, #3b82f6); border-radius: 14px; color: white; font-weight: 800; font-size: 32px; transform: rotate(-15deg); box-shadow: 0 4px 6px -1px rgba(59, 130, 246, 0.5); }
         
@@ -176,51 +177,62 @@
             </div>
         </div>
 
-        <!-- HEADER LIMPIO (SIN BOTÓN ROJO) -->
+        <!-- HEADER LIMPIO Y CENTRADO (SIN BUSCADOR, SIN BOTÓN ROJO) -->
         <header class="mb-6">
-            <div class="flex flex-col sm:flex-row items-center justify-between gap-6 pb-4 border-b border-slate-200">
-                <div class="flex items-center gap-4 w-full sm:w-auto">
+            <div class="flex flex-col sm:flex-row items-center justify-center gap-6 pb-4 border-b border-slate-200">
+                <div class="flex items-center gap-4">
                     <div class="logo">D</div>
                     <h1 class="text-2xl sm:text-3xl font-bold text-slate-900">Descargar Ultima Version</h1>
-                </div>
-                <div class="relative w-full sm:max-w-md">
-                    <button id="open-ai-chat-btn" class="w-full flex items-center justify-center gap-3 px-4 py-3 border border-transparent rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-semibold shadow-lg hover:from-blue-700 hover:to-indigo-700 focus:outline-none focus:ring-4 focus:ring-blue-400 transition-all duration-300 ease-out transform hover:scale-105 text-base border-2 border-blue-100">
-                        <!-- LUPA MÁS GRANDE (w-8 h-8) -->
-                        <svg style="width: 32px; height: 32px; stroke-width: 2.5;" class="h-8 w-8 flex-shrink-0 text-blue-200 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
-                        Busca tu software o APK aquí
-                    </button>
                 </div>
             </div>
         </header>
         
-        <!-- BIENVENIDA PERSUASIVA Y MODERNA (ZONA DESTACADA SLATE-100) -->
-        <div class="mt-4 mb-6 bg-slate-100 backdrop-blur-md p-6 rounded-2xl shadow-lg border border-slate-300 relative overflow-hidden group">
-          <!-- Decoración de fondo -->
-          <div class="absolute top-0 left-0 w-1 h-full bg-gradient-to-b from-blue-600 to-purple-700"></div>
-          
-          <div class="flex items-start gap-5 relative z-10">
-              <div class="text-4xl bg-white p-3 rounded-xl shadow-sm flex-shrink-0 border border-slate-200">🛡️</div>
-              <div>
-                  <h2 class="text-xl font-bold text-slate-900 mb-3 tracking-tight">Pagina de Descargas Segura</h2>
-                  <p class="text-slate-700 text-base sm:text-lg font-medium leading-relaxed">
-                    Internet es una jungla llena de virus y enlaces rotos. <span class="text-blue-700 font-bold">Nosotros somos tu filtro.</span>
-                    Nuestro equipo rastrea, encuentra y verifica manualmente los mejores archivos de la red para traértelos limpios y seguros.
-                  </p>
-                  
-                  <div class="mt-4 bg-white p-4 rounded-xl border border-slate-200 flex gap-3 items-start shadow-sm">
-                    <span class="text-xl">💡</span>
-                    <p class="text-slate-600 text-sm leading-snug">
-                        <strong>OJO:</strong> Estos son archivos de otras paginas, al tratar de traer una de ellas aquí si este pesenta algún tipo de virus o algo parecido <strong>es eliminado instantaneamente.</strong> 
-                        Asi es que siéntete seguro de descargarlo desde aquí venga de  donde venga. 
-                        <span class="block mt-2 font-semibold text-blue-800">No arriesgues tu equipo buscando por fuera; aquí ya hicimos el trabajo duro por ti.</span>
-                    </p>
-                  </div>
-              </div>
-          </div>
+        <!-- BIENVENIDA FUTURISTA Y MEJORADA (FOCO AJUSTADO Y FONDO VISIBLE) -->
+        <div class="mt-4 mb-6 relative rounded-2xl shadow-xl overflow-hidden border border-slate-600/50 group">
+            <!-- 1. Imagen de Fondo (Tu imagen hipnotizadora) -->
+            <div class="absolute inset-0">
+                <img src="imagen-preview.jpg?v=1" class="w-full h-full object-cover opacity-80 transform group-hover:scale-105 transition-transform duration-1000" alt="Background Futurista">
+            </div>
+            
+            <!-- 2. Tela de Color (Overlay con MÁS TRANSPARENCIA para ver el fondo) -->
+            <div class="absolute inset-0 bg-gradient-to-br from-slate-900/90 via-slate-900/70 to-blue-900/60 backdrop-blur-[2px]"></div>
+            
+            <!-- 3. Contenido (Texto sobre el pizarron) -->
+            <div class="relative z-10 p-6 sm:p-10 text-center">
+                <!-- TÍTULO CON ESCUDO INTEGRADO (SIN COLUMNA APRETADA) -->
+                <h2 class="text-2xl sm:text-3xl font-bold text-white mb-4 tracking-tight drop-shadow-lg flex flex-col sm:flex-row items-center justify-center gap-3">
+                    <span class="text-4xl">🛡️</span> 
+                    <span>Tu Zona Segura de Descargas</span>
+                </h2>
+                
+                <p class="text-slate-100 text-base sm:text-lg font-medium leading-relaxed max-w-4xl mx-auto drop-shadow-md">
+                    Internet es una jungla llena de virus y enlaces rotos. 
+                    <span class="text-cyan-300 font-bold bg-blue-900/40 px-2 rounded border border-blue-500/30">Nosotros somos tu filtro.</span>
+                    Nuestro equipo rastrea y verifica manualmente los mejores archivos de la red para traértelos limpios y seguros.
+                </p>
+                
+                <!-- CUADRO OJO (FOCO AJUSTADO: COLUMNA EN MÓVIL, FILA EN PC) -->
+                <div class="mt-8 bg-white/10 backdrop-blur-md p-5 rounded-xl border border-white/20 shadow-2xl text-left max-w-3xl mx-auto hover:bg-white/15 transition-colors">
+                    <!-- Usamos flex-col en móvil (vertical) y sm:flex-row en PC (horizontal) -->
+                    <div class="flex flex-col sm:flex-row gap-4 items-start">
+                        <span class="text-4xl sm:text-3xl self-center sm:self-start bg-yellow-500/20 rounded-full p-2">💡</span>
+                        <div class="text-slate-100 text-sm sm:text-base leading-relaxed w-full">
+                            <strong class="text-yellow-300 tracking-wide text-lg block sm:inline mb-1 sm:mb-0">OJO:</strong> 
+                            Estos son archivos de otras páginas, pero al traerlos aquí, 
+                            si alguno presenta algún tipo de virus <strong class="text-red-300">es eliminado instantáneamente.</strong>
+                            <br class="hidden sm:block mb-2">
+                            Así es que siéntete seguro de descargarlo desde aquí, venga de donde venga.
+                            <span class="block mt-3 font-bold text-cyan-200 text-base border-l-4 border-cyan-400 pl-3 bg-cyan-900/20 p-2 rounded-r">
+                                No arriesgues tu equipo buscando por fuera; aquí ya hicimos el trabajo duro por ti.
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
 
-        <!-- Menú de Navegación -->
-        <nav id="nav-container" class="mb-8 p-4 bg-white rounded-xl shadow-sm border border-slate-200 sticky top-4 z-50">
+        <!-- Menú de Navegación (SIN STICKY) -->
+        <nav id="nav-container" class="mb-8 p-4 bg-white rounded-xl shadow-sm border border-slate-200 z-40 relative">
             <p class="text-slate-500 text-sm text-center">Cargando categorías...</p>
         </nav>
         
@@ -267,7 +279,19 @@
         </main>
     </div>
 
-    <!-- ===== NUEVO MODAL 'PUERTA DE ENLACE' (VIDEOS Y DESCARGA FINAL) ===== -->
+    <!-- BOTÓN FLOTANTE DE BUSCADOR IA (NUEVO) -->
+    <div class="fixed bottom-6 right-6 z-50 flex flex-col gap-2 items-end">
+        <!-- Texto de llamada (se mueve) -->
+        <div class="bg-white/90 backdrop-blur text-slate-800 text-xs font-bold py-1 px-2 rounded-lg shadow-md mb-1 animate-bounce">
+            ¿Buscas algo? 👇
+        </div>
+        <button id="open-ai-chat-btn" class="flex items-center justify-center gap-2 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-bold py-3 px-5 rounded-full shadow-2xl transform transition hover:scale-110 active:scale-95 border-2 border-white/50 backdrop-blur-sm">
+            <svg style="width: 24px; height: 24px;" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+            <span class="hidden sm:inline">Busca tu software aquí</span>
+        </button>
+    </div>
+
+    <!-- ===== MODALES ===== -->
     <div id="download-gate-modal" class="modal-overlay">
         <div class="modal-content">
             <button id="download-gate-modal-close" class="absolute top-4 right-4 text-slate-500 hover:text-slate-800 z-50 bg-white rounded-full p-1 shadow-sm"><svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg></button>
@@ -316,6 +340,15 @@
                 <textarea id="comment-input" class="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500" rows="3" placeholder="Escribe tu comentario..."></textarea>
                 <button id="submit-comment-btn" class="mt-3 w-full bg-blue-600 text-white font-semibold py-2.5 px-4 rounded-lg hover:bg-blue-700 transition-colors">Enviar Comentario</button>
             </div>
+        </div>
+    </div>
+    
+    <div id="download-guide-modal" class="modal-overlay">
+        <div class="modal-content max-w-lg">
+            <button id="download-guide-modal-close" class="absolute top-4 right-4 text-slate-500 hover:text-slate-800"><svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg></button>
+            <h2 class="ml-4 text-xl sm:text-2xl font-bold text-slate-900">GUÍA RÁPIDA (MÓVIL)</h2>
+            <p class="text-slate-700 text-base mb-5">Sigue los pasos en el video de arriba para poder saltar la publicidad.</p>
+            <button id="download-guide-continue-btn" class="mt-8 w-full bg-green-600 text-white font-bold py-3 px-4 rounded-lg hover:bg-green-700 transition-colors text-lg">¡Entendido!</button>
         </div>
     </div>
 
@@ -746,6 +779,7 @@
             if (!itemId) return;
             let item = allSoftware.find(i => i.id === itemId);
             if (!item) return;
+            
             let itemTab = item.platform || 'pc'; 
             if (activeTab !== itemTab) {
                 const tabToClick = (itemTab === 'pc') ? document.getElementById('tab-pc') : document.getElementById('tab-mobile');
@@ -779,6 +813,7 @@
             });
         }
 
+        // PROTECCIÓN: Botón de comentario
         const submitCommentBtn = document.getElementById('submit-comment-btn');
         if (submitCommentBtn) {
             submitCommentBtn.addEventListener('click', async () => {
@@ -1075,13 +1110,11 @@
             const topList = document.getElementById('top-downloads-list');
             if (!topList || allSoftware.length === 0) return;
             
-            // Sort by downloads desc, take top 14
             const top = [...allSoftware].sort((a,b) => (b.downloads||0) - (a.downloads||0)).slice(0, 14);
             
             topList.innerHTML = '';
             top.forEach((item, idx) => {
                 const el = document.createElement('div');
-                // Styling for vertical card in carousel
                 el.className = "min-w-[180px] w-[180px] sm:min-w-[200px] sm:w-[200px] bg-white p-3 rounded-xl border border-slate-200 shadow-sm hover:shadow-md cursor-pointer transition-all transform hover:-translate-y-1 snap-center flex flex-col relative";
                 
                 el.innerHTML = `
