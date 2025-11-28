@@ -65,15 +65,17 @@
         .hidden { display: none !important; }
         svg { width: 24px; height: 24px; max-width: 100%; display: inline-block; vertical-align: middle; }
         img { max-width: 100%; height: auto; display: block; }
-        .logo { width: 48px; height: 48px; display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, #38bdf8, #3b82f6); border-radius: 12px; color: white; font-weight: 800; font-size: 28px; transform: rotate(-15deg); }
+        /* LOGO GRANDE Y ELEGANTE */
+        .logo { width: 56px; height: 56px; display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, #38bdf8, #3b82f6); border-radius: 14px; color: white; font-weight: 800; font-size: 32px; transform: rotate(-15deg); box-shadow: 0 4px 6px -1px rgba(59, 130, 246, 0.5); }
+        
         .card-container { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1.5rem; }
         
         /* Modales */
-        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.7); display: flex; align-items: center; justify-content: center; z-index: 9999; opacity: 0; visibility: hidden; transition: opacity 0.3s ease, visibility 0.3s ease; }
+        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.85); display: flex; align-items: center; justify-content: center; z-index: 9999; opacity: 0; visibility: hidden; transition: opacity 0.3s ease, visibility 0.3s ease; backdrop-filter: blur(5px); }
         .modal-overlay.open { opacity: 1; visibility: visible; }
-        .modal-content { background: white; padding: 2rem; border-radius: 12px; max-width: 90%; width: 600px; position: relative; margin: 1rem; transform: scale(0.95); transition: transform 0.3s ease; max-height: 90vh; overflow-y: auto; }
+        .modal-content { background: white; padding: 0; border-radius: 16px; max-width: 900px; width: 95%; position: relative; margin: 1rem; transform: scale(0.95); transition: transform 0.3s ease; max-height: 90vh; overflow-y: auto; overflow-x: hidden; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25); }
         .modal-overlay.open .modal-content { transform: scale(1); }
-        .modal-video-container { position: relative; width: 100%; padding-bottom: 56.25%; height: 0; overflow: hidden; margin-top: 1rem; border-radius: 8px; background: #000; }
+        .modal-video-container { position: relative; width: 100%; padding-bottom: 56.25%; height: 0; overflow: hidden; border-radius: 12px; background: #000; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); }
         .modal-video-container iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none; }
         
         /* Navegación */
@@ -114,7 +116,7 @@
         .comment span { color: #94a3b8; font-size: 0.75rem; }
         .comment.admin-comment { background-color: #f0f9ff !important; border-color: #bae6fd; }
         
-        /* Ticker - MÁS LENTO Y LEGIBLE (80s) */
+        /* Ticker - LENTO Y LEGIBLE (80s) */
         .ticker-wrap { width: 100%; overflow: hidden; background-color: #1e293b; color: white; padding: 8px 0; font-size: 0.9rem; white-space: nowrap; box-sizing: border-box; }
         .ticker { display: inline-block; padding-left: 100%; animation: ticker 80s linear infinite; }
         @keyframes ticker { 0% { transform: translate3d(0, 0, 0); } 100% { transform: translate3d(-100%, 0, 0); } }
@@ -128,7 +130,7 @@
         details > summary { list-style: none; outline: none; cursor: pointer; }
         details > summary::-webkit-details-marker { display: none; }
         
-        /* Scroll Horizontal (Carrusel) */
+        /* Scroll Horizontal */
         .scroll-container {
             -ms-overflow-style: none;  /* IE and Edge */
             scrollbar-width: thin;  /* Firefox */
@@ -174,36 +176,47 @@
             </div>
         </div>
 
+        <!-- HEADER LIMPIO (SIN BOTÓN ROJO) -->
         <header class="mb-6">
             <div class="flex flex-col sm:flex-row items-center justify-between gap-6 pb-4 border-b border-slate-200">
-                <div class="flex flex-col sm:flex-row items-center gap-4 w-full sm:w-auto">
-                    <div class="flex items-center gap-4">
-                        <div class="logo">D</div>
-                        <h1 class="text-2xl sm:text-3xl font-bold text-slate-900">Descargar Ultima Version</h1>
-                    </div>
-                    <!-- ===== BOTÓN 'CÓMO DESCARGAR' (ROJO GIGANTE) ===== -->
-                    <button id="how-to-download-btn" class="flex items-center gap-4 text-white font-bold mt-2 sm:mt-0 px-6 py-4 bg-red-600 rounded-full transition-colors hover:bg-red-700 animate-pulse shadow-lg border-4 border-red-500 sm:text-lg">
-                        <!-- ÍCONO PLAY GIGANTE -->
-                        <svg style="width: 48px; height: 48px;" class="h-12 w-12 sm:h-16 sm:w-16 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clip-rule="evenodd"></path></svg>
-                        <span>¿Cómo descargar nuestros archivos? <br class="sm:hidden"><span class="text-sm sm:text-base font-normal opacity-90">(Ver video guía)</span></span>
-                    </button>
+                <div class="flex items-center gap-4 w-full sm:w-auto">
+                    <div class="logo">D</div>
+                    <h1 class="text-2xl sm:text-3xl font-bold text-slate-900">Descargar Ultima Version</h1>
                 </div>
                 <div class="relative w-full sm:max-w-md">
-                    <button id="open-ai-chat-btn" class="w-full flex items-center justify-center gap-3 px-4 py-2.5 border border-transparent rounded-lg bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-semibold shadow-lg hover:from-blue-700 hover:to-indigo-700 focus:outline-none focus:ring-4 focus:ring-blue-400 transition-all duration-300 ease-out transform hover:scale-105 text-sm border-2 border-blue-100">
-                        <svg style="width: 28px; height: 28px; stroke-width: 2.5;" class="h-7 w-7 flex-shrink-0 text-blue-200 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+                    <button id="open-ai-chat-btn" class="w-full flex items-center justify-center gap-3 px-4 py-3 border border-transparent rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-semibold shadow-lg hover:from-blue-700 hover:to-indigo-700 focus:outline-none focus:ring-4 focus:ring-blue-400 transition-all duration-300 ease-out transform hover:scale-105 text-base border-2 border-blue-100">
+                        <!-- LUPA MÁS GRANDE (w-8 h-8) -->
+                        <svg style="width: 32px; height: 32px; stroke-width: 2.5;" class="h-8 w-8 flex-shrink-0 text-blue-200 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
                         Busca tu software o APK aquí
                     </button>
                 </div>
             </div>
         </header>
         
-        <div class="mt-4 mb-6 bg-white/60 dark:bg-slate-800/60 backdrop-blur-sm p-4 rounded-2xl shadow-sm border border-slate-200 dark:border-slate-700">
-          <p class="text-slate-800 dark:text-slate-100 text-base leading-relaxed text-center">
-            👋 <strong>Bienvenido a Descargar Última Versión</strong><br>
-            Aquí reunimos las <strong>apps y juegos que realmente funcionan</strong>. 
-            Cada archivo ha sido <strong>probado, verificado y elegido a mano</strong> para ahorrarte tiempo, frustraciones y enlaces rotos. 
-            Solo publicamos lo que <strong>pasa por nuestros filtros de seguridad y rendimiento</strong>, así puedes descargar con total confianza. 🚀
-          </p>
+        <!-- BIENVENIDA PERSUASIVA Y MODERNA (ZONA DESTACADA SLATE-100) -->
+        <div class="mt-4 mb-6 bg-slate-100 backdrop-blur-md p-6 rounded-2xl shadow-lg border border-slate-300 relative overflow-hidden group">
+          <!-- Decoración de fondo -->
+          <div class="absolute top-0 left-0 w-1 h-full bg-gradient-to-b from-blue-600 to-purple-700"></div>
+          
+          <div class="flex items-start gap-5 relative z-10">
+              <div class="text-4xl bg-white p-3 rounded-xl shadow-sm flex-shrink-0 border border-slate-200">🛡️</div>
+              <div>
+                  <h2 class="text-xl font-bold text-slate-900 mb-3 tracking-tight">Pagina de Descargas Segura</h2>
+                  <p class="text-slate-700 text-base sm:text-lg font-medium leading-relaxed">
+                    Internet es una jungla llena de virus y enlaces rotos. <span class="text-blue-700 font-bold">Nosotros somos tu filtro.</span>
+                    Nuestro equipo rastrea, encuentra y verifica manualmente los mejores archivos de la red para traértelos limpios y seguros.
+                  </p>
+                  
+                  <div class="mt-4 bg-white p-4 rounded-xl border border-slate-200 flex gap-3 items-start shadow-sm">
+                    <span class="text-xl">💡</span>
+                    <p class="text-slate-600 text-sm leading-snug">
+                        <strong>OJO:</strong> Estos son archivos de otras paginas, al tratar de traer una de ellas aquí si este pesenta algún tipo de virus o algo parecido <strong>es eliminado instantaneamente.</strong> 
+                        Asi es que siéntete seguro de descargarlo desde aquí venga de  donde venga. 
+                        <span class="block mt-2 font-semibold text-blue-800">No arriesgues tu equipo buscando por fuera; aquí ya hicimos el trabajo duro por ti.</span>
+                    </p>
+                  </div>
+              </div>
+          </div>
         </div>
 
         <!-- Menú de Navegación -->
@@ -254,14 +267,33 @@
         </main>
     </div>
 
-    <!-- ===== MODALES ===== -->
-    <div id="how-to-download-modal" class="modal-overlay">
+    <!-- ===== NUEVO MODAL 'PUERTA DE ENLACE' (VIDEOS Y DESCARGA FINAL) ===== -->
+    <div id="download-gate-modal" class="modal-overlay">
         <div class="modal-content">
-            <button id="how-to-download-modal-close" class="absolute top-4 right-4 text-slate-500 hover:text-slate-800"><svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg></button>
-            <h2 class="text-xl font-bold text-slate-900 mb-2">¡Importante antes de descargar!</h2>
-            <p class="text-slate-700">Yo te brindo gratis la descarga, pero colabórame con unos clics.</p>
-            <div class="modal-video-container">
-                <iframe id="video-iframe" src="" frameborder="0" allowfullscreen></iframe>
+            <button id="download-gate-modal-close" class="absolute top-4 right-4 text-slate-500 hover:text-slate-800 z-50 bg-white rounded-full p-1 shadow-sm"><svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg></button>
+            
+            <div class="flex flex-col md:flex-row h-full">
+                <!-- LADO IZQUIERDO: VIDEO -->
+                <div class="w-full md:w-2/3 bg-black relative">
+                     <div class="modal-video-container h-full rounded-none md:rounded-l-xl">
+                        <iframe id="gate-video-iframe" src="" frameborder="0" allowfullscreen class="w-full h-full absolute inset-0"></iframe>
+                    </div>
+                </div>
+
+                <!-- LADO DERECHO: ACCIÓN -->
+                <div class="w-full md:w-1/3 p-6 flex flex-col justify-center items-center bg-gradient-to-br from-white to-slate-50">
+                    <h2 class="text-2xl font-extrabold text-slate-900 mb-2 text-center leading-tight">¿Cómo descargar? 🧐</h2>
+                    <p class="text-slate-600 text-sm text-center mb-6">Mira el video de la izquierda (o arriba) para aprender a saltar la publicidad en 1 minuto y evitar virus.</p>
+                    
+                    <div class="bg-yellow-50 border border-yellow-200 rounded-lg p-3 mb-6 w-full">
+                        <p class="text-xs text-yellow-800 font-medium text-center">⚠️ ¡Importante! Sigue los pasos del video para llegar al archivo final.</p>
+                    </div>
+
+                    <button id="proceed-download-btn" class="w-full bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white font-bold py-4 px-6 rounded-xl shadow-lg transform transition hover:scale-105 active:scale-95 text-lg flex items-center justify-center gap-2 animate-pulse">
+                        <span>¡Ya vi el video, DAME EL ARCHIVO!</span>
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
+                    </button>
+                </div>
             </div>
         </div>
     </div>
@@ -284,15 +316,6 @@
                 <textarea id="comment-input" class="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500" rows="3" placeholder="Escribe tu comentario..."></textarea>
                 <button id="submit-comment-btn" class="mt-3 w-full bg-blue-600 text-white font-semibold py-2.5 px-4 rounded-lg hover:bg-blue-700 transition-colors">Enviar Comentario</button>
             </div>
-        </div>
-    </div>
-    
-    <div id="download-guide-modal" class="modal-overlay">
-        <div class="modal-content max-w-lg">
-            <button id="download-guide-modal-close" class="absolute top-4 right-4 text-slate-500 hover:text-slate-800"><svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg></button>
-            <h2 class="ml-4 text-xl sm:text-2xl font-bold text-slate-900">GUÍA RÁPIDA (MÓVIL)</h2>
-            <p class="text-slate-700 text-base mb-5">Sigue los pasos en el video de arriba para poder saltar la publicidad.</p>
-            <button id="download-guide-continue-btn" class="mt-8 w-full bg-green-600 text-white font-bold py-3 px-4 rounded-lg hover:bg-green-700 transition-colors text-lg">¡Entendido!</button>
         </div>
     </div>
 
@@ -329,11 +352,14 @@
                 <div id="ai-chat-error" class="hidden text-sm text-red-600 bg-red-100 p-3 rounded-lg mb-3"></div>
                 <form id="ai-chat-form" class="flex items-center gap-3">
                     <input type="text" id="ai-chat-input" placeholder="Escribe..." class="flex-grow p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500" autocomplete="off">
-                    <button type="button" id="ai-chat-mic" class="p-3 bg-slate-200 text-slate-700 rounded-lg hover:bg-slate-300 transition-colors">
+                    
+                    <!-- BOTÓN DE MICRÓFONO MEJORADO PARA MÓVIL -->
+                    <button type="button" id="ai-chat-mic" class="p-3 bg-slate-200 text-slate-700 rounded-lg hover:bg-slate-300 transition-colors flex items-center justify-center min-w-[44px] min-h-[44px]">
                          <svg id="mic-icon" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z"></path></svg>
                          <svg id="mic-listening" class="h-6 w-6 text-red-500 hidden animate-pulse" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="10"></circle></svg>
                     </button>
-                    <button type="submit" id="ai-chat-submit" class="p-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700">
+
+                    <button type="submit" id="ai-chat-submit" class="p-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 flex items-center justify-center min-w-[44px] min-h-[44px]">
                         <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 10l7-7m0 0l7 7m-7-7v18"></path></svg>
                     </button>
                 </form>
@@ -425,7 +451,6 @@
         let currentSearchTerm = '';
         let userLikes = JSON.parse(localStorage.getItem('userLikes') || '{}');
         let userVotes = JSON.parse(localStorage.getItem('userVotes') || '{}');
-        let recognition = null;
         let radarInterval = null;
         let configUnsubscribe = null;
         let softwareUnsubscribe = null;
@@ -491,39 +516,55 @@
         });
 
         // Manejo de Video en Modal (AUTOMÁTICO Y BLINDADO)
-        const modalMap = { 'how-to-download-btn': 'how-to-download-modal', 'yape-modal-open': 'yape-modal', 'open-ai-chat-btn': 'ai-chat-modal' };
+        const modalMap = { 'yape-modal-open': 'yape-modal', 'open-ai-chat-btn': 'ai-chat-modal' };
         Object.keys(modalMap).forEach(id => { 
             const btn = document.getElementById(id); 
             if(btn) btn.addEventListener('click', () => {
                 openModal(modalMap[id]);
-                // LÓGICA DE VIDEO
-                if(id === 'how-to-download-btn') {
-                    const iframe = document.querySelector('#how-to-download-modal iframe');
-                    const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-                    // Video Celular vs Video PC
-                    const videoId = isMobile ? "90ZzYKrxS6U" : "Zs-1k7F0_vE";
-                    if(iframe) iframe.src = `https://www.youtube.com/embed/${videoId}?autoplay=1&controls=1&showinfo=0&rel=0`;
-                }
             }); 
         });
 
-        ['how-to-download-modal', 'yape-modal', 'comments-modal', 'download-guide-modal', 'ai-chat-modal'].forEach(id => {
-            const m = document.getElementById(id); const c = document.getElementById(id+'-close');
+        // MANEJO DEL NUEVO "GATE MODAL" (PUERTA DE ENLACE)
+        function openGateModal(downloadLink) {
+            currentDownloadLink = downloadLink; // Guardar link para el botón final
+            const modal = document.getElementById('download-gate-modal');
+            const iframe = document.getElementById('gate-video-iframe');
+            
+            // Detección Móvil vs PC
+            const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+            const videoId = isMobile ? "90ZzYKrxS6U" : "Zs-1k7F0_vE";
+            
+            if(iframe) iframe.src = `https://www.youtube.com/embed/${videoId}?autoplay=1&controls=1&showinfo=0&rel=0`;
+            
+            if(modal) modal.classList.add('open');
+        }
+
+        // Listeners de Cierre
+        ['how-to-download-modal', 'yape-modal', 'comments-modal', 'download-guide-modal', 'ai-chat-modal', 'download-gate-modal'].forEach(id => {
+            const m = document.getElementById(id); 
+            const c = document.getElementById(id+'-close');
             if(c) c.addEventListener('click', () => closeModal(id));
             if(m) m.addEventListener('click', (e) => { if(e.target === m) closeModal(id); });
         });
         
-        // Detener video al cerrar
+        // Detener videos al cerrar
         function closeModal(id) {
             const el = document.getElementById(id);
             if(el) el.classList.remove('open');
-            if(id === 'how-to-download-modal') {
-                const iframe = document.querySelector('#how-to-download-modal iframe');
+            if(id === 'download-gate-modal') {
+                const iframe = document.getElementById('gate-video-iframe');
                 if(iframe) iframe.src = ""; // Stop video
             }
             if(id === 'comments-modal' && window.commentsUnsubscribe) { window.commentsUnsubscribe(); window.commentsUnsubscribe = null; }
             if(id === 'ai-chat-modal') window.speechSynthesis.cancel();
         }
+
+        // BOTÓN FINAL "DAME EL ARCHIVO"
+        const proceedBtn = document.getElementById('proceed-download-btn');
+        if(proceedBtn) proceedBtn.addEventListener('click', () => {
+            closeModal('download-gate-modal');
+            if(currentDownloadLink) { window.open(currentDownloadLink, '_blank'); currentDownloadLink = null; }
+        });
 
         const guideBtn = document.getElementById('download-guide-continue-btn');
         if(guideBtn) guideBtn.addEventListener('click', () => {
@@ -652,11 +693,12 @@
             const id = e.currentTarget.dataset.id;
             const link = e.currentTarget.dataset.link;
             if (!link || link === '#' || link === 'undefined') { alert("Enlace no disponible."); return; }
-            currentDownloadLink = link;
+            
+            // UPDATE: En lugar de ir directo, abrimos el "Gate Modal"
             const itemRef = doc(db, `artifacts/${appId}/public/data/software-items`, id);
             updateDoc(itemRef, { downloads: increment(1) }).catch(console.error);
-            if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) openModal('download-guide-modal');
-            else window.open(link, '_blank');
+            
+            openGateModal(link);
         }
 
         async function handleLikeAction(e) {
@@ -698,22 +740,17 @@
             else navigator.clipboard.writeText(url).then(() => alert("Copiado!"));
         }
         
-        // --- DEEP LINKING LOGIC (MOVIDO AQUÍ) ---
         function handleTopDownloadClick(e, cardId) {
              if (e) e.preventDefault();
             const itemId = cardId || (e ? e.currentTarget.dataset.itemId : null);
             if (!itemId) return;
             let item = allSoftware.find(i => i.id === itemId);
             if (!item) return;
-            
-            // 1. Detectar y Cambiar Pestaña
             let itemTab = item.platform || 'pc'; 
             if (activeTab !== itemTab) {
                 const tabToClick = (itemTab === 'pc') ? document.getElementById('tab-pc') : document.getElementById('tab-mobile');
                 if (tabToClick) tabToClick.click();
             }
-            
-            // 2. Esperar renderizado y Scroll suave con Iluminación
             setTimeout(() => {
                 const cardElement = document.getElementById(`card-${item.id}`);
                 if (cardElement) {
@@ -742,7 +779,6 @@
             });
         }
 
-        // PROTECCIÓN: Botón de comentario
         const submitCommentBtn = document.getElementById('submit-comment-btn');
         if (submitCommentBtn) {
             submitCommentBtn.addEventListener('click', async () => {
@@ -757,33 +793,56 @@
             });
         }
 
-        // --- CHAT IA (AUDIO & VOZ) ---
+        // --- CHAT IA (AUDIO & VOZ MEJORADO PARA MÓVIL) ---
         const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+        let recognition = null;
+        
         if (SpeechRecognition) {
             recognition = new SpeechRecognition();
             recognition.lang = 'es-ES';
+            recognition.continuous = false; 
+            recognition.interimResults = false;
+
             recognition.onresult = (e) => {
                 const text = e.results[0][0].transcript;
                 document.getElementById('ai-chat-input').value = text;
-                document.getElementById('mic-listening').classList.add('hidden');
-                document.getElementById('mic-icon').classList.remove('hidden');
+                stopListeningUI();
             };
+            
+            recognition.onerror = (e) => {
+                console.error("Error voz:", e.error);
+                stopListeningUI();
+                if (e.error === 'not-allowed') {
+                    alert("⚠️ Por favor permite el acceso al micrófono para usar la voz.");
+                }
+            };
+
             recognition.onend = () => {
-                document.getElementById('mic-listening').classList.add('hidden');
-                document.getElementById('mic-icon').classList.remove('hidden');
+                stopListeningUI();
             };
         } else {
             const micBtn = document.getElementById('ai-chat-mic');
             if(micBtn) micBtn.style.display = 'none';
         }
 
-        const micBtn = document.getElementById('ai-chat-mic');
-        if(micBtn) micBtn.addEventListener('click', () => {
-            if (!recognition) { alert("Tu navegador no soporta voz."); return; }
-            try { recognition.start(); document.getElementById('mic-icon').classList.add('hidden'); document.getElementById('mic-listening').classList.remove('hidden'); } catch (e) { console.error(e); }
-        });
+        // Función UI Helper
+        function stopListeningUI() {
+            document.getElementById('mic-listening').classList.add('hidden');
+            document.getElementById('mic-icon').classList.remove('hidden');
+        }
 
-        // PROTECCIÓN: Botón de parlante
+        const micBtn = document.getElementById('ai-chat-mic');
+        if(micBtn) {
+            micBtn.addEventListener('click', () => {
+                if (!recognition) { alert("Tu navegador no soporta voz."); return; }
+                try { 
+                    document.getElementById('mic-icon').classList.add('hidden'); 
+                    document.getElementById('mic-listening').classList.remove('hidden');
+                    recognition.start(); 
+                } catch (e) { console.error(e); stopListeningUI(); }
+            });
+        }
+
         const speakerToggle = document.getElementById('ai-speaker-toggle');
         if(speakerToggle) {
             speakerToggle.addEventListener('click', () => {
@@ -801,7 +860,6 @@
             window.speechSynthesis.speak(utterance);
         }
 
-        // PROTECCIÓN: Formulario de chat
         const aiChatForm = document.getElementById('ai-chat-form');
         if(aiChatForm) {
             aiChatForm.addEventListener('submit', async (e) => {
@@ -876,17 +934,14 @@
             db = getFirestore(app);
             auth = getAuth(app);
             
-            // --- AUTH SIMPLE DIRECTO ---
             const initAuth = async () => {
                 try {
-                    // Intentar primero con token si existe (para entornos preview)
                     if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
                         await signInWithCustomToken(auth, __initial_auth_token);
                     } else {
                         throw new Error("No token");
                     }
                 } catch (e) {
-                    // Si falla CUALQUIER COSA, usar anónimo (Red de Seguridad)
                     console.log("Usando acceso anónimo de respaldo...");
                     await signInAnonymously(auth);
                 }
@@ -896,7 +951,7 @@
             onAuthStateChanged(auth, (user) => {
                 if (user) {
                     // TICKER
-                    onSnapshot(query(collection(db, `artifacts/${appId}/public/data/software-items`), orderBy("createdAt", "desc"), limit(14)), (snapshot) => {
+                    onSnapshot(query(collection(db, `artifacts/${appId}/public/data/software-items`), orderBy("createdAt", "desc"), limit(5)), (snapshot) => {
                         const ticker = document.getElementById('news-ticker-content');
                         if (ticker) {
                             let html = '';
@@ -965,17 +1020,14 @@
                                 navContainer.innerHTML = html;
                             }
                             
-                            // LOAD TOP DOWNLOADS (CAROUSEL TOP 14)
                             loadTopDownloads();
                             updateView();
                             
                             // --- DEEP LINKING: AUTO-ENFOQUE AL CARGAR ---
-                            // Detecta si alguien compartió un link específico
                             if (isFirstLoad) {
                                 const urlParams = new URLSearchParams(window.location.search);
                                 const sharedItem = urlParams.get('item');
                                 if (sharedItem) {
-                                    // Esperamos un momento a que todo cargue para hacer el scroll
                                     setTimeout(() => {
                                         handleTopDownloadClick(null, sharedItem);
                                         isFirstLoad = false;
