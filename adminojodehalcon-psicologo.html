@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin - Ojo de Halcón 🦅</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; background-color: #0f172a; color: #e2e8f0; }
+        .mono { font-family: 'JetBrains Mono', monospace; }
+        
+        /* Animación de escaneo para el radar */
+        @keyframes scan {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        .radar-scan {
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: conic-gradient(from 0deg, transparent 0deg, rgba(16, 185, 129, 0.1) 60deg, transparent 60deg);
+            border-radius: 50%;
+            animation: scan 4s linear infinite;
+        }
+        
+        /* Scrollbars oscuras */
+        ::-webkit-scrollbar { width: 8px; height: 8px; }
+        ::-webkit-scrollbar-track { background: #1e293b; }
+        ::-webkit-scrollbar-thumb { background: #475569; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #64748b; }
+
+        .log-row:hover { background-color: #1e293b; }
+        
+        /* Badges */
+        .badge { padding: 2px 8px; border-radius: 4px; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; }
+        .badge-descarga { background: #064e3b; color: #34d399; border: 1px solid #059669; }
+        .badge-busqueda { background: #431407; color: #fb923c; border: 1px solid #ea580c; }
+        .badge-like { background: #450a0a; color: #fca5a5; border: 1px solid #dc2626; }
+        .badge-visita { background: #1e1b4b; color: #818cf8; border: 1px solid #4f46e5; }
+        .badge-nav { background: #171717; color: #a3a3a3; border: 1px solid #404040; }
+        .badge-comentario { background: #172554; color: #60a5fa; border: 1px solid #2563eb; }
+    </style>
+</head>
+<body class="flex flex-col h-screen overflow-hidden">
+
+    <!-- LOGIN SCREEN (Overlay) -->
+    <div id="login-screen" class="fixed inset-0 z-50 flex flex-col items-center justify-center bg-slate-900">
+        <div class="text-center mb-8">
+            <div class="text-6xl mb-4">🦅</div>
+            <h1 class="text-3xl font-bold text-white tracking-tight">OJO DE HALCÓN</h1>
+            <p class="text-slate-400">Acceso Restringido - Solo Administrador</p>
+        </div>
+        <button id="login-btn" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-8 rounded-full shadow-lg transition-all transform hover:scale-105 flex items-center gap-3">
+            <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M12.545,10.239v3.821h5.445c-0.712,2.315-2.647,3.972-5.445,3.972c-3.332,0-6.033-2.701-6.033-6.032s2.701-6.032,6.033-6.032c1.498,0,2.866,0.549,3.921,1.453l2.814-2.814C17.503,2.988,15.139,2,12.545,2C7.021,2,2.543,6.477,2.543,12s4.478,10,10.002,10c8.396,0,10.249-7.85,9.426-11.748L12.545,10.239z"/></svg>
+            Iniciar Sesión con Google
+        </button>
+        <p id="auth-status" class="mt-4 text-red-400 font-mono text-sm hidden"></p>
+    </div>
+
+    <!-- DASHBOARD (Hidden by default) -->
+    <div id="dashboard" class="flex flex-col h-full hidden opacity-0 transition-opacity duration-1000">
+        
+        <!-- Header -->
+        <header class="bg-slate-800 border-b border-slate-700 p-4 flex justify-between items-center shadow-md z-10">
+            <div class="flex items-center gap-3">
+                <div class="bg-blue-600 p-2 rounded-lg"><span class="text-2xl">🦅</span></div>
+                <div>
+                    <h1 class="text-xl font-bold text-white leading-none">CENTRO DE COMANDO</h1>
+                    <span class="text-xs text-emerald-400 font-mono flex items-center gap-1">
+                        <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span> SISTEMA EN LÍNEA
+                    </span>
+                </div>
+            </div>
+            <div class="flex items-center gap-4">
+                <div class="text-right hidden sm:block">
+                    <p class="text-xs text-slate-400">Usuario Admin</p>
+                    <p class="text-sm font-bold text-white" id="admin-name">Cargando...</p>
+                </div>
+                <button id="logout-btn" class="text-xs bg-slate-700 hover:bg-slate-600 px-3 py-1 rounded text-slate-300">Salir</button>
+            </div>
+        </header>
+
+        <!-- Main Content Grid -->
+        <div class="flex-grow p-4 overflow-hidden">
+            <div class="grid grid-cols-1 lg:grid-cols-4 gap-4 h-full">
+                
+                <!-- COLUMNA 1: ESTADÍSTICAS Y RADAR -->
+                <div class="lg:col-span-1 flex flex-col gap-4 overflow-y-auto pr-1">
+                    <!-- Radar Widget -->
+                    <div class="bg-slate-800 rounded-xl border border-slate-700 p-4 shadow-lg relative overflow-hidden">
+                        <h2 class="text-sm font-bold text-slate-400 uppercase mb-4 tracking-wider">Tráfico en Tiempo Real</h2>
+                        <div class="flex flex-col items-center justify-center py-4">
+                            <div class="w-32 h-32 rounded-full border-2 border-slate-600 relative flex items-center justify-center bg-slate-900">
+                                <div class="radar-scan"></div>
+                                <div class="absolute inset-0 grid grid-cols-2 grid-rows-2">
+                                    <div class="border-r border-b border-slate-700/50"></div>
+                                    <div class="border-b border-slate-700/50"></div>
+                                    <div class="border-r border-slate-700/50"></div>
+                                    <div></div>
+                                </div>
+                                <!-- Blips (Usuarios) -->
+                                <div id="radar-blips"></div>
+                                <span class="text-3xl font-bold text-white z-10 relative drop-shadow-md" id="active-users-count">0</span>
+                            </div>
+                            <p class="mt-3 text-xs text-slate-500">Usuarios activos (último minuto)</p>
+                        </div>
+                        <div class="grid grid-cols-2 gap-2 mt-2">
+                            <div class="bg-slate-700/50 rounded p-2 text-center">
+                                <span class="text-xs text-slate-400 block">Móvil</span>
+                                <span class="font-bold text-blue-400" id="mobile-count">0</span>
+                            </div>
+                            <div class="bg-slate-700/50 rounded p-2 text-center">
+                                <span class="text-xs text-slate-400 block">PC</span>
+                                <span class="font-bold text-green-400" id="pc-count">0</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Requests Widget -->
+                    <div class="bg-slate-800 rounded-xl border border-slate-700 p-4 shadow-lg flex-grow flex flex-col min-h-[300px]">
+                        <div class="flex justify-between items-center mb-2">
+                            <h2 class="text-sm font-bold text-slate-400 uppercase tracking-wider">Pedidos Pendientes</h2>
+                            <span class="bg-slate-700 text-xs px-2 py-0.5 rounded-full" id="requests-count">0</span>
+                        </div>
+                        <div class="flex-grow overflow-y-auto space-y-2 pr-1" id="requests-list">
+                            <p class="text-xs text-slate-500 text-center py-4">Cargando pedidos...</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- COLUMNA 2 Y 3: EL GRAN LOG (OJO DE HALCÓN) -->
+                <div class="lg:col-span-3 bg-slate-800 rounded-xl border border-slate-700 shadow-lg flex flex-col overflow-hidden">
+                    <div class="p-4 border-b border-slate-700 bg-slate-800/50 flex justify-between items-center">
+                        <h2 class="text-lg font-bold text-white flex items-center gap-2">
+                            <span class="w-2 h-2 rounded-full bg-red-500 animate-ping"></span>
+                            Registro de Actividad Global
+                        </h2>
+                        <div class="flex gap-2">
+                            <span class="text-xs text-slate-400 self-center hidden sm:inline">Filtrar:</span>
+                            <button class="filter-btn text-xs px-3 py-1 rounded-full bg-slate-700 text-slate-300 hover:bg-slate-600 transition active" data-filter="all">Todo</button>
+                            <button class="filter-btn text-xs px-3 py-1 rounded-full bg-slate-900 text-orange-400 border border-orange-900/50 hover:bg-slate-700 transition" data-filter="Búsqueda IA">🔍 IA</button>
+                            <button class="filter-btn text-xs px-3 py-1 rounded-full bg-slate-900 text-emerald-400 border border-emerald-900/50 hover:bg-slate-700 transition" data-filter="Descarga">⬇️ Down</button>
+                        </div>
+                    </div>
+                    
+                    <!-- Header Tabla -->
+                    <div class="grid grid-cols-12 bg-slate-900/50 text-slate-400 text-xs font-bold p-3 border-b border-slate-700 uppercase tracking-wide">
+                        <div class="col-span-2">Hora</div>
+                        <div class="col-span-2">Tipo</div>
+                        <div class="col-span-3">Item / Contexto</div>
+                        <div class="col-span-3">Detalle / Input</div>
+                        <div class="col-span-2 text-right">Usuario</div>
+                    </div>
+
+                    <!-- Cuerpo Tabla (Scrollable) -->
+                    <div class="flex-grow overflow-y-auto" id="activity-log-container">
+                        <div id="activity-list" class="divide-y divide-slate-700/50">
+                            <p class="text-center text-slate-500 py-10 font-mono text-sm">Esperando transmisión de datos...</p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getAuth, signInWithPopup, GoogleAuthProvider, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getFirestore, collection, query, orderBy, limit, onSnapshot, where, doc, deleteDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+        // --- CONFIGURACIÓN ---
+        // Usamos la misma config que el index.html para conectar a la misma DB
+        const envConfig = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : null;
+        const envAppId = typeof __app_id !== 'undefined' ? __app_id : null;
+
+        const userConfig = {
+          apiKey: "AIzaSyCPB82qY7h3YGvk_cClAw5so0DFgiePzNM",
+          authDomain: "descargar-ultima-version.firebaseapp.com",
+          projectId: "descargar-ultima-version",
+          storageBucket: "descargar-ultima-version.firebasestorage.app",
+          messagingSenderId: "1028999431387",
+          appId: "1:1028999431387:web:3f6799e9adfca72d3078fe",
+          measurementId: "G-BZRK62Y3S5"
+        };
+
+        const firebaseConfig = envConfig || userConfig;
+        const appId = envAppId || "descargar-ultima-version"; 
+        const ADMIN_ID = "lQ5NWvUJqNXg7KpPQSvqmoB3TU12";
+
+        // --- INIT FIREBASE ---
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+
+        // --- UI ELEMENTS ---
+        const loginScreen = document.getElementById('login-screen');
+        const dashboard = document.getElementById('dashboard');
+        const loginBtn = document.getElementById('login-btn');
+        const authStatus = document.getElementById('auth-status');
+        const activityList = document.getElementById('activity-list');
+        const activeUsersCount = document.getElementById('active-users-count');
+        const mobileCount = document.getElementById('mobile-count');
+        const pcCount = document.getElementById('pc-count');
+        const radarBlips = document.getElementById('radar-blips');
+        const requestsList = document.getElementById('requests-list');
+        const requestsCounter = document.getElementById('requests-count');
+        
+        let currentFilter = 'all';
+        let logsUnsubscribe = null;
+
+        // --- AUTH LOGIC ---
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                if (user.uid === ADMIN_ID) {
+                    // Acceso concedido
+                    loginScreen.classList.add('hidden');
+                    dashboard.classList.remove('hidden');
+                    // Pequeño delay para la transición
+                    setTimeout(() => dashboard.classList.remove('opacity-0'), 100);
+                    
+                    document.getElementById('admin-name').textContent = user.displayName || user.email;
+                    initDashboard();
+                } else {
+                    // No es admin
+                    authStatus.textContent = "ACCESO DENEGADO: Este usuario no tiene permisos de administrador.";
+                    authStatus.classList.remove('hidden');
+                    signOut(auth);
+                }
+            } else {
+                // No logueado
+                dashboard.classList.add('hidden', 'opacity-0');
+                loginScreen.classList.remove('hidden');
+            }
+        });
+
+        loginBtn.addEventListener('click', async () => {
+            try {
+                await signInWithPopup(auth, new GoogleAuthProvider());
+            } catch (error) {
+                console.error(error);
+                authStatus.textContent = "Error al iniciar sesión: " + error.message;
+                authStatus.classList.remove('hidden');
+            }
+        });
+
+        document.getElementById('logout-btn').addEventListener('click', () => signOut(auth));
+
+        // --- DASHBOARD LOGIC ---
+
+        function initDashboard() {
+            setupActivityLog();
+            setupPresenceRadar();
+            setupRequestsBoard();
+        }
+
+        // 1. OJO DE HALCÓN (LOGS)
+        function setupActivityLog() {
+            // Filtros
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    document.querySelectorAll('.filter-btn').forEach(b => {
+                        b.classList.remove('active', 'bg-slate-600', 'text-white');
+                        if (!b.classList.contains('bg-slate-900')) b.classList.add('bg-slate-700', 'text-slate-300'); // Reset style
+                    });
+                    
+                    e.target.classList.add('active', 'bg-slate-600', 'text-white');
+                    currentFilter = e.target.dataset.filter;
+                    subscribeToLogs(); // Re-suscribir con filtro (o filtrar en cliente si son pocos datos)
+                });
+            });
+
+            subscribeToLogs();
+        }
+
+        function subscribeToLogs() {
+            if (logsUnsubscribe) logsUnsubscribe();
+
+            // Consulta base: últimos 100 eventos
+            let q = query(collection(db, `artifacts/${appId}/public/data/activity-logs`), orderBy('timestamp', 'desc'), limit(100));
+            
+            // Nota: Firestore requiere índices compuestos para 'where' + 'orderBy'. 
+            // Para evitar errores en este entorno sin consola de índices, filtraremos en memoria (cliente)
+            // ya que 100 registros es poco y es más seguro para la demo.
+            
+            logsUnsubscribe = onSnapshot(q, (snapshot) => {
+                const changes = snapshot.docChanges();
+                if(snapshot.empty) {
+                    activityList.innerHTML = '<p class="text-center text-slate-500 py-10 font-mono text-sm">Sin registros.</p>';
+                    return;
+                }
+
+                // Render completo para simplificar ordenamiento en memoria si filtramos
+                const docs = snapshot.docs.map(d => ({id: d.id, ...d.data()}));
+                
+                // Filtrado en Cliente
+                const filtered = currentFilter === 'all' ? docs : docs.filter(d => d.type === currentFilter);
+
+                activityList.innerHTML = '';
+                
+                filtered.forEach(d => {
+                    const dateObj = d.timestamp ? d.timestamp.toDate() : new Date();
+                    const time = dateObj.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+                    
+                    let badgeClass = 'badge-nav';
+                    if (d.type === 'Descarga') badgeClass = 'badge-descarga';
+                    if (d.type === 'Búsqueda IA') badgeClass = 'badge-busqueda';
+                    if (d.type === 'Like') badgeClass = 'badge-like';
+                    if (d.type === 'Visita') badgeClass = 'badge-visita';
+                    if (d.type === 'Comentario') badgeClass = 'badge-comentario';
+
+                    const row = document.createElement('div');
+                    row.className = 'grid grid-cols-12 gap-2 p-3 text-sm log-row border-b border-slate-800 animate-pulse-once'; // animate-pulse-once para efecto de entrada
+                    row.innerHTML = `
+                        <div class="col-span-2 font-mono text-slate-500 text-xs self-center">${time}</div>
+                        <div class="col-span-2 self-center"><span class="badge ${badgeClass}">${d.type}</span></div>
+                        <div class="col-span-3 font-semibold text-slate-200 truncate self-center" title="${d.item}">${d.item || '-'}</div>
+                        <div class="col-span-3 text-slate-400 text-xs truncate self-center font-mono" title="${d.detail}">${d.detail || ''}</div>
+                        <div class="col-span-2 text-right text-xs text-slate-600 truncate self-center">${d.uid ? d.uid.substring(0, 8) : 'Anon'}...</div>
+                    `;
+                    activityList.appendChild(row);
+                });
+            });
+        }
+
+        // 2. RADAR DE PRESENCIA (Usuarios Online)
+        function setupPresenceRadar() {
+            // Escuchar cambios en la colección 'presence'
+            // Nota: En una app real, usaríamos Cloud Functions para limpiar usuarios inactivos.
+            // Aquí mostraremos los que se hayan actualizado en los últimos 5 minutos.
+            
+            const fiveMinutesAgo = new Date(Date.now() - 5 * 60 * 1000);
+            
+            // Para simplificar y evitar errores de query compleja, traemos todo 'presence' y filtramos fecha en JS
+            // (Asumiendo que no hay millones de usuarios concurrentes en esta demo)
+            const q = collection(db, `artifacts/${appId}/public/data/presence`);
+            
+            onSnapshot(q, (snapshot) => {
+                const now = Date.now();
+                let active = 0;
+                let mobile = 0;
+                let pc = 0;
+                
+                radarBlips.innerHTML = ''; // Limpiar blips antiguos
+
+                snapshot.forEach(doc => {
+                    const data = doc.data();
+                    if (data.timestamp) {
+                        const lastSeen = data.timestamp.toDate().getTime();
+                        // Consideramos activo si se movió en los últimos 2 minutos (para que sea muy real time)
+                        if (now - lastSeen < 2 * 60 * 1000) {
+                            active++;
+                            if (data.platform === 'mobile') mobile++; else pc++;
+                            
+                            // Crear un "blip" visual en el radar
+                            const blip = document.createElement('div');
+                            blip.className = 'absolute w-2 h-2 rounded-full bg-green-400 shadow-[0_0_5px_#4ade80]';
+                            // Posición aleatoria dentro del círculo para efecto visual
+                            const angle = Math.random() * 360;
+                            const distance = Math.random() * 40; // radio aprox
+                            blip.style.top = `calc(50% + ${Math.sin(angle)*distance}px)`;
+                            blip.style.left = `calc(50% + ${Math.cos(angle)*distance}px)`;
+                            radarBlips.appendChild(blip);
+                        }
+                    }
+                });
+
+                activeUsersCount.textContent = active;
+                mobileCount.textContent = mobile;
+                pcCount.textContent = pc;
+            });
+        }
+
+        // 3. PIZARRA DE PEDIDOS
+        function setupRequestsBoard() {
+            const q = query(collection(db, `artifacts/${appId}/public/data/general-requests`), orderBy('votes', 'desc'), limit(20));
+            onSnapshot(q, (snapshot) => {
+                requestsList.innerHTML = '';
+                requestsCounter.textContent = snapshot.size;
+                
+                if (snapshot.empty) {
+                    requestsList.innerHTML = '<p class="text-xs text-slate-500 text-center py-2">Sin pedidos.</p>';
+                    return;
+                }
+
+                snapshot.forEach(doc => {
+                    const d = doc.data();
+                    const el = document.createElement('div');
+                    el.className = "bg-slate-700/30 border border-slate-700 p-2 rounded flex justify-between items-center group";
+                    el.innerHTML = `
+                        <div>
+                            <p class="text-sm text-slate-200 font-bold">${d.text}</p>
+                            <p class="text-[10px] text-slate-500">Por: ${d.displayName || 'Anon'} • ${d.timestamp ? d.timestamp.toDate().toLocaleDateString() : ''}</p>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <span class="text-xs font-bold text-blue-400 bg-blue-900/30 px-2 py-1 rounded">▲ ${d.votes || 0}</span>
+                            <button class="text-slate-600 hover:text-red-500 transition opacity-0 group-hover:opacity-100 delete-req-btn" data-id="${doc.id}">✕</button>
+                        </div>
+                    `;
+                    requestsList.appendChild(el);
+                });
+
+                // Funcionalidad borrar pedido
+                document.querySelectorAll('.delete-req-btn').forEach(btn => {
+                    btn.addEventListener('click', async (e) => {
+                        if(confirm('¿Borrar este pedido?')) {
+                            await deleteDoc(doc(db, `artifacts/${appId}/public/data/general-requests`, e.target.dataset.id));
+                        }
+                    });
+                });
+            });
+        }
+
+    </script>
+</body>
+</html>

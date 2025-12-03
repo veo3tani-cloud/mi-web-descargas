@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel Admin v4.5 (Plan B: Free Storage)</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; background-color: #f1f5f9; }
+        input, select, textarea { transition: all 0.2s ease; border: 1px solid #cbd5e1; }
+        input:focus, select:focus, textarea:focus { outline: none; border-color: #3b82f6; ring: 2px; box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1); }
+        
+        .toggle-checkbox:checked { right: 0; border-color: #68D391; }
+        .toggle-checkbox:checked + .toggle-label { background-color: #68D391; }
+        
+        .tab-button { padding: 1rem; font-weight: 600; cursor: pointer; border-bottom: 3px solid transparent; color: #64748b; transition: all 0.2s; }
+        .tab-button:hover { background-color: #f8fafc; color: #334155; }
+        .tab-button.active { color: #2563eb; border-bottom-color: #2563eb; background-color: white; }
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
+
+        .loading-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(255,255,255,0.8); backdrop-filter: blur(4px); z-index: 50; display: flex; justify-content: center; align-items: center; opacity: 0; pointer-events: none; transition: opacity 0.3s; }
+        .loading-overlay.show { opacity: 1; pointer-events: all; }
+    </style>
+</head>
+<body class="text-slate-800">
+
+    <div id="loader" class="loading-overlay">
+        <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+    </div>
+
+    <div class="max-w-7xl mx-auto p-4 sm:p-6 lg:p-8">
+        
+        <header class="flex flex-col md:flex-row justify-between items-center mb-8 bg-white p-4 rounded-2xl shadow-sm border border-slate-200">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 bg-gradient-to-br from-orange-500 to-pink-600 rounded-lg flex items-center justify-center text-white font-bold text-xl shadow-md">B</div>
+                <div>
+                    <h1 class="text-2xl font-bold text-slate-900 leading-none">Panel Maestro</h1>
+                    <p class="text-xs text-slate-500 font-medium mt-1">v4.5 Plan B (ImgBB)</p>
+                </div>
+            </div>
+            
+            <div id="auth-container" class="mt-4 md:mt-0 flex items-center gap-4">
+                <button id="login-btn" class="bg-slate-900 text-white font-semibold py-2 px-5 rounded-lg hover:bg-slate-800 transition-colors shadow-md flex items-center gap-2">
+                    Acceder
+                </button>
+                <div id="user-info" class="hidden flex items-center gap-3 bg-slate-50 px-3 py-1.5 rounded-full border border-slate-200">
+                    <img id="user-pic" class="w-8 h-8 rounded-full border border-white shadow-sm" alt="User">
+                    <div class="text-right mr-2">
+                        <p id="user-name" class="text-sm font-bold text-slate-700 leading-tight"></p>
+                        <button id="logout-btn" class="text-[10px] text-red-500 font-bold hover:underline uppercase tracking-wide">Cerrar Sesión</button>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <div id="id-alert" class="hidden mb-4 p-3 bg-yellow-100 text-yellow-800 rounded-lg text-sm text-center">
+            ⚠️ Tu ID es: <span id="current-user-id" class="font-mono font-bold"></span>. Verifica que coincida con el ADMIN_ID.
+        </div>
+
+        <main id="admin-panel" class="hidden">
+            
+            <div class="flex border-b border-slate-300 bg-white rounded-t-xl overflow-hidden shadow-sm mb-6">
+                <button id="tab-btn-software" class="tab-button active flex-1 md:flex-none">📦 Inventario & Edición</button>
+                <button id="tab-btn-config" class="tab-button flex-1 text-center">⚙️ Configuración & Radar</button>
+            </div>
+
+            <!-- TAB 1: SOFTWARE -->
+            <div id="tab-content-software" class="tab-content active space-y-6 py-6">
+                
+                <!-- Stats -->
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                    <div class="bg-white p-5 rounded-xl shadow-sm border border-slate-200"><p class="text-xs font-bold text-slate-400 uppercase">Items</p><p id="stat-total" class="text-3xl font-extrabold text-slate-800 mt-1">0</p></div>
+                    <div class="bg-white p-5 rounded-xl shadow-sm border border-slate-200"><p class="text-xs font-bold text-slate-400 uppercase">Descargas</p><p id="stat-downloads" class="text-3xl font-extrabold text-blue-600 mt-1">0</p></div>
+                    <div class="bg-white p-5 rounded-xl shadow-sm border border-slate-200"><p class="text-xs font-bold text-slate-400 uppercase">Likes</p><p id="stat-likes" class="text-3xl font-extrabold text-pink-500 mt-1">0</p></div>
+                    <div class="bg-white p-5 rounded-xl shadow-sm border border-slate-200 flex items-center justify-center"><div class="text-center"><span class="block w-3 h-3 bg-green-500 rounded-full mx-auto mb-2 animate-pulse"></span><p class="text-xs font-bold text-green-600 uppercase">Conectado</p></div></div>
+                </div>
+
+                <!-- Formulario -->
+                <div class="bg-white rounded-xl shadow-md border border-slate-200 overflow-hidden">
+                    <div class="bg-slate-50 px-6 py-4 border-b border-slate-200 flex justify-between items-center">
+                        <h2 class="font-bold text-slate-700">Añadir Nuevo Item</h2>
+                        <button id="clear-btn" class="text-xs font-bold text-slate-500 hover:text-slate-800 uppercase">Limpiar</button>
+                    </div>
+                    
+                    <form id="software-form" class="p-6 grid grid-cols-1 md:grid-cols-12 gap-6">
+                        <div class="md:col-span-6 space-y-4">
+                            <div><label class="block text-xs font-bold text-slate-500 uppercase mb-1">ID Único</label><input type="text" id="id" placeholder="ej: photoshop-2025" class="w-full px-3 py-2 rounded-lg bg-slate-50 border border-slate-300 text-sm"></div>
+                            <div><label class="block text-xs font-bold text-slate-500 uppercase mb-1">Título</label><input type="text" id="title" class="w-full px-3 py-2 rounded-lg bg-slate-50 border border-slate-300"></div>
+                            <div><label class="block text-xs font-bold text-slate-500 uppercase mb-1">Descripción</label><textarea id="description" rows="3" class="w-full px-3 py-2 rounded-lg bg-slate-50 border border-slate-300"></textarea></div>
+                            <div class="grid grid-cols-2 gap-4">
+                                <div><label class="block text-xs font-bold text-slate-500 uppercase mb-1">Plataforma</label><select id="platform" class="w-full px-3 py-2 rounded-lg bg-slate-50 border border-slate-300"><option value="pc">PC 💻</option><option value="mobile">Móvil 📱</option></select></div>
+                                <div><label class="block text-xs font-bold text-slate-500 uppercase mb-1">Categoría</label><input type="text" id="category" placeholder="ej: adobe" class="w-full px-3 py-2 rounded-lg bg-slate-50 border border-slate-300"></div>
+                            </div>
+                        </div>
+
+                        <div class="md:col-span-6 space-y-4">
+                            <!-- SUBIDA DE IMAGEN IMGBB -->
+                            <div>
+                                <label class="block text-xs font-bold text-slate-500 uppercase mb-1">Imagen (ImgBB)</label>
+                                <div class="flex gap-2 items-center">
+                                    <input type="text" id="imageUrl" placeholder="URL o sube archivo ->" class="flex-1 px-3 py-2 rounded-lg bg-slate-50 border border-slate-300">
+                                    <label class="cursor-pointer bg-orange-600 hover:bg-orange-700 text-white px-3 py-2 rounded-lg flex items-center gap-1 shadow transition-colors">
+                                        <span id="upload-text" class="text-xs font-bold">☁️ Subir</span>
+                                        <svg id="upload-loading" class="hidden animate-spin w-4 h-4" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
+                                        <input type="file" id="file-upload" class="hidden" accept="image/*">
+                                    </label>
+                                    <div class="w-10 h-10 bg-slate-200 rounded border border-slate-300 flex items-center justify-center overflow-hidden shrink-0"><img id="img-preview" class="w-full h-full object-cover hidden"></div>
+                                </div>
+                                <p id="upload-status" class="text-[10px] text-slate-400 mt-1 text-right">Gratis vía ImgBB</p>
+                            </div>
+
+                            <div><label class="block text-xs font-bold text-slate-500 uppercase mb-1">Enlace Descarga</label><input type="text" id="downloadLink" class="w-full px-3 py-2 rounded-lg bg-slate-50 border border-slate-300 text-blue-600 font-mono text-sm"></div>
+                            
+                            <!-- CAMPOS PRO -->
+                            <div class="bg-blue-50 p-3 rounded-lg border border-blue-100">
+                                <div class="flex justify-between items-end mb-1">
+                                    <label class="block text-xs font-bold text-blue-700 uppercase">ℹ️ Instrucciones</label>
+                                    <div class="flex gap-2">
+                                        <button type="button" onclick="addBold('installation')" class="text-xs bg-white border border-blue-200 text-blue-600 px-2 py-0.5 rounded font-bold">B</button>
+                                        <button type="button" onclick="addLink('installation')" class="text-xs bg-white border border-blue-200 text-blue-600 px-2 py-0.5 rounded font-bold">🔗</button>
+                                    </div>
+                                </div>
+                                <textarea id="installation" rows="2" class="w-full px-3 py-2 bg-white border border-blue-200 rounded-lg text-sm"></textarea>
+                            </div>
+                            <div class="bg-green-50 p-3 rounded-lg border border-green-100">
+                                <div class="flex justify-between items-end mb-1">
+                                    <label class="block text-xs font-bold text-green-700 uppercase">✨ Novedades</label>
+                                    <div class="flex gap-2">
+                                        <button type="button" onclick="addBold('updates')" class="text-xs bg-white border border-green-200 text-green-600 px-2 py-0.5 rounded font-bold">B</button>
+                                        <button type="button" onclick="addLink('updates')" class="text-xs bg-white border border-green-200 text-green-600 px-2 py-0.5 rounded font-bold">🔗</button>
+                                    </div>
+                                </div>
+                                <textarea id="updates" rows="2" class="w-full px-3 py-2 bg-white border border-green-200 rounded-lg text-sm"></textarea>
+                            </div>
+
+                            <div class="grid grid-cols-3 gap-4">
+                                <div><label class="block text-xs font-bold text-slate-500 uppercase mb-1">Likes</label><input type="number" id="likes" value="0" class="w-full px-3 py-2 rounded-lg bg-slate-50 border border-slate-300"></div>
+                                <div><label class="block text-xs font-bold text-slate-500 uppercase mb-1">Descargas</label><input type="number" id="downloads" value="0" class="w-full px-3 py-2 rounded-lg bg-slate-50 border border-slate-300 text-blue-600 font-bold"></div>
+                                <div><label class="block text-xs font-bold text-slate-500 uppercase mb-1">Keywords</label><input type="text" id="keywords" class="w-full px-3 py-2 rounded-lg bg-slate-50 border border-slate-300"></div>
+                            </div>
+                        </div>
+
+                        <div class="md:col-span-12 pt-2">
+                            <button type="submit" id="save-btn" class="w-full bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-bold py-3.5 rounded-xl hover:from-blue-700 hover:to-indigo-700 shadow-lg transform hover:-translate-y-0.5 transition-all">GUARDAR FICHA</button>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- LISTA -->
+                <div class="bg-white rounded-xl shadow-md border border-slate-200 overflow-hidden">
+                    <div class="p-4 border-b border-slate-200 bg-slate-50 flex justify-between items-center gap-4">
+                        <h3 class="font-bold text-slate-700">Inventario</h3>
+                        <input type="text" id="search-inventory" placeholder="🔍 Buscar..." class="w-64 pl-3 pr-4 py-2 border border-slate-300 rounded-lg text-sm">
+                    </div>
+                    <div class="overflow-x-auto max-h-[600px]">
+                        <table class="w-full text-left text-sm"><tbody id="software-list" class="divide-y divide-slate-100"></tbody></table>
+                        <div id="no-results-msg" class="hidden text-center py-8 text-slate-400">Sin resultados</div>
+                    </div>
+                </div>
+            </div> 
+
+            <!-- TAB 2: CONFIG -->
+            <div id="tab-content-config" class="tab-content space-y-6 py-6">
+                <!-- Radar -->
+                <div class="bg-gradient-to-r from-indigo-500 to-purple-600 rounded-xl shadow-lg text-white p-6 relative">
+                    <div class="flex justify-between items-start relative z-10">
+                        <div><h2 class="text-2xl font-bold">📡 Radar de Tráfico</h2><p class="text-sm opacity-80">Usuarios en vivo</p></div>
+                        <div class="relative inline-block w-12 align-middle select-none">
+                            <input type="checkbox" id="radar-toggle" class="toggle-checkbox absolute block w-6 h-6 rounded-full bg-white border-4 appearance-none cursor-pointer"/>
+                            <label for="radar-toggle" class="toggle-label block overflow-hidden h-6 rounded-full bg-indigo-300 cursor-pointer"></label>
+                        </div>
+                    </div>
+                    <div id="radar-display" class="grid grid-cols-3 gap-4 mt-6 relative z-10">
+                        <div class="bg-white/10 rounded p-3 text-center"><p class="text-xs font-bold">TOTAL</p><p id="total-online" class="text-2xl font-bold">0</p></div>
+                        <div class="bg-white/10 rounded p-3 text-center"><p class="text-xs font-bold">PC</p><p id="pc-online" class="text-2xl font-bold">0</p></div>
+                        <div class="bg-white/10 rounded p-3 text-center"><p class="text-xs font-bold">MÓVIL</p><p id="mobile-online" class="text-2xl font-bold">0</p></div>
+                    </div>
+                </div>
+                <!-- Configs -->
+                <div class="bg-white p-6 rounded-xl shadow border border-slate-200">
+                    <h3 class="font-bold text-slate-800 mb-2">🤖 IA Prompt</h3>
+                    <textarea id="system-prompt-editor" rows="4" class="w-full p-3 border rounded text-sm bg-slate-50"></textarea>
+                    <button id="save-prompt-btn" class="mt-2 bg-blue-600 text-white py-2 px-4 rounded font-bold text-xs">Guardar Prompt</button>
+                </div>
+                <div class="bg-white p-6 rounded-xl shadow border border-slate-200">
+                    <h3 class="font-bold text-slate-800 mb-2">📢 Anuncio Chat</h3>
+                    <input type="text" id="ai-ad-input" class="w-full p-3 border rounded text-sm bg-slate-50" placeholder="HTML anuncio...">
+                    <button id="save-ad-btn" class="mt-2 bg-blue-600 text-white py-2 px-4 rounded font-bold text-xs">Guardar Anuncio</button>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getAuth, onAuthStateChanged, GoogleAuthProvider, signInWithPopup, signInWithCustomToken, signOut } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getFirestore, doc, getDoc, setDoc, onSnapshot, collection, query, deleteDoc, orderBy, serverTimestamp, where, Timestamp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+        // --- API KEY DE IMGBB (PLAN B) ---
+        const IMGBB_API_KEY = "8549ecba3ac9be0402aa3b10b25f181d"; 
+
+        const firebaseConfig = {
+          apiKey: "AIzaSyCPB82qY7h3YGvk_cClAw5so0DFgiePzNM",
+          authDomain: "descargar-ultima-version.firebaseapp.com",
+          projectId: "descargar-ultima-version",
+          storageBucket: "descargar-ultima-version.firebasestorage.app",
+          messagingSenderId: "1028999431387",
+          appId: "1:1028999431387:web:3f6799e9adfca72d3078fe",
+          measurementId: "G-BZRK62Y3S5"
+        };
+        const ADMIN_ID = "lQ5NWvUJqNXg7KpPQSvqmoB3TU12";
+        const appId = "descargar-ultima-version";
+
+        let app, db, auth, softwareUnsubscribe, radarUnsubscribe;
+        let currentEditingId = null, allSoftware = [];
+
+        try {
+            app = initializeApp(firebaseConfig);
+            db = getFirestore(app);
+            auth = getAuth(app);
+        } catch (e) { console.error(e); }
+
+        // --- AUTH ---
+        const initAuth = async () => {
+            try {
+                if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
+                    await signInWithCustomToken(auth, __initial_auth_token);
+                }
+            } catch (e) {}
+        };
+        initAuth();
+
+        onAuthStateChanged(auth, (user) => {
+            document.getElementById('loader').classList.remove('show');
+            if (user) {
+                if (user.uid === ADMIN_ID) {
+                    showAdminPanel(user);
+                } else {
+                    document.getElementById('id-alert').classList.remove('hidden');
+                    document.getElementById('current-user-id').textContent = user.uid;
+                }
+            } else {
+                document.getElementById('admin-panel').classList.add('hidden');
+                document.getElementById('auth-container').innerHTML = `<button id="login-btn-in" class="bg-slate-900 text-white font-semibold py-2 px-5 rounded-lg shadow">Acceder</button>`;
+                document.getElementById('login-btn-in').addEventListener('click', async () => {
+                    try { await signInWithPopup(auth, new GoogleAuthProvider()); } catch (e) { alert(e.message); }
+                });
+            }
+        });
+
+        function showAdminPanel(user) {
+            document.getElementById('auth-container').innerHTML = `<div class="flex items-center gap-3"><p class="font-bold text-sm hidden sm:block">${user.displayName}</p><button id="out" class="text-xs text-red-500 font-bold">Salir</button><img src="${user.photoURL}" class="w-8 h-8 rounded-full"></div>`;
+            document.getElementById('out').addEventListener('click', () => signOut(auth));
+            document.getElementById('admin-panel').classList.remove('hidden');
+            document.getElementById('id-alert').classList.add('hidden');
+            loadSoftwareList();
+            loadConfigData();
+            initRadarListener();
+        }
+
+        // --- LOGICA DE SUBIDA IMGBB (PLAN B) ---
+        document.getElementById('file-upload').addEventListener('change', async (e) => {
+            const file = e.target.files[0];
+            if (!file) return;
+            
+            const uploadText = document.getElementById('upload-text');
+            const uploadLoading = document.getElementById('upload-loading');
+            uploadText.classList.add('hidden');
+            uploadLoading.classList.remove('hidden');
+            document.getElementById('upload-status').textContent = "Subiendo a ImgBB...";
+
+            const formData = new FormData();
+            formData.append("image", file);
+
+            try {
+                const res = await fetch(`https://api.imgbb.com/1/upload?key=${IMGBB_API_KEY}`, { method: "POST", body: formData });
+                const data = await res.json();
+                
+                if (data.success) {
+                    const url = data.data.url;
+                    document.getElementById('imageUrl').value = url;
+                    document.getElementById('img-preview').src = url;
+                    document.getElementById('img-preview').classList.remove('hidden');
+                    document.getElementById('upload-status').textContent = "✅ ¡Imagen Lista!";
+                    document.getElementById('upload-status').className = "text-[10px] text-green-600 mt-1 text-right font-bold";
+                } else {
+                    throw new Error("ImgBB Error");
+                }
+            } catch (err) {
+                alert("Error al subir: " + err.message);
+                document.getElementById('upload-status').textContent = "❌ Error";
+            } finally {
+                uploadText.classList.remove('hidden');
+                uploadLoading.classList.add('hidden');
+            }
+        });
+
+        // --- SOFTWARE CRUD (RESTO IGUAL) ---
+        const form = document.getElementById('software-form');
+        
+        document.getElementById('imageUrl').addEventListener('input', (e) => {
+            const url = e.target.value;
+            const img = document.getElementById('img-preview');
+            if(url) { img.src = url; img.classList.remove('hidden'); } else { img.classList.add('hidden'); }
+        });
+
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const id = document.getElementById('id').value.trim();
+            if(!id) return alert("ID obligatorio");
+
+            const data = {
+                title: document.getElementById('title').value,
+                description: document.getElementById('description').value,
+                imageUrl: document.getElementById('imageUrl').value,
+                downloadLink: document.getElementById('downloadLink').value,
+                platform: document.getElementById('platform').value,
+                category: document.getElementById('category').value,
+                keywords: document.getElementById('keywords').value,
+                installation: document.getElementById('installation').value.replace(/\n/g, '<br>'),
+                updates: document.getElementById('updates').value.replace(/\n/g, '<br>'),
+                likes: parseInt(document.getElementById('likes').value) || 0,
+                downloads: parseInt(document.getElementById('downloads').value) || 0,
+                createdAt: serverTimestamp()
+            };
+            
+            await setDoc(doc(db, `artifacts/${appId}/public/data/software-items`, id), data, { merge: true });
+            document.getElementById('clear-btn').click();
+            alert("✅ Guardado!");
+        });
+
+        document.getElementById('clear-btn').addEventListener('click', () => {
+             form.reset(); currentEditingId = null;
+             document.getElementById('id').disabled = false;
+             document.getElementById('img-preview').classList.add('hidden');
+             document.getElementById('form-title').textContent = "Añadir Nuevo Item";
+             document.getElementById('save-btn').textContent = "GUARDAR FICHA";
+             document.getElementById('save-btn').className = "w-full bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-bold py-3.5 rounded-xl hover:from-blue-700 hover:to-indigo-700 shadow-lg transform hover:-translate-y-0.5 transition-all";
+             document.getElementById('upload-status').textContent = "Gratis vía ImgBB";
+        });
+
+        // Funciones Auxiliares (Tablas, Search, Edit, Delete, Config, Radar) - MISMAS QUE ANTES
+        function loadSoftwareList() {
+            if(softwareUnsubscribe) softwareUnsubscribe();
+            const q = query(collection(db, `artifacts/${appId}/public/data/software-items`), orderBy('createdAt', 'desc'));
+            softwareUnsubscribe = onSnapshot(q, (snap) => {
+                const list = document.getElementById('software-list');
+                list.innerHTML = '';
+                let totalD = 0, totalL = 0, totalI = 0;
+                allSoftware = [];
+                snap.forEach(d => {
+                    const i = {id: d.id, ...d.data()};
+                    allSoftware.push(i);
+                    totalD += (i.downloads || 0);
+                    totalL += (i.likes || 0);
+                    totalI++;
+                });
+                document.getElementById('stat-total').textContent = totalI;
+                document.getElementById('stat-downloads').textContent = totalD.toLocaleString();
+                document.getElementById('stat-likes').textContent = totalL.toLocaleString();
+                renderTable(allSoftware);
+            });
+        }
+        function renderTable(items) {
+            const list = document.getElementById('software-list');
+            list.innerHTML = '';
+            if(items.length === 0) { document.getElementById('no-results-msg').classList.remove('hidden'); return; }
+            document.getElementById('no-results-msg').classList.add('hidden');
+            items.forEach(i => {
+                const row = document.createElement('tr');
+                row.className = "border-b hover:bg-slate-50";
+                const img = i.imageUrl || 'https://placehold.co/50x50';
+                const plat = i.platform === 'mobile' ? '📱' : '💻';
+                row.innerHTML = `<td class="p-4"><img src="${img}" class="w-10 h-10 rounded object-cover bg-gray-200"></td><td class="p-4"><div class="font-bold text-slate-700">${i.title}</div><div class="text-xs text-slate-400">${i.id}</div></td><td class="p-4 text-sm text-slate-600">${plat} ${i.platform}</td><td class="p-4 text-xs font-bold text-blue-600">⬇ ${i.downloads||0}</td><td class="p-4 text-right"><button class="text-blue-600 font-bold mr-3" onclick="window.editItem('${i.id}')">EDIT</button><button class="text-red-500 font-bold" onclick="window.deleteItem('${i.id}')">X</button></td>`;
+                list.appendChild(row);
+            });
+        }
+        document.getElementById('search-inventory').addEventListener('input', (e) => {
+            const term = e.target.value.toLowerCase();
+            const filtered = allSoftware.filter(item => item.title.toLowerCase().includes(term) || item.id.toLowerCase().includes(term));
+            renderTable(filtered);
+        });
+        window.editItem = (id) => {
+            const item = allSoftware.find(x => x.id === id);
+            if(!item) return;
+            currentEditingId = id;
+            document.getElementById('id').value = item.id; document.getElementById('id').disabled = true;
+            document.getElementById('title').value = item.title;
+            document.getElementById('description').value = item.description;
+            document.getElementById('imageUrl').value = item.imageUrl;
+            document.getElementById('downloadLink').value = item.downloadLink;
+            document.getElementById('platform').value = item.platform;
+            document.getElementById('category').value = item.category;
+            document.getElementById('keywords').value = item.keywords;
+            document.getElementById('likes').value = item.likes;
+            document.getElementById('downloads').value = item.downloads || 0;
+            document.getElementById('installation').value = (item.installation || '').replace(/<br\s*\/?>/gi, '\n').replace(/<a[^>]*>(.*?)<\/a>/g, '$1');
+            document.getElementById('updates').value = (item.updates || '').replace(/<br\s*\/?>/gi, '\n').replace(/<a[^>]*>(.*?)<\/a>/g, '$1');
+            const img = document.getElementById('img-preview');
+            if(item.imageUrl) { img.src = item.imageUrl; img.classList.remove('hidden'); }
+            document.getElementById('form-title').textContent = "Editando: " + item.title;
+            document.getElementById('save-btn').textContent = "GUARDAR CAMBIOS";
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        };
+        window.deleteItem = async (id) => { if(confirm("¿Borrar?")) await deleteDoc(doc(db, `artifacts/${appId}/public/data/software-items`, id)); };
+        window.addBold = (id) => { const t = document.getElementById(id); const s = t.value.substring(t.selectionStart, t.selectionEnd); if(s) { t.setRangeText(`<b>${s}</b>`); t.focus(); } else alert("Selecciona texto"); };
+        window.addLink = (id) => { const t = document.getElementById(id); const s = t.value.substring(t.selectionStart, t.selectionEnd); if(s) { const u = prompt("URL:"); if(u) { t.setRangeText(`<a href="${u}" target="_blank" class="text-blue-600 underline">${s}</a>`); t.focus(); } } else alert("Selecciona texto"); };
+
+        // Tabs
+        const tabSoft = document.getElementById('tab-btn-software');
+        const tabConf = document.getElementById('tab-btn-config');
+        tabSoft.addEventListener('click', () => { tabSoft.classList.add('active'); tabConf.classList.remove('active'); document.getElementById('tab-content-software').style.display='block'; document.getElementById('tab-content-config').style.display='none'; });
+        tabConf.addEventListener('click', () => { tabConf.classList.add('active'); tabSoft.classList.remove('active'); document.getElementById('tab-content-config').style.display='block'; document.getElementById('tab-content-software').style.display='none'; });
+
+        async function loadConfigData() { const s = await getDoc(doc(db, `artifacts/${appId}/public/data/config`, "siteSettings")); if(s.exists()) { const d = s.data(); document.getElementById('system-prompt-editor').value = d.systemPrompt||''; document.getElementById('ai-ad-input').value = d.aiChatAd||''; } }
+        document.getElementById('save-prompt-btn').addEventListener('click', async () => { await setDoc(doc(db, `artifacts/${appId}/public/data/config`, "siteSettings"), { systemPrompt: document.getElementById('system-prompt-editor').value }, { merge: true }); alert("Guardado"); });
+        document.getElementById('save-ad-btn').addEventListener('click', async () => { await setDoc(doc(db, `artifacts/${appId}/public/data/config`, "siteSettings"), { aiChatAd: document.getElementById('ai-ad-input').value }, { merge: true }); alert("Guardado"); });
+        
+        function initRadarListener() {
+            const rRef = doc(db, `artifacts/${appId}/public/data/config`, "siteSettings");
+            onSnapshot(rRef, (s) => { if(s.exists()) { const en = s.data().radarEnabled; document.getElementById('radar-toggle').checked = en; if(en) startListeningToPresence(); else stopListeningToPresence(); } });
+            document.getElementById('radar-toggle').addEventListener('change', async (e) => { await setDoc(rRef, { radarEnabled: e.target.checked }, { merge: true }); });
+        }
+        function startListeningToPresence() {
+            if (radarUnsubscribe) return;
+            const twoMinsAgo = Timestamp.fromMillis(Date.now() - 120000);
+            const q = query(collection(db, `artifacts/${appId}/public/data/presence`), where("timestamp", ">", twoMinsAgo));
+            radarUnsubscribe = onSnapshot(q, (s) => {
+                let t=0,p=0,m=0; s.forEach(d=>{ t++; if(d.data().platform==='mobile')m++; else p++; });
+                document.getElementById('total-online').textContent=t; document.getElementById('pc-online').textContent=p; document.getElementById('mobile-online').textContent=m;
+            });
+        }
+        function stopListeningToPresence() { if(radarUnsubscribe){ radarUnsubscribe(); radarUnsubscribe=null;} document.getElementById('total-online').textContent="-"; document.getElementById('pc-online').textContent="-"; document.getElementById('mobile-online').textContent="-"; }
+
+    </script>
+</body>
+</html>
