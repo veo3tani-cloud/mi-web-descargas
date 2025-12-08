@@ -64,13 +64,6 @@
         @keyframes highlight-card { 0% { transform: scale(1); box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.5); } 50% { transform: scale(1.02); } 100% { transform: scale(1); } }
         .card-highlight { animation: highlight-card 2s ease-in-out; border-color: #2563eb; z-index: 10; position: relative; }
         
-        /* Ticker */
-        .ticker-wrap { width: 100%; overflow: hidden; background-color: #1e293b; color: white; padding: 8px 0; font-size: 0.9rem; white-space: nowrap; }
-        .ticker { display: inline-block; padding-left: 100%; animation: ticker 80s linear infinite; }
-        @keyframes ticker { 0% { transform: translate3d(0, 0, 0); } 100% { transform: translate3d(-100%, 0, 0); } }
-        .ticker-item { display: inline-block; padding: 0 2rem; font-weight: 600; }
-        .ticker-highlight { color: #fbbf24; text-shadow: 0 0 5px rgba(251, 191, 36, 0.3); }
-        
         /* Banners Mobile/PC */
         @media (max-width: 768px) {
             #mobile-ad-top { position: fixed; top: 0; left: 0; width: 100%; height: 60px; display: flex !important; justify-content: center; align-items: center; background: #fff; z-index: 50; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
@@ -82,17 +75,85 @@
             #pc-ad-top-downloads { display: flex !important; justify-content: center; align-items: center; width: 100%; max-width: 728px; margin: 0 auto; }
         }
 
-        /* Comentarios & Pizarra */
+        /* Comentarios & Pizarra - CORREGIDO OVERFLOW */
         .comment { background-color: #f8fafc !important; border: 1px solid #e2e8f0; padding: 12px; border-radius: 8px; margin-bottom: 10px; }
         .comment.admin-comment { background-color: #f0f9ff !important; border-color: #bae6fd; }
-        .request-board-item { display: flex; justify-content: space-between; align-items: center; padding: 0.75rem 1rem; background-color: #f8fafc; border: 1px solid #e2e8f0; border-radius: 0.5rem; margin-bottom: 0.75rem; }
-        .vote-btn { background-color: #f1f5f9; color: #64748b; padding: 0.5rem 0.75rem; border-radius: 0.375rem; font-weight: 600; font-size: 0.875rem; cursor: pointer; }
+        .request-board-item { display: flex; justify-content: space-between; align-items: flex-start; padding: 0.75rem 1rem; background-color: #f8fafc; border: 1px solid #e2e8f0; border-radius: 0.5rem; margin-bottom: 0.75rem; gap: 10px; }
+        .request-text { flex: 1; min-width: 0; word-break: break-word; overflow-wrap: anywhere; } 
+        .vote-btn { background-color: #f1f5f9; color: #64748b; padding: 0.5rem 0.75rem; border-radius: 0.375rem; font-weight: 600; font-size: 0.875rem; cursor: pointer; flex-shrink: 0; }
         .vote-btn.voted { background-color: #dbeafe; color: #2563eb; border: 1px solid #93c5fd; }
         
-        /* Scroll Horizontal */
+        /* Scroll Horizontal & Stories */
         .scroll-container { -ms-overflow-style: none; scrollbar-width: thin; scrollbar-color: #cbd5e1 transparent; }
         .scroll-container::-webkit-scrollbar { height: 6px; }
         .scroll-container::-webkit-scrollbar-thumb { background-color: #cbd5e1; border-radius: 20px; }
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+        
+        /* Drag Cursor Styles */
+        .cursor-grab { cursor: grab; }
+        .cursor-grabbing { cursor: grabbing; }
+
+        /* --- STORIES ESTILO FACEBOOK CORREGIDO --- */
+        .story-card {
+            width: 105px !important; /* ANCHO FIJO */
+            height: 175px !important; /* ALTO FIJO */
+            flex: 0 0 auto;
+            border-radius: 12px;
+            position: relative;
+            overflow: hidden;
+            border: 1px solid #e2e8f0; 
+            padding: 0;
+            background: #f1f5f9;
+            transition: transform 0.2s;
+            user-select: none; 
+        }
+        .story-card:hover { transform: scale(1.02); }
+        
+        .story-inner { width: 100%; height: 100%; position: relative; }
+
+        .story-img {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            object-fit: cover; transition: transform 0.5s; display: block;
+        }
+        .story-card:hover .story-img { transform: scale(1.05); }
+        
+        .story-overlay {
+            position: absolute; bottom: 0; left: 0; width: 100%;
+            background: linear-gradient(to top, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.4) 60%, transparent 100%);
+            padding: 8px 6px; color: white;
+            display: flex; flex-direction: column; justify-content: flex-end;
+            height: 100%; pointer-events: none;
+        }
+        
+        .story-title {
+            font-size: 0.75rem; font-weight: 700; line-height: 1.15; text-align: left;
+            text-shadow: 0 1px 2px rgba(0,0,0,0.9);
+            display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical;
+            overflow: hidden; margin-bottom: 2px;
+        }
+        
+        .story-user-icon {
+            position: absolute; top: 8px; left: 8px; width: 36px; height: 36px;
+            border-radius: 50%; border: 3px solid #2563eb; 
+            background: white; display: flex; align-items: center; justify-content: center;
+            font-size: 14px; z-index: 10;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.3); pointer-events: none;
+        }
+        
+        @media (min-width: 640px) {
+            .story-card { width: 120px !important; height: 200px !important; }
+        }
+        
+        /* Estilos Pizarra Links - MEJORADOS */
+        .robot-link-btn {
+            display: inline-flex; align-items: center; gap: 4px;
+            background-color: #eff6ff; color: #2563eb;
+            font-size: 0.75rem; padding: 4px 10px; border-radius: 6px;
+            border: 1px solid #bfdbfe; text-decoration: none;
+            margin-top: 6px; font-weight: 700; transition: all 0.2s;
+        }
+        .robot-link-btn:hover { background-color: #dbeafe; transform: translateY(-1px); box-shadow: 0 2px 4px rgba(37, 99, 235, 0.1); }
     </style>
     <link rel="icon" type="image/png" href="favicon.png">
 </head>
@@ -108,25 +169,30 @@
       </div>
     </div>
     
-    <div id="app" class="container mx-auto px-4 sm:px-6 lg:px-8 py-8 flex-grow">
+    <div id="app" class="container mx-auto px-4 sm:px-6 lg:px-8 py-4 flex-grow">
         
-        <!-- Ticker -->
-        <div class="ticker-wrap mb-4 rounded-lg shadow-md border-b-4 border-blue-500">
-            <div class="ticker" id="news-ticker-content"><span class="ticker-item">Conectando...</span></div>
-        </div>
-
         <!-- Header -->
-        <header class="mb-6">
-            <div class="flex flex-col sm:flex-row items-center justify-center gap-6 pb-4 border-b border-slate-200">
+        <header class="mb-4">
+            <div class="flex flex-col sm:flex-row items-center justify-center gap-4 pb-2 border-b border-slate-200">
                 <div class="flex items-center gap-4">
                     <div class="logo">D</div>
                     <h1 class="text-2xl sm:text-3xl font-bold text-slate-900">Descargar Ultima Version</h1>
                 </div>
             </div>
         </header>
+
+        <!-- STORIES CONTAINER -->
+        <div class="mb-2">
+            <h3 class="text-sm font-bold text-slate-500 mb-2 px-1">✨ Últimas Actualizaciones</h3>
+            <div id="stories-container" class="flex overflow-x-auto gap-2.5 py-2 px-1 snap-x scroll-container no-scrollbar pb-4 cursor-grab">
+                <div class="story-card animate-pulse border-slate-200"><div class="w-full h-full bg-slate-200"></div></div>
+                <div class="story-card animate-pulse border-slate-200"><div class="w-full h-full bg-slate-200"></div></div>
+                <div class="story-card animate-pulse border-slate-200"><div class="w-full h-full bg-slate-200"></div></div>
+            </div>
+        </div>
         
-        <!-- BIENVENIDA (Estilo Original "OJO") -->
-        <div class="mt-4 mb-6 relative rounded-2xl shadow-xl overflow-hidden border border-slate-600/50 group">
+        <!-- BIENVENIDA -->
+        <div class="mt-2 mb-6 relative rounded-2xl shadow-xl overflow-hidden border border-slate-600/50 group">
             <div class="absolute inset-0">
                 <img src="imagen-preview.jpg?v=1" class="w-full h-full object-cover opacity-80" alt="Background">
             </div>
@@ -247,11 +313,11 @@
             <div class="mt-4 pt-4 border-t border-slate-200">
                 <textarea id="comment-input" class="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500" rows="3" placeholder="Escribe tu comentario..."></textarea>
                 <div class="flex justify-between items-center mt-3">
-                     <!-- BOTÓN REPORTAR LINK (NUEVO) -->
-                     <button id="report-link-btn" class="text-xs text-red-500 font-bold hover:text-red-700 flex items-center gap-1 border border-red-200 bg-red-50 px-3 py-1.5 rounded-full transition-colors">
+                      <!-- BOTÓN REPORTAR LINK -->
+                      <button id="report-link-btn" class="text-xs text-red-500 font-bold hover:text-red-700 flex items-center gap-1 border border-red-200 bg-red-50 px-3 py-1.5 rounded-full transition-colors">
                         <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
                         Reportar Link Roto
-                     </button>
+                      </button>
                     <button id="submit-comment-btn" class="bg-blue-600 text-white font-semibold py-2 px-4 rounded-lg hover:bg-blue-700">Enviar</button>
                 </div>
             </div>
@@ -264,6 +330,28 @@
             <h2 class="ml-4 text-xl sm:text-2xl font-bold text-slate-900">GUÍA RÁPIDA</h2>
             <p class="text-slate-700 text-base mb-5">Sigue los pasos en el video para saltar publicidad.</p>
             <button id="download-guide-continue-btn" class="mt-8 w-full bg-green-600 text-white font-bold py-3 px-4 rounded-lg hover:bg-green-700 text-lg">¡Entendido!</button>
+        </div>
+    </div>
+
+    <!-- Modal Admin Dashboard (MEJORADO CON HERRAMIENTA DE MIGRACIÓN) -->
+    <div id="admin-dashboard-modal" class="modal-overlay">
+        <div class="modal-content">
+            <button id="admin-dashboard-modal-close" class="absolute top-4 right-4 text-slate-500 hover:text-slate-800"><svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg></button>
+            <h2 class="text-xl font-bold text-slate-900 mb-4 p-4 border-b">Panel de Actividad & Herramientas</h2>
+            <div class="p-4">
+                <div class="mb-4 p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
+                    <h3 class="font-bold text-yellow-800 mb-2">Herramienta de Recuperación</h3>
+                    <p class="text-sm text-yellow-700 mb-3">Si te faltan fichas de la web anterior, pulsa este botón. El sistema buscará en la base de datos vieja y las copiará aquí.</p>
+                    <button id="migrate-db-btn" class="w-full bg-red-600 hover:bg-red-700 text-white font-bold py-3 rounded shadow-md transition-colors flex justify-center items-center gap-2">
+                        <span>🔄 IMPORTAR DATOS DE LA WEB ANTIGUA</span>
+                    </button>
+                    <p id="migration-status" class="text-xs text-center mt-2 font-mono text-slate-500"></p>
+                </div>
+                <h3 class="font-bold text-slate-700 mb-2">Actividad Reciente</h3>
+                <div id="admin-logs-container" class="overflow-y-auto" style="max-height: 40vh;">
+                    <p class="text-slate-500 text-center">Cargando actividad...</p>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -324,7 +412,10 @@
             <div class="mt-10 pt-8 border-t border-slate-300 max-w-2xl mx-auto text-center flex flex-col items-center gap-2">
                 <button id="admin-login-btn" class="text-sm text-slate-500 hover:text-blue-600">Login (Admin)</button>
                 <p id="admin-status" class="text-sm text-green-600 mt-2 hidden"></p>
-                <button id="ver-actividad-btn" class="hidden text-sm bg-slate-800 text-white px-3 py-1 rounded-full hover:bg-slate-700 transition-colors">👁️ Ver Actividad Reciente</button>
+                <!-- BOTÓN OCULTO POR DEFECTO CON STYLE DISPLAY NONE -->
+                <button id="ver-actividad-btn" style="display: none;" class="text-sm bg-slate-800 text-white px-3 py-1 rounded-full hover:bg-slate-700 transition-colors flex items-center gap-2 mx-auto">
+                    <span>👁️</span> Abrir Panel & Herramientas
+                </button>
             </div>
         </div>
     </footer>
@@ -337,14 +428,26 @@
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
-        import { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged, GoogleAuthProvider, signInWithPopup } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
-        import { getFirestore, doc, getDoc, setDoc, onSnapshot, collection, query, orderBy, limit, addDoc, serverTimestamp, runTransaction, increment, updateDoc, getDocs, where, Timestamp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+        import { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged, GoogleAuthProvider, signInWithPopup, signOut } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getFirestore, doc, getDoc, setDoc, onSnapshot, collection, query, orderBy, limit, addDoc, serverTimestamp, runTransaction, increment, updateDoc, getDocs, where, Timestamp, deleteDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
         // --- CONFIGURACIÓN HÍBRIDA (INTOCABLE) ---
         const envConfig = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : null;
         const envAppId = typeof __app_id !== 'undefined' ? __app_id : null;
 
+        // CONFIG ACTUAL (NUEVA)
         const userConfig = {
+          apiKey: "AIzaSyDeNCckeg9KYlsk__1UQF1yA64WK_nb3Vw", 
+          authDomain: "web-descargarultimaversion.firebaseapp.com",
+          projectId: "web-descargarultimaversion",
+          storageBucket: "web-descargarultimaversion.firebasestorage.app",
+          messagingSenderId: "1028999431387",
+          appId: "1:1028999431387:web:3f6799e9adfca72d3078fe",
+          measurementId: "G-BZRK62Y3S5"
+        };
+
+        // CONFIG ANTIGUA (PARA MIGRACIÓN)
+        const oldFirebaseConfig = {
           apiKey: "AIzaSyCPB82qY7h3YGvk_cClAw5so0DFgiePzNM",
           authDomain: "descargar-ultima-version.firebaseapp.com",
           projectId: "descargar-ultima-version",
@@ -356,7 +459,9 @@
 
         const firebaseConfig = envConfig || userConfig;
         const appId = envAppId || "descargar-ultima-version"; 
-        const ADMIN_ID = "lQ5NWvUJqNXg7KpPQSvqmoB3TU12";
+        
+        // --- ID DE ADMIN CORREGIDO ---
+        const ADMIN_ID = "vDq0ZPy7f0UYpTzP44H0nvRDPYD2";
 
         // --- ESTADO GLOBAL ---
         let app, db, auth;
@@ -472,6 +577,7 @@
             }
             if(id === 'comments-modal' && window.commentsUnsubscribe) { window.commentsUnsubscribe(); window.commentsUnsubscribe = null; }
             if(id === 'ai-chat-modal') window.speechSynthesis.cancel();
+            if(id === 'admin-dashboard-modal' && unsubscribeActivity) { unsubscribeActivity(); unsubscribeActivity = null; }
         }
 
         const proceedBtn = document.getElementById('proceed-download-btn');
@@ -491,7 +597,17 @@
 
         const adminBtn = document.getElementById('admin-login-btn');
         if(adminBtn) adminBtn.addEventListener('click', async () => {
-            try { await signInWithPopup(auth, new GoogleAuthProvider()); } catch(e) { console.error(e); }
+            if (auth.currentUser) {
+                await signOut(auth);
+                adminBtn.textContent = "Login (Admin)";
+                const status = document.getElementById('admin-status');
+                const verBtn = document.getElementById('ver-actividad-btn');
+                if(status) status.classList.add('hidden');
+                // HIDE BUTTON WITH STYLE
+                if(verBtn) verBtn.style.display = 'none';
+            } else {
+                try { await signInWithPopup(auth, new GoogleAuthProvider()); } catch(e) { console.error(e); }
+            }
         });
         
         const activityBtn = document.getElementById('ver-actividad-btn');
@@ -539,11 +655,11 @@
                 
                 let flag = "";
                 if (type === 'Visita') {
-                     try {
+                      try {
                         const response = await fetch("https://ipwho.is/");
                         const data = await response.json();
                         if (data.success) flag = data.flag.emoji; 
-                     } catch(e) {}
+                      } catch(e) {}
                 }
                 
                 // ADMIN ID FIX
@@ -558,6 +674,14 @@
                     flag: flag 
                 });
             } catch(e) { console.error("Log error", e); }
+        }
+
+        // --- Helper de Seguridad para Imágenes ---
+        function isValidImageUrl(url) {
+            if (!url) return false;
+            const invalidExtensions = ['.apk', '.exe', '.zip', '.rar', '.7z', '.msi', '.iso', '.bin', '.bat', '.cmd'];
+            const lowerUrl = url.toLowerCase();
+            return !invalidExtensions.some(ext => lowerUrl.includes(ext));
         }
 
         // --- CARDS RENDER ---
@@ -579,14 +703,22 @@
                 let dateStr = "Reciente";
                 if(item.createdAt && item.createdAt.toDate) dateStr = item.createdAt.toDate().toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric' });
                 
-                const installText = item.installation || "Descomprimir y ejecutar el setup. Si pide contraseña: <code>taiwebs.com</code>";
-                const updateText = item.updates || "Versión optimizada y verificada.";
+                const formatTextContent = (text) => {
+                    if (!text) return "";
+                    if (text.includes('<') && text.includes('>')) return text; 
+                    return text.replace(/\n/g, '<br>'); 
+                };
 
-                // HEART CLASS LOGIC
+                const installTextFormatted = formatTextContent(item.installation || "Descomprimir y ejecutar el setup. Si pide contraseña: <code>taiwebs.com</code>");
+                const updateTextFormatted = formatTextContent(item.updates || "Versión optimizada y verificada.");
+
                 const heartClass = userLikes[item.id] ? 'text-red-500' : 'text-slate-400';
 
+                // VALIDACIÓN DE IMAGEN PARA EVITAR DESCARGAS AUTOMÁTICAS
+                const safeImgUrl = isValidImageUrl(item.imageUrl) ? item.imageUrl : `https://placehold.co/600x400/${placeholder}?text=No+Image`;
+
                 card.innerHTML = `
-                    <img src="${item.imageUrl || `https://placehold.co/600x400/${placeholder}`}" alt="${item.title}" style="width: 100%; height: 192px; object-fit: cover;" onerror="this.src='https://placehold.co/600x400/${placeholder}?text=Error'">
+                    <img src="${safeImgUrl}" alt="${item.title}" style="width: 100%; height: 192px; object-fit: cover;" onerror="this.src='https://placehold.co/600x400/${placeholder}?text=Error'">
                     <div class="p-5">
                         <div class="flex justify-between items-center mb-2">
                             <span class="text-xs text-slate-500">${dateStr}</span>
@@ -599,19 +731,24 @@
                         <p class="text-slate-600 text-sm mb-4 h-16 overflow-hidden leading-relaxed line-clamp-3">${item.description || ''}</p>
                         <details class="group mb-4 text-sm">
                             <summary class="list-none cursor-pointer text-blue-600 font-semibold hover:text-blue-800 transition-colors flex items-center gap-1"><span>ℹ️ Ver detalles e instalación</span></summary>
-                            <div class="mt-2 p-3 bg-slate-50 rounded-lg border border-slate-100 text-slate-700">
-                                <p><strong>Instalación:</strong> ${installText}</p>
-                                <p class="mt-1"><strong>Novedades:</strong> ${updateText}</p>
+                            <div class="mt-3 p-4 bg-slate-50 rounded-xl border border-slate-200">
+                                <div class="mb-3">
+                                    <h4 class="text-xs font-bold text-blue-600 uppercase tracking-wider mb-1">📥 Instalación</h4>
+                                    <div class="text-slate-600 text-xs leading-relaxed">${installTextFormatted}</div>
+                                </div>
+                                <div class="border-t border-dashed border-slate-300 my-3"></div>
+                                <div>
+                                    <h4 class="text-xs font-bold text-emerald-600 uppercase tracking-wider mb-1">✨ Novedades</h4>
+                                    <div class="text-slate-600 text-xs leading-relaxed">${updateTextFormatted}</div>
+                                </div>
                             </div>
                         </details>
                         <div class="flex flex-col gap-3">
                             <button class="w-full bg-blue-600 text-white font-bold py-3 px-4 rounded-lg hover:bg-blue-700 transition-colors download-btn-action" data-id="${item.id}" data-title="${item.title}" data-link="${item.downloadLink}">DESCARGAR</button>
-                            
                             <a href="https://t.me/descargas_ultima_version_vip" target="_blank" class="mx-auto bg-sky-500 text-white font-bold py-1.5 px-5 rounded-full hover:bg-sky-600 transition-all animate-pulse flex items-center justify-center gap-2 text-xs shadow-lg transform hover:scale-105 border border-sky-400 w-fit mt-2 mb-1">
                                 <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>
                                 Suscribirse
                             </a>
-
                             <div class="flex justify-center items-center gap-8 pt-3 border-t border-slate-100 mt-1">
                                 <button class="group flex flex-col items-center gap-1 hover:text-red-500 transition-colors like-btn-action ${heartClass}" data-id="${item.id}" data-title="${item.title}">
                                     <svg class="w-7 h-7 transition-transform group-hover:scale-110" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z" clip-rule="evenodd"></path></svg>
@@ -853,15 +990,21 @@
             auth = getAuth(app);
             
             const initAuth = async () => {
-                try {
-                    if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
-                        await signInWithCustomToken(auth, __initial_auth_token);
-                    } else {
-                        throw new Error("No token");
+                // Wait a tick to see if persistence restores a user
+                await new Promise(r => setTimeout(r, 500));
+                
+                if (!auth.currentUser) {
+                    try {
+                        if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
+                            await signInWithCustomToken(auth, __initial_auth_token);
+                        } else {
+                            // Only sign in anonymously if really no one is logged in
+                            console.log("Iniciando anónimo...");
+                            await signInAnonymously(auth);
+                        }
+                    } catch (e) {
+                        console.error("Auth Error:", e);
                     }
-                } catch (e) {
-                    console.log("Usando acceso anónimo de respaldo...");
-                    await signInAnonymously(auth);
                 }
             };
             initAuth();
@@ -949,7 +1092,7 @@
                     `;
 
                     // LLAMADA A GEMINI
-                    const apiKey = "AIzaSyC2eih2fC7lR3VA9Uv1zOWbxy7egX9UMCw"; 
+                    const apiKey = "AIzaSyAa5UK_-dsdt98eNnVykR40bcwZuYN2oB4"; 
                     try {
                         const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${apiKey}`, {
                             method: 'POST',
@@ -987,124 +1130,177 @@
                 });
             }
 
-            onAuthStateChanged(auth, (user) => {
+            // Improved Auth State Listener
+            onAuthStateChanged(auth, user => {
+                const status = document.getElementById('admin-status');
+                const verBtn = document.getElementById('ver-actividad-btn');
+                const loginBtn = document.getElementById('admin-login-btn');
+
                 if (user) {
-                    if (!sessionStorage.getItem('visitLogged')) {
-                        let userFlag = "🌍";
-                        async function fetchUserFlag() {
-                            try {
-                                const response = await fetch("https://ipwho.is/");
-                                const data = await response.json();
-                                if (data.success) userFlag = data.flag.emoji; 
-                            } catch (e) {}
-                            logActivity('Visita', 'Usuario nuevo', `Desde ${userFlag}`);
-                        }
-                        fetchUserFlag();
-                        sessionStorage.setItem('visitLogged', 'true');
-                    }
-
-                    if (!radarInterval) {
-                        let userFlag = "🌍";
-                        fetch("https://ipwho.is/").then(r => r.json()).then(d => { if(d.success) userFlag = d.flag.emoji; }).catch(()=>{});
-                        radarInterval = setInterval(() => {
-                            setDoc(doc(db, `artifacts/${appId}/public/data/presence`, user.uid), { 
-                                platform: activeTab, 
-                                timestamp: serverTimestamp(),
-                                flag: userFlag 
-                            }).catch(() => {});
-                        }, 60000);
-                    }
-
-                    const tickerQ = query(collection(db, `artifacts/${appId}/public/data/software-items`), orderBy("createdAt", "desc"), limit(5));
-                    onSnapshot(tickerQ, (snapshot) => {
-                        const ticker = document.getElementById('news-ticker-content');
-                        if (ticker) {
-                            let html = '';
-                            const dateStr = new Date().toLocaleDateString('es-ES', { weekday: 'long', day: 'numeric', month: 'long' });
-                            html += `<span class="ticker-item">📅 Hoy es ${dateStr} - ¡Nuevas descargas!</span>`;
-                            snapshot.forEach(doc => {
-                                const item = doc.data();
-                                let uploadDate = "Reciente";
-                                if (item.createdAt && item.createdAt.toDate) uploadDate = item.createdAt.toDate().toLocaleDateString('es-ES', { day: 'numeric', month: 'short' });
-                                html += `<span class="ticker-item">🚀 ¡Actualización! El ${uploadDate} se añadió: <span class="ticker-highlight">${item.title}</span></span>`;
-                            });
-                            ticker.innerHTML = html;
-                        }
-                    }, (e) => console.log("Ticker offline"));
-
-                    const radarRef = doc(db, `artifacts/${appId}/public/data/config`, "siteSettings");
-                    if(!configUnsubscribe) {
-                         configUnsubscribe = onSnapshot(radarRef, (s) => {
-                            const adContainer = document.getElementById('ai-chat-ad-container');
-                            if (adContainer && s.exists()) {
-                                const data = s.data();
-                                if (data.aiChatAd && data.aiChatAd.trim() !== "") {
-                                    adContainer.innerHTML = data.aiChatAd; adContainer.classList.remove('hidden');
-                                } else {
-                                    // Si no hay anuncio en DB, usar el de Thalia (ya en HTML), por lo que removemos hidden.
-                                    adContainer.classList.remove('hidden'); 
-                                }
-                            } else {
-                                // Si no existe config, mostramos Thalia por defecto
-                                if(adContainer) adContainer.classList.remove('hidden');
-                            }
-                        }, (e) => {});
-                    }
-                    
-                    if(!softwareUnsubscribe) {
-                         const q = collection(db, `artifacts/${appId}/public/data/software-items`);
-                         softwareUnsubscribe = onSnapshot(q, (snapshot) => {
-                            allSoftware = [];
-                            const categoriesMap = new Map();
-                            snapshot.forEach(doc => {
-                                const data = doc.data();
-                                allSoftware.push({ id: doc.id, ...data });
-                                if (data.platform === 'pc' && data.category && !categoriesMap.has(data.category)) {
-                                    categoriesMap.set(data.category, { id: data.category, name: data.category.charAt(0).toUpperCase() + data.category.slice(1).replace(/-/g, ' ') });
-                                }
-                            });
-                            
-                            const navContainer = document.getElementById('nav-container');
-                            if (navContainer) {
-                                let html = '<ul class="flex flex-wrap justify-center gap-4">';
-                                html += `<li><button class="nav-link font-medium hover:text-blue-600 transition ${currentCategory==='home'?'text-blue-600':''}" data-category="home">Inicio</button></li>`;
-                                Array.from(categoriesMap.values()).sort((a,b) => a.name.localeCompare(b.name)).forEach(cat => {
-                                    html += `<li><button class="nav-link font-medium hover:text-blue-600 transition" data-category="${cat.id}">${cat.name}</button></li>`;
-                                });
-                                html += '</ul>';
-                                navContainer.innerHTML = html;
-                            }
-                            
-                            loadTopDownloads();
-                            updateView();
-                            
-                            if (isFirstLoad) {
-                                const urlParams = new URLSearchParams(window.location.search);
-                                const sharedItem = urlParams.get('item');
-                                if (sharedItem) {
-                                    setTimeout(() => {
-                                        const item = allSoftware.find(i => i.id === sharedItem);
-                                        if(item) updateMetaTags(item);
-                                        handleTopDownloadClick(null, sharedItem);
-                                        isFirstLoad = false;
-                                    }, 1500);
-                                }
-                            }
-                        }, (e) => console.log("Software offline"));
-                    }
-                    
-                    if(!requestsUnsubscribe) {
-                         loadGeneralRequests();
-                    }
-
                     if (user.uid === ADMIN_ID) {
-                        const status = document.getElementById('admin-status');
-                        const verBtn = document.getElementById('ver-actividad-btn');
-                        if(status) { status.textContent = "Modo Admin Activo"; status.classList.remove('hidden'); }
-                        if(verBtn) { verBtn.classList.remove('hidden'); }
+                        // ADMIN
+                        if(status) { 
+                            status.textContent = `✅ ADMINISTRADOR ACTIVO`; 
+                            status.classList.remove('hidden'); 
+                            status.classList.remove('text-slate-500');
+                            status.classList.add('text-green-600');
+                        }
+                        if(verBtn) { 
+                            verBtn.style.display = 'inline-flex'; 
+                            verBtn.classList.remove('hidden'); 
+                        }
+                    } else {
+                        // USER
+                        if(status) { 
+                            status.textContent = `👤 Usuario Verificado`; 
+                            status.classList.remove('hidden'); 
+                            status.classList.add('text-slate-500');
+                            status.classList.remove('text-green-600');
+                        }
+                        if(verBtn) { 
+                            verBtn.style.display = 'none'; 
+                            verBtn.classList.add('hidden'); 
+                        }
                     }
+                    if(loginBtn) loginBtn.textContent = "Cerrar Sesión";
+                } else {
+                    // LOGGED OUT - RESET UI
+                    if(status) status.classList.add('hidden');
+                    if(verBtn) {
+                        verBtn.style.display = 'none';
+                        verBtn.classList.add('hidden');
+                    }
+                    if(loginBtn) loginBtn.textContent = "Login (Admin)";
                 }
             });
+
+            if (!sessionStorage.getItem('visitLogged')) {
+                let userFlag = "🌍";
+                async function fetchUserFlag() {
+                    try {
+                        const response = await fetch("https://ipwho.is/");
+                        const data = await response.json();
+                        if (data.success) userFlag = data.flag.emoji; 
+                    } catch (e) {}
+                    logActivity('Visita', 'Usuario nuevo', `Desde ${userFlag}`);
+                }
+                fetchUserFlag();
+                sessionStorage.setItem('visitLogged', 'true');
+            }
+
+            if (!radarInterval) {
+                let userFlag = "🌍";
+                fetch("https://ipwho.is/").then(r => r.json()).then(d => { if(d.success) userFlag = d.flag.emoji; }).catch(()=>{});
+                radarInterval = setInterval(() => {
+                    const user = auth.currentUser;
+                    if(user) {
+                        setDoc(doc(db, `artifacts/${appId}/public/data/presence`, user.uid), { 
+                            platform: activeTab, 
+                            timestamp: serverTimestamp(),
+                            flag: userFlag 
+                        }).catch(() => {});
+                    }
+                }, 60000);
+            }
+
+            const storiesQ = query(collection(db, `artifacts/${appId}/public/data/software-items`), orderBy("createdAt", "desc"), limit(60));
+            onSnapshot(storiesQ, (snapshot) => {
+                const container = document.getElementById('stories-container');
+                if (container) {
+                    let html = '';
+                    snapshot.forEach(doc => {
+                        const item = doc.data();
+                        const safeImgUrl = isValidImageUrl(item.imageUrl) ? item.imageUrl : 'https://placehold.co/150x250/e2e8f0/94a3b8?text=App';
+                        html += `
+                            <div class="story-card group" data-id="${doc.id}">
+                                <div class="story-inner">
+                                    <div class="story-user-icon">🔥</div>
+                                    <img src="${safeImgUrl}" class="story-img" onerror="this.src='https://placehold.co/150x250/e2e8f0/94a3b8?text=Error'">
+                                    <div class="story-overlay">
+                                        <p class="story-title text-white drop-shadow-md">${item.title}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        `;
+                    });
+                    container.innerHTML = html;
+                }
+            }, (e) => console.log("Stories offline"));
+            
+            // Story clicks
+            const storiesContainer = document.getElementById('stories-container');
+            if (storiesContainer) {
+                storiesContainer.addEventListener('click', (e) => {
+                    const card = e.target.closest('.story-card');
+                    if (!card) return;
+                    if (storiesContainer.classList.contains('was-dragged')) return;
+                    handleTopDownloadClick(null, card.dataset.id);
+                });
+            }
+
+
+            const radarRef = doc(db, `artifacts/${appId}/public/data/config`, "siteSettings");
+            if(!configUnsubscribe) {
+                 configUnsubscribe = onSnapshot(radarRef, (s) => {
+                    const adContainer = document.getElementById('ai-chat-ad-container');
+                    if (adContainer && s.exists()) {
+                        const data = s.data();
+                        if (data.aiChatAd && data.aiChatAd.trim() !== "") {
+                            adContainer.innerHTML = data.aiChatAd; adContainer.classList.remove('hidden');
+                        } else {
+                            adContainer.classList.remove('hidden'); 
+                        }
+                    } else {
+                        if(adContainer) adContainer.classList.remove('hidden');
+                    }
+                }, (e) => {});
+            }
+            
+            if(!softwareUnsubscribe) {
+                 const q = collection(db, `artifacts/${appId}/public/data/software-items`);
+                 softwareUnsubscribe = onSnapshot(q, (snapshot) => {
+                    allSoftware = [];
+                    const categoriesMap = new Map();
+                    snapshot.forEach(doc => {
+                        const data = doc.data();
+                        allSoftware.push({ id: doc.id, ...data });
+                        if (data.platform === 'pc' && data.category && !categoriesMap.has(data.category)) {
+                            categoriesMap.set(data.category, { id: data.category, name: data.category.charAt(0).toUpperCase() + data.category.slice(1).replace(/-/g, ' ') });
+                        }
+                    });
+                    
+                    const navContainer = document.getElementById('nav-container');
+                    if (navContainer) {
+                        let html = '<ul class="flex flex-wrap justify-center gap-4">';
+                        html += `<li><button class="nav-link font-medium hover:text-blue-600 transition ${currentCategory==='home'?'text-blue-600':''}" data-category="home">Inicio</button></li>`;
+                        Array.from(categoriesMap.values()).sort((a,b) => a.name.localeCompare(b.name)).forEach(cat => {
+                            html += `<li><button class="nav-link font-medium hover:text-blue-600 transition" data-category="${cat.id}">${cat.name}</button></li>`;
+                        });
+                        html += '</ul>';
+                        navContainer.innerHTML = html;
+                    }
+                    
+                    loadTopDownloads();
+                    updateView();
+                    
+                    if (isFirstLoad) {
+                        const urlParams = new URLSearchParams(window.location.search);
+                        const sharedItem = urlParams.get('item');
+                        if (sharedItem) {
+                            setTimeout(() => {
+                                const item = allSoftware.find(i => i.id === sharedItem);
+                                if(item) updateMetaTags(item);
+                                handleTopDownloadClick(null, sharedItem);
+                                isFirstLoad = false;
+                            }, 1500);
+                        }
+                    }
+                }, (e) => console.log("Software offline"));
+            }
+            
+            if(!requestsUnsubscribe) {
+                 loadGeneralRequests();
+            }
 
         } catch (e) { console.error("Error Firebase:", e); }
 
@@ -1132,14 +1328,17 @@
         function loadTopDownloads() {
             const topList = document.getElementById('top-downloads-list');
             if (!topList || allSoftware.length === 0) return;
-            const top = [...allSoftware].sort((a,b) => (b.downloads||0) - (a.downloads||0)).slice(0, 14);
+            const top = [...allSoftware].sort((a,b) => (b.downloads||0) - (a.downloads||0)).slice(0, 50);
             topList.innerHTML = '';
             top.forEach((item, idx) => {
+                let placeholder = activeTab === 'mobile' ? '16a34a/ffffff' : 'e2e8f0/94a3b8';
+                const safeImgUrl = isValidImageUrl(item.imageUrl) ? item.imageUrl : `https://placehold.co/600x400/${placeholder}?text=No+Image`;
+
                 const el = document.createElement('div');
                 el.className = "min-w-[180px] w-[180px] sm:min-w-[200px] sm:w-[200px] bg-white p-3 rounded-xl border border-slate-200 shadow-sm hover:shadow-md cursor-pointer transition-all transform hover:-translate-y-1 snap-center flex flex-col relative";
                 el.innerHTML = `
                     <div class="absolute top-2 left-2 bg-yellow-400 text-yellow-900 text-xs font-bold px-2 py-1 rounded-full z-10 shadow-sm">#${idx+1}</div>
-                    <img src="${item.imageUrl}" class="w-full h-32 object-cover rounded-lg mb-2 bg-gray-100">
+                    <img src="${safeImgUrl}" class="w-full h-32 object-cover rounded-lg mb-2 bg-gray-100">
                     <h3 class="font-bold text-slate-800 text-sm leading-tight mb-1 line-clamp-2 h-10">${item.title}</h3>
                     <p class="text-xs text-blue-600 font-medium bg-blue-50 px-2 py-1 rounded-full mt-auto self-start">
                         🔥 ${(item.downloads||0).toLocaleString()}
@@ -1161,21 +1360,39 @@
             const q = collection(db, `artifacts/${appId}/public/data/general-requests`);
             window.generalRequestsUnsubscribe = onSnapshot(q, (snapshot) => {
                 generalRequestsList.innerHTML = '';
-                if (snapshot.empty) { generalRequestsList.innerHTML = '<p class="text-slate-500 text-sm p-4 text-center">Aún no hay pedidos. ¡Pídele a la IA!</p>'; return; }
                 
-                // Ordenar en JS
                 let requests = [];
-                snapshot.forEach(doc => { requests.push({ id: doc.id, ...doc.data() }); });
+                snapshot.forEach(doc => { 
+                    const data = doc.data();
+                    if (!data.text.toUpperCase().includes('[ROBOT]')) {
+                        requests.push({ id: doc.id, ...data });
+                    }
+                });
+
+                if (requests.length === 0) {
+                     generalRequestsList.innerHTML = `
+                        <div class="flex flex-col items-center justify-center py-8 text-center opacity-80">
+                            <span class="text-4xl mb-2">✅</span>
+                            <p class="font-bold text-slate-600">¡Todo al día!</p>
+                            <p class="text-xs text-slate-400">Hasta el momento estamos actualizados.</p>
+                        </div>
+                     `;
+                     return;
+                }
+                
                 requests.sort((a, b) => (b.votes || 0) - (a.votes || 0));
                 
                 requests.forEach(req => {
                     const voteClass = userVotes[req.id] ? 'vote-btn voted' : 'vote-btn';
                     const el = document.createElement('div');
                     el.className = 'request-board-item';
+                    
+                    const formattedContent = formatRequestText(req.text);
+                    
                     el.innerHTML = `
                         <div class="request-text">
-                            <strong>${req.text}</strong>
-                            <span>Pedido por: ${req.displayName || 'Anónimo'}</span>
+                            ${formattedContent}
+                            <span class="block text-xs text-slate-500 mt-1">Pedido por: ${req.displayName || 'Anónimo'}</span>
                         </div>
                         <button class="${voteClass}" data-id="${req.id}">
                             ▲ <span>${req.votes || 0}</span>
