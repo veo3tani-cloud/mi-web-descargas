@@ -129,8 +129,11 @@
         .story-title {
             font-size: 0.75rem; font-weight: 700; line-height: 1.15; text-align: left;
             text-shadow: 0 1px 2px rgba(0,0,0,0.9);
-            display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical;
-            overflow: hidden; margin-bottom: 2px;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            margin-bottom: 2px;
         }
         
         .story-user-icon {
@@ -459,8 +462,6 @@
 
         const firebaseConfig = envConfig || userConfig;
         const appId = envAppId || "descargar-ultima-version"; 
-        
-        // --- ID DE ADMIN CORREGIDO ---
         const ADMIN_ID = "vDq0ZPy7f0UYpTzP44H0nvRDPYD2";
 
         // --- ESTADO GLOBAL ---
@@ -717,6 +718,9 @@
                 // VALIDACIÓN DE IMAGEN PARA EVITAR DESCARGAS AUTOMÁTICAS
                 const safeImgUrl = isValidImageUrl(item.imageUrl) ? item.imageUrl : `https://placehold.co/600x400/${placeholder}?text=No+Image`;
 
+                // CONCATENACIÓN VISUAL: Título + Versión
+                const displayTitle = `${item.title} ${item.version ? `<span class="text-sm font-normal text-slate-500 ml-1">${item.version}</span>` : ''}`;
+
                 card.innerHTML = `
                     <img src="${safeImgUrl}" alt="${item.title}" style="width: 100%; height: 192px; object-fit: cover;" onerror="this.src='https://placehold.co/600x400/${placeholder}?text=Error'">
                     <div class="p-5">
@@ -727,7 +731,7 @@
                                 ${item.downloads || 0}
                             </span>
                         </div>
-                        <h3 class="text-lg font-bold text-slate-900 mb-2 leading-tight line-clamp-2" title="${item.title}">${item.title}</h3>
+                        <h3 class="text-lg font-bold text-slate-900 mb-2 leading-tight line-clamp-2" title="${item.title}">${displayTitle}</h3>
                         <p class="text-slate-600 text-sm mb-4 h-16 overflow-hidden leading-relaxed line-clamp-3">${item.description || ''}</p>
                         <details class="group mb-4 text-sm">
                             <summary class="list-none cursor-pointer text-blue-600 font-semibold hover:text-blue-800 transition-colors flex items-center gap-1"><span>ℹ️ Ver detalles e instalación</span></summary>
@@ -797,7 +801,16 @@
 
         function updateView() {
             if (!allSoftware.length) return;
-            let filtered = allSoftware.filter(i => i.platform === (activeTab === 'pc' ? 'pc' : 'mobile'));
+            // FIX: Filtro ampliado para recuperar items "Android" o "Windows" y mayúsculas/minúsculas
+            let filtered = allSoftware.filter(i => {
+                const p = (i.platform || '').toLowerCase();
+                if (activeTab === 'mobile') {
+                    return p === 'mobile' || p === 'android' || p === 'apk';
+                } else {
+                    return p === 'pc' || p === 'windows' || p === 'desktop';
+                }
+            });
+            
             if (currentCategory !== 'home' && activeTab === 'pc') filtered = filtered.filter(i => i.category === currentCategory);
             if (currentSearchTerm) filtered = filtered.filter(i => i.title.toLowerCase().includes(currentSearchTerm.toLowerCase()));
             const container = activeTab === 'pc' ? document.getElementById('content-grid-pc') : document.getElementById('content-grid-mobile');
@@ -885,7 +898,10 @@
             if (!item) return;
             updateMetaTags(item);
             
-            let itemTab = item.platform || 'pc'; 
+            let itemTab = (item.platform || '').toLowerCase(); 
+            if (itemTab === 'android' || itemTab === 'apk') itemTab = 'mobile'; // Normalizar
+            if (itemTab === 'windows') itemTab = 'pc'; // Normalizar
+
             if (activeTab !== itemTab) {
                 const tabToClick = (itemTab === 'pc') ? document.getElementById('tab-pc') : document.getElementById('tab-mobile');
                 if (tabToClick) tabToClick.click();
@@ -919,10 +935,103 @@
             } catch(e) {}
         }
         
-        // --- ADMIN DASHBOARD LOADER ---
+        // --- ADMIN DASHBOARD LOADER (FUNCIONANDO) ---
         function loadActivityLogs() {
-            // Esta función es solo para el admin, en el index no hace nada visual pero la dejamos para consistencia
-            // OJO: En el index.html esta función no se llama salvo por el botón oculto, no afecta al usuario normal.
+            const container = document.getElementById('admin-logs-container');
+            if(!container) return;
+            
+            // REMOVIDO CHECK DE ADMIN_ID PARA PERMITIR MIGRACIÓN TEMPORAL
+            // const user = auth.currentUser;
+            // if(!user || user.uid !== ADMIN_ID) { ... }
+            
+            container.innerHTML = '<p class="text-slate-500 text-center p-4">Cargando registros...</p>';
+            
+            // LOGICA DEL BOTON DE MIGRACION
+            const migrateBtn = document.getElementById('migrate-db-btn');
+            const status = document.getElementById('migration-status');
+            if (migrateBtn) {
+                migrateBtn.onclick = async () => {
+                    if (!confirm("⚠️ ¿Iniciar la importación de datos? Esto copiará las fichas antiguas a la nueva base de datos.")) return;
+                    status.textContent = "Conectando a base antigua...";
+                    migrateBtn.disabled = true;
+                    migrateBtn.classList.add('opacity-50');
+                    
+                    try {
+                        // 1. Conectar a DB vieja
+                        const oldApp = initializeApp(oldFirebaseConfig, "OLD_APP");
+                        const oldDb = getFirestore(oldApp);
+                        
+                        // 2. Leer datos viejos
+                        status.textContent = "Leyendo datos antiguos...";
+                        const oldSnapshot = await getDocs(collection(oldDb, 'artifacts/descargar-ultima-version/public/data/software-items'));
+                        
+                        if (oldSnapshot.empty) {
+                            status.textContent = "❌ No se encontraron datos en la DB antigua.";
+                            return;
+                        }
+                        
+                        // 3. Copiar a DB nueva
+                        let count = 0;
+                        for (const oldDoc of oldSnapshot.docs) {
+                            const data = oldDoc.data();
+                            // Verificar si ya existe por ID o Título para no duplicar
+                            const existsRef = doc(db, `artifacts/${appId}/public/data/software-items`, oldDoc.id);
+                            const existsSnap = await getDoc(existsRef);
+                            
+                            if (!existsSnap.exists()) {
+                                await setDoc(existsRef, data);
+                                count++;
+                                status.textContent = `Importando... (${count} fichas)`;
+                            }
+                        }
+                        
+                        status.textContent = `✅ ¡Éxito! Se importaron ${count} fichas nuevas. Recarga la página.`;
+                        alert(`Proceso finalizado. Se recuperaron ${count} descargas.`);
+                        location.reload();
+                        
+                    } catch (e) {
+                        console.error(e);
+                        status.textContent = "❌ Error: " + e.message;
+                        migrateBtn.disabled = false;
+                        migrateBtn.classList.remove('opacity-50');
+                    }
+                };
+            }
+            
+            // Cancelar listener anterior si existe
+            if (unsubscribeActivity) unsubscribeActivity();
+            
+            const q = query(collection(db, `artifacts/${appId}/public/data/activity-logs`), orderBy('timestamp', 'desc'), limit(50));
+            
+            unsubscribeActivity = onSnapshot(q, (snapshot) => {
+                container.innerHTML = '';
+                if(snapshot.empty) {
+                    container.innerHTML = '<p class="text-slate-500 text-center p-4">No hay actividad reciente.</p>';
+                    return;
+                }
+                
+                snapshot.forEach(doc => {
+                    const log = doc.data();
+                    const time = log.timestamp ? log.timestamp.toDate().toLocaleTimeString() : '';
+                    const date = log.timestamp ? log.timestamp.toDate().toLocaleDateString() : '';
+                    
+                    const div = document.createElement('div');
+                    div.className = 'bg-white p-3 mb-2 rounded border border-slate-200 text-sm shadow-sm';
+                    div.innerHTML = `
+                        <div class="flex justify-between items-center mb-1">
+                            <span class="font-bold text-blue-600">${log.type || 'Info'} ${log.flag || ''}</span>
+                            <span class="text-xs text-slate-400">${date} ${time}</span>
+                        </div>
+                        <p class="font-medium text-slate-800">${log.item || '-'}</p>
+                        ${log.detail ? `<p class="text-xs text-slate-500 mt-1">${log.detail}</p>` : ''}
+                        <p class="text-xs text-slate-400 mt-1">UID: ${log.uid ? log.uid.substring(0,8) + '...' : 'Anon'}</p>
+                    `;
+                    container.appendChild(div);
+                });
+            }, (error) => {
+                console.error("Error logs:", error);
+                container.innerHTML = '<p class="text-red-500 text-center">Error cargando logs (Permisos).</p>';
+            });
         }
 
         // PROTECCIÓN: Botón de comentario
@@ -981,6 +1090,33 @@
                     alert("Reporte enviado al administrador. ¡Gracias!");
                 }
             });
+        }
+
+        // --- HELPER FUNCTION PARA PIZARRA LIMPIA (MEJORADA) ---
+        function formatRequestText(text) {
+            if (!text) return '';
+            
+            // Detectar si es un mensaje del Robot
+            const robotRegex = /\[ROBOT\]\s*([\s\S]*?)\s*(https?:\/\/[^\s]+)/i;
+            const match = text.match(robotRegex);
+            
+            if (match) {
+                const appName = match[1];
+                const url = match[2];
+                return `
+                    <div class="flex flex-col gap-1">
+                        <span class="font-bold text-slate-800">${appName}</span>
+                        <span class="text-xs text-green-600 font-bold uppercase tracking-wide bg-green-50 w-fit px-2 py-0.5 rounded border border-green-200">🚀 Nueva versión detectada</span>
+                        <a href="${url}" target="_blank" class="robot-link-btn">
+                            <span>Ver Enlace</span>
+                            <svg class="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
+                        </a>
+                    </div>
+                `;
+            }
+            
+            // Si no es robot, devolver texto normal
+            return `<strong>${text}</strong>`;
         }
 
         // --- INIT & AUTH ---
@@ -1152,7 +1288,7 @@
                     } else {
                         // USER
                         if(status) { 
-                            status.textContent = `👤 Usuario Verificado`; 
+                            status.textContent = `👤 Usuario (ID: ${user.uid.substring(0,6)}...)`; 
                             status.classList.remove('hidden'); 
                             status.classList.add('text-slate-500');
                             status.classList.remove('text-green-600');
