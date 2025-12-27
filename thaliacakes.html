@@ -120,7 +120,7 @@
         }
 
         const COLLECTION_NAME = 'sweetcrm_customers';
-        // Usamos un ID por defecto para localhost si no existe el del entorno
+        // Usamos un ID por defecto para que sea el mismo en localhost y en la web
         const APP_ID = typeof window.__app_id !== 'undefined' ? window.__app_id : 'thaliacakes-v1';
         const initialAuthToken = (typeof window.__initial_auth_token !== 'undefined') ? window.__initial_auth_token : null;
 
@@ -414,9 +414,9 @@
             useEffect(() => {
                 if (!user || !db) return;
                 
-                // Siempre usamos la ruta de usuario segura para evitar errores de permisos
-                // Path: artifacts/{APP_ID}/users/{userId}/{COLLECTION_NAME}
-                const q = query(collection(db, 'artifacts', APP_ID, 'users', user.uid, COLLECTION_NAME));
+                // SOLUCIÓN CLAVE: Usamos 'public/data' en lugar de 'users/uid'
+                // Esto permite que todos los dispositivos vean los mismos datos compartidos.
+                const q = query(collection(db, 'artifacts', APP_ID, 'public', 'data', COLLECTION_NAME));
                 
                 const unsubscribe = onSnapshot(q, (snapshot) => {
                     setCustomers(snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })));
@@ -480,7 +480,8 @@
             const handleUpdateProfile = async (customerId, newData) => {
                 if (!user || !db) return;
                 try {
-                    const docRef = doc(db, 'artifacts', APP_ID, 'users', user.uid, COLLECTION_NAME, customerId);
+                    // Usamos la ruta pública
+                    const docRef = doc(db, 'artifacts', APP_ID, 'public', 'data', COLLECTION_NAME, customerId);
                     await updateDoc(docRef, newData);
                     if (viewingCustomer && viewingCustomer.id === customerId) setViewingCustomer({ ...viewingCustomer, ...newData });
                 } catch (error) { console.error("Error updating profile:", error); alert("Error al actualizar perfil."); }
@@ -495,7 +496,7 @@
                     return order;
                 });
                 try {
-                    const docRef = doc(db, 'artifacts', APP_ID, 'users', user.uid, COLLECTION_NAME, customerId);
+                    const docRef = doc(db, 'artifacts', APP_ID, 'public', 'data', COLLECTION_NAME, customerId);
                     await updateDoc(docRef, { history: newHistory });
                     if (viewingCustomer && viewingCustomer.id === customerId) setViewingCustomer({ ...viewingCustomer, history: newHistory });
                 } catch (error) { console.error("Error updating order:", error); }
@@ -512,7 +513,7 @@
                     return order;
                 });
                 try {
-                    const docRef = doc(db, 'artifacts', APP_ID, 'users', user.uid, COLLECTION_NAME, customerId);
+                    const docRef = doc(db, 'artifacts', APP_ID, 'public', 'data', COLLECTION_NAME, customerId);
                     await updateDoc(docRef, { history: newHistory });
                     if (viewingCustomer && viewingCustomer.id === customerId) setViewingCustomer({ ...viewingCustomer, history: newHistory });
                 } catch (error) { console.error("Error uploading photo:", error); }
@@ -543,7 +544,8 @@
                 };
 
                 const existing = customers.find(c => c.name.toLowerCase() === name.toLowerCase().trim());
-                const colRef = collection(db, 'artifacts', APP_ID, 'users', user.uid, COLLECTION_NAME);
+                // Usamos la ruta pública
+                const colRef = collection(db, 'artifacts', APP_ID, 'public', 'data', COLLECTION_NAME);
 
                 try {
                     if (existing) {
@@ -581,7 +583,7 @@
                 e.stopPropagation();
                 if (!confirm('¿Borrar cliente?')) return;
                 try {
-                    const docRef = doc(db, 'artifacts', APP_ID, 'users', user.uid, COLLECTION_NAME, id);
+                    const docRef = doc(db, 'artifacts', APP_ID, 'public', 'data', COLLECTION_NAME, id);
                     await deleteDoc(docRef);
                 } catch (e) { console.error(e); }
             };
