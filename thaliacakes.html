@@ -1,591 +1,755 @@
-import React, { useState, useEffect, useMemo } from 'react';
-import { 
-  Users, 
-  TrendingUp, 
-  AlertTriangle, 
-  Plus, 
-  Search, 
-  Cake, 
-  Calendar, 
-  DollarSign, 
-  ArrowUpRight, 
-  ArrowDownRight,
-  Award,
-  Download,
-  Trash2,
-  PieChart as PieChartIcon,
-  Cloud,
-  Loader2
-} from 'lucide-react';
-import { 
-  BarChart, 
-  Bar, 
-  XAxis, 
-  YAxis, 
-  CartesianGrid, 
-  Tooltip, 
-  ResponsiveContainer
-} from 'recharts';
-
-// --- Firebase Imports ---
-import { initializeApp } from "firebase/app";
-import { 
-  getAuth, 
-  signInAnonymously, 
-  onAuthStateChanged,
-  signInWithCustomToken
-} from "firebase/auth";
-import { 
-  getFirestore, 
-  collection, 
-  addDoc, 
-  updateDoc, 
-  deleteDoc, 
-  doc, 
-  onSnapshot,
-  query
-} from "firebase/firestore";
-
-// --- Configuración de Firebase ---
-const firebaseConfig = JSON.parse(__firebase_config);
-const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
-const db = getFirestore(app);
-const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
-const COLLECTION_NAME = 'sweetcrm_customers'; // Nombre de la colección en la base de datos
-
-// --- Componentes UI Básicos ---
-
-const Card = ({ children, className = "" }) => (
-  <div className={`bg-white rounded-xl shadow-sm border border-slate-200 ${className}`}>
-    {children}
-  </div>
-);
-
-const Badge = ({ children, type = 'neutral' }) => {
-  const styles = {
-    neutral: 'bg-slate-100 text-slate-600',
-    success: 'bg-emerald-100 text-emerald-700',
-    warning: 'bg-amber-100 text-amber-700',
-    danger: 'bg-rose-100 text-rose-700',
-    indigo: 'bg-indigo-100 text-indigo-700',
-    purple: 'bg-purple-100 text-purple-700',
-  };
-  return (
-    <span className={`px-2.5 py-0.5 rounded-full text-xs font-medium ${styles[type] || styles.neutral}`}>
-      {children}
-    </span>
-  );
-};
-
-// --- Lógica Principal ---
-
-export default function SweetCRM() {
-  const [activeTab, setActiveTab] = useState('dashboard');
-  const [showAddModal, setShowAddModal] = useState(false);
-  const [searchTerm, setSearchTerm] = useState('');
-  const [customers, setCustomers] = useState([]);
-  const [user, setUser] = useState(null);
-  const [loading, setLoading] = useState(true);
-
-  // 1. Autenticación con Firebase
-  useEffect(() => {
-    const initAuth = async () => {
-      try {
-        if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
-          await signInWithCustomToken(auth, __initial_auth_token);
-        } else {
-          await signInAnonymously(auth);
-        }
-      } catch (error) {
-        console.error("Error de autenticación:", error);
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SweetCRM - Control de Pastelería</title>
+    
+    <!-- 1. Estilos: Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- 2. Import Map -->
+    <script type="importmap">
+    {
+      "imports": {
+        "react": "https://esm.sh/react@18.2.0",
+        "react-dom": "https://esm.sh/react-dom@18.2.0",
+        "react-dom/client": "https://esm.sh/react-dom@18.2.0/client",
+        "lucide-react": "https://esm.sh/lucide-react@0.263.1",
+        "recharts": "https://esm.sh/recharts@2.12.0?external=react,react-dom",
+        "firebase/app": "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js",
+        "firebase/auth": "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js",
+        "firebase/firestore": "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js"
       }
-    };
-    initAuth();
-    
-    const unsubscribe = onAuthStateChanged(auth, (u) => {
-      setUser(u);
-    });
-    return () => unsubscribe();
-  }, []);
+    }
+    </script>
 
-  // 2. Sincronización de Datos en Tiempo Real (Firestore)
-  useEffect(() => {
-    if (!user) return;
+    <!-- 3. Babel -->
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
 
-    // Escuchar cambios en la colección 'sweetcrm_customers'
-    // Usamos 'public' para que puedas compartir esto con tu equipo si quisieras, 
-    // o cámbialo a 'users/${user.uid}/...' si quieres que sea 100% privado.
-    // Siguiendo las reglas: artifacts/{appId}/public/data/{collectionName}
-    const q = query(collection(db, 'artifacts', appId, 'public', 'data', COLLECTION_NAME));
-    
-    const unsubscribe = onSnapshot(q, (snapshot) => {
-      const loadedCustomers = snapshot.docs.map(doc => ({
-        id: doc.id,
-        ...doc.data()
-      }));
-      setCustomers(loadedCustomers);
-      setLoading(false);
-    }, (error) => {
-      console.error("Error leyendo datos:", error);
-      setLoading(false);
-    });
+    <style>
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        .animate-fade-in { animation: fadeIn 0.5s ease-out; }
+        body { background-color: #f8fafc; }
+        /* Scrollbar fina */
+        .thin-scrollbar::-webkit-scrollbar { width: 6px; }
+        .thin-scrollbar::-webkit-scrollbar-track { background: #f1f5f9; }
+        .thin-scrollbar::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; }
+        /* Efecto para imágenes */
+        .img-hover-zoom { transition: transform 0.3s ease; }
+        .img-hover-zoom:hover { transform: scale(1.05); }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
 
-    return () => unsubscribe();
-  }, [user]);
-
-  // --- Análisis Inteligente de Datos ---
-  
-  const metrics = useMemo(() => {
-    const totalRevenue = customers.reduce((acc, curr) => acc + (curr.totalSpent || 0), 0);
-    const totalOrders = customers.reduce((acc, curr) => acc + (curr.orders || 0), 0);
-    const avgTicket = totalOrders > 0 ? (totalRevenue / totalOrders).toFixed(2) : 0;
-    
-    const threeMonthsAgo = new Date();
-    threeMonthsAgo.setMonth(threeMonthsAgo.getMonth() - 3);
-    const atRisk = customers.filter(c => c.lastOrder && new Date(c.lastOrder) < threeMonthsAgo && c.orders > 1).length;
-
-    const sortedBySpend = [...customers].sort((a, b) => (b.totalSpent || 0) - (a.totalSpent || 0));
-    const top20Count = Math.ceil(customers.length * 0.2);
-    const vips = customers.length > 0 ? sortedBySpend.slice(0, top20Count).length : 0;
-
-    return { totalRevenue, totalOrders, avgTicket, atRisk, vips };
-  }, [customers]);
-
-  const enrichedCustomers = useMemo(() => {
-    const today = new Date();
-    const threeMonthsAgo = new Date();
-    threeMonthsAgo.setMonth(threeMonthsAgo.getMonth() - 3);
-    
-    return customers.map(c => {
-      let status = 'Regular';
-      let statusColor = 'neutral';
-      const lastOrderDate = c.lastOrder ? new Date(c.lastOrder) : new Date();
-      
-      if ((c.totalSpent || 0) > 1000 || (c.orders || 0) > 10) {
-        status = 'VIP';
-        statusColor = 'purple';
-      } else if (lastOrderDate < threeMonthsAgo && (c.orders || 0) > 1) {
-        status = 'En Riesgo';
-        statusColor = 'danger';
-      } else if ((c.orders || 0) === 1 && (today - new Date(c.joinDate)) / (1000 * 60 * 60 * 24) < 30) {
-        status = 'Nuevo';
-        statusColor = 'success';
-      } else if ((c.orders || 0) > 3 && lastOrderDate > threeMonthsAgo) {
-        status = 'Fiel';
-        statusColor = 'indigo';
-      }
-
-      const estimatedNext = new Date(lastOrderDate);
-      estimatedNext.setDate(estimatedNext.getDate() + 60); 
-
-      return { ...c, status, statusColor, estimatedNext };
-    }).filter(c => 
-      c.name.toLowerCase().includes(searchTerm.toLowerCase()) || 
-      (c.email && c.email.toLowerCase().includes(searchTerm.toLowerCase()))
-    );
-  }, [customers, searchTerm]);
-
-  // --- Funciones de Acción con Firebase ---
-
-  const handleAddOrder = async (e) => {
-    e.preventDefault();
-    if (!user) return;
-
-    const formData = new FormData(e.target);
-    const name = formData.get('name');
-    const amount = parseFloat(formData.get('amount'));
-    const item = formData.get('item');
-    const date = new Date().toISOString().split('T')[0];
-
-    // Buscar si el cliente existe en la lista que ya tenemos en memoria (sincronizada con Firebase)
-    const existingCustomer = customers.find(c => c.name.toLowerCase() === name.toLowerCase());
-
-    try {
-      if (existingCustomer) {
-        // Actualizar cliente existente en Firebase
-        const customerRef = doc(db, 'artifacts', appId, 'public', 'data', COLLECTION_NAME, existingCustomer.id);
+    <!-- 4. Tu Aplicación React -->
+    <script type="text/babel" data-type="module">
+        import React, { useState, useEffect, useMemo, useRef } from 'react';
+        import { createRoot } from 'react-dom/client';
+        import { 
+            Users, TrendingUp, AlertTriangle, Plus, Search, Cake, 
+            Calendar, DollarSign, Award, Download, Trash2, 
+            PieChart as PieChartIcon, Cloud, Loader2, Copy,
+            Eye, FileText, CheckCircle, Clock, CreditCard, X,
+            Heart, Scale, Shapes, Palette, BellRing, Truck,
+            Check, XCircle, Edit3, Save, RotateCw, Image as ImageIcon,
+            Upload, Camera, Maximize2
+        } from 'lucide-react';
+        import { 
+            BarChart, Bar, XAxis, YAxis, CartesianGrid, 
+            Tooltip, ResponsiveContainer 
+        } from 'recharts';
         
-        await updateDoc(customerRef, {
-          totalSpent: (existingCustomer.totalSpent || 0) + amount,
-          orders: (existingCustomer.orders || 0) + 1,
-          lastOrder: date,
-          history: [...(existingCustomer.history || []), { date, amount, item }]
-        });
-      } else {
-        // Crear nuevo cliente en Firebase
-        const newCustomer = {
-          name,
-          phone: formData.get('phone'),
-          email: formData.get('email'),
-          totalSpent: amount,
-          orders: 1,
-          lastOrder: date,
-          joinDate: date,
-          history: [{ date, amount, item }]
+        // Firebase Imports
+        import { initializeApp } from "firebase/app";
+        import { 
+            getAuth, signInAnonymously, onAuthStateChanged, signInWithCustomToken 
+        } from "firebase/auth";
+        import { 
+            getFirestore, collection, addDoc, updateDoc, deleteDoc, 
+            doc, onSnapshot, query 
+        } from "firebase/firestore";
+
+        // ------------------------------------------------------------------
+        // CONFIGURACIÓN DE FIREBASE
+        // ------------------------------------------------------------------
+        
+        const manualConfig = {
+            apiKey: "AIzaSyCqyCcs2R2e7AegGjvFAwG98wlamtbHvZY",
+            authDomain: "bard-frontend.firebaseapp.com",
+            projectId: "bard-frontend",
+            storageBucket: "bard-frontend.firebasestorage.app",
+            messagingSenderId: "175205271074",
+            appId: "1:175205271074:web:2b7bd4d34d33bf38e6ec7b"
         };
-        // Firestore genera el ID automáticamente
-        await addDoc(collection(db, 'artifacts', appId, 'public', 'data', COLLECTION_NAME), newCustomer);
-      }
-      setShowAddModal(false);
-    } catch (error) {
-      console.error("Error al guardar:", error);
-      alert("Hubo un error al guardar el pedido. Por favor intenta de nuevo.");
-    }
-  };
 
-  const deleteCustomer = async (id) => {
-    if (!user) return;
-    if(confirm('¿Estás seguro de borrar este cliente y su historial permanentemente?')) {
-      try {
-        await deleteDoc(doc(db, 'artifacts', appId, 'public', 'data', COLLECTION_NAME, id));
-      } catch (error) {
-        console.error("Error al borrar:", error);
-      }
-    }
-  };
+        // Detección Inteligente
+        let firebaseConfig = manualConfig;
+        let isAutoConfigured = false;
 
-  // --- Subcomponentes de Vistas ---
+        if (typeof window.__firebase_config !== 'undefined') {
+            try {
+                const detected = JSON.parse(window.__firebase_config);
+                if (manualConfig.apiKey.startsWith("AIzaSy")) {
+                     // Mantenemos manualConfig para localhost si ya tiene datos válidos
+                } else {
+                     firebaseConfig = detected;
+                     isAutoConfigured = true;
+                }
+            } catch (e) {
+                console.error("Config error", e);
+            }
+        }
 
-  const DashboardView = () => (
-    <div className="space-y-6 animate-fade-in">
-      {/* Tarjetas de Métricas */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-        <Card className="p-4 border-l-4 border-indigo-500">
-          <div className="flex justify-between items-start">
-            <div>
-              <p className="text-sm font-medium text-slate-500">Ventas Totales</p>
-              <h3 className="text-2xl font-bold text-slate-800">${metrics.totalRevenue}</h3>
-            </div>
-            <div className="p-2 bg-indigo-50 rounded-lg text-indigo-600">
-              <DollarSign size={20} />
-            </div>
-          </div>
-          <p className="text-xs text-slate-400 mt-2">Histórico acumulado</p>
-        </Card>
+        // Inicializar Firebase
+        let app, auth, db;
+        let connectionError = false;
+        
+        try {
+            if (firebaseConfig.apiKey && !firebaseConfig.apiKey.includes("TU_API_KEY")) {
+                app = initializeApp(firebaseConfig);
+                auth = getAuth(app);
+                db = getFirestore(app);
+            } else {
+                connectionError = true;
+            }
+        } catch (e) {
+            console.error("Error iniciando Firebase", e);
+            connectionError = true;
+        }
 
-        <Card className="p-4 border-l-4 border-emerald-500">
-          <div className="flex justify-between items-start">
-            <div>
-              <p className="text-sm font-medium text-slate-500">Clientes Activos</p>
-              <h3 className="text-2xl font-bold text-slate-800">{customers.length}</h3>
-            </div>
-            <div className="p-2 bg-emerald-50 rounded-lg text-emerald-600">
-              <Users size={20} />
-            </div>
-          </div>
-          <p className="text-xs text-emerald-600 mt-2 flex items-center">
-            <TrendingUp size={12} className="mr-1" /> {metrics.vips} son VIP
-          </p>
-        </Card>
+        const COLLECTION_NAME = 'sweetcrm_customers';
+        // Usamos un ID por defecto para localhost si no existe el del entorno
+        const APP_ID = typeof window.__app_id !== 'undefined' ? window.__app_id : 'thaliacakes-v1';
+        const initialAuthToken = (typeof window.__initial_auth_token !== 'undefined') ? window.__initial_auth_token : null;
 
-        <Card className="p-4 border-l-4 border-rose-500">
-          <div className="flex justify-between items-start">
-            <div>
-              <p className="text-sm font-medium text-slate-500">En Riesgo</p>
-              <h3 className="text-2xl font-bold text-slate-800">{metrics.atRisk}</h3>
-            </div>
-            <div className="p-2 bg-rose-50 rounded-lg text-rose-600">
-              <AlertTriangle size={20} />
-            </div>
-          </div>
-          <p className="text-xs text-rose-600 mt-2">No compran hace +3 meses</p>
-        </Card>
+        // --- Utilidad para comprimir imágenes ---
+        const compressImage = (file) => {
+            return new Promise((resolve) => {
+                const reader = new FileReader();
+                reader.readAsDataURL(file);
+                reader.onload = (event) => {
+                    const img = new Image();
+                    img.src = event.target.result;
+                    img.onload = () => {
+                        const canvas = document.createElement('canvas');
+                        const MAX_WIDTH = 600; 
+                        const scaleSize = MAX_WIDTH / img.width;
+                        canvas.width = MAX_WIDTH;
+                        canvas.height = img.height * scaleSize;
+                        const ctx = canvas.getContext('2d');
+                        ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+                        resolve(canvas.toDataURL('image/jpeg', 0.7)); 
+                    };
+                };
+            });
+        };
 
-        <Card className="p-4 border-l-4 border-amber-500">
-          <div className="flex justify-between items-start">
-            <div>
-              <p className="text-sm font-medium text-slate-500">Ticket Promedio</p>
-              <h3 className="text-2xl font-bold text-slate-800">${metrics.avgTicket}</h3>
-            </div>
-            <div className="p-2 bg-amber-50 rounded-lg text-amber-600">
-              <PieChartIcon size={20} />
-            </div>
-          </div>
-          <p className="text-xs text-slate-400 mt-2">Por pedido</p>
-        </Card>
-      </div>
+        // --- Componentes UI Básicos ---
 
-      {/* Gráficos y Tablas Rápidas */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        <Card className="col-span-2 p-6">
-          <h3 className="text-lg font-bold text-slate-800 mb-4">Mejores Clientes (Top 5)</h3>
-          {customers.length > 0 ? (
-            <div className="h-64">
-              <ResponsiveContainer width="100%" height="100%">
-                  <BarChart data={[...customers].sort((a,b) => b.totalSpent - a.totalSpent).slice(0, 5)}>
-                    <CartesianGrid strokeDasharray="3 3" vertical={false} />
-                    <XAxis dataKey="name" tick={{fontSize: 12}} interval={0} />
-                    <YAxis />
-                    <Tooltip />
-                    <Bar dataKey="totalSpent" fill="#6366f1" radius={[4, 4, 0, 0]} name="Gasto Total ($)" />
-                  </BarChart>
-              </ResponsiveContainer>
+        const Card = ({ children, className = "" }) => (
+            <div className={`bg-white rounded-xl shadow-sm border border-slate-200 ${className}`}>
+                {children}
             </div>
-          ) : (
-            <div className="h-64 flex items-center justify-center text-slate-400 text-sm">
-              Registra ventas para ver estadísticas
-            </div>
-          )}
-        </Card>
+        );
 
-        <Card className="p-6">
-          <h3 className="text-lg font-bold text-slate-800 mb-4">Acciones Sugeridas</h3>
-          <div className="space-y-4">
-            {enrichedCustomers
-              .filter(c => c.status === 'En Riesgo')
-              .slice(0, 3)
-              .map(c => (
-              <div key={c.id} className="flex items-center justify-between p-3 bg-rose-50 rounded-lg border border-rose-100">
-                <div>
-                  <p className="font-semibold text-rose-900 text-sm">{c.name}</p>
-                  <p className="text-xs text-rose-700">Sin compras desde {new Date(c.lastOrder).toLocaleDateString()}</p>
+        const Badge = ({ children, type = 'neutral' }) => {
+            const styles = {
+                neutral: 'bg-slate-100 text-slate-600',
+                success: 'bg-emerald-100 text-emerald-700',
+                warning: 'bg-amber-100 text-amber-700',
+                danger: 'bg-rose-100 text-rose-700',
+                indigo: 'bg-indigo-100 text-indigo-700',
+                purple: 'bg-purple-100 text-purple-700',
+                blue: 'bg-blue-100 text-blue-700',
+            };
+            return (
+                <span className={`px-2.5 py-0.5 rounded-full text-xs font-medium ${styles[type] || styles.neutral}`}>
+                    {children}
+                </span>
+            );
+        };
+
+        // --- Componente: Modal de Comparación de Fotos (Lightbox) ---
+        const ComparisonModal = ({ refImage, resImage, onClose }) => {
+            return (
+                <div className="fixed inset-0 bg-black/95 z-[250] flex flex-col animate-fade-in text-white p-4">
+                    <div className="flex justify-between items-center mb-4">
+                        <h3 className="text-lg font-bold flex items-center gap-2">
+                            <Maximize2 size={20}/> Modo Comparación
+                        </h3>
+                        <button onClick={onClose} className="p-2 bg-white/10 rounded-full hover:bg-white/20"><X size={24}/></button>
+                    </div>
+                    
+                    <div className="flex-1 flex flex-col md:flex-row gap-4 items-center justify-center overflow-hidden">
+                        <div className="flex-1 w-full h-full flex flex-col items-center justify-center bg-zinc-900 rounded-xl border border-zinc-700 p-2 relative">
+                            <span className="absolute top-4 left-4 bg-black/60 px-3 py-1 rounded text-xs font-bold text-pink-300 backdrop-blur-sm">
+                                1. REFERENCIA
+                            </span>
+                            {refImage ? <img src={refImage} className="max-w-full max-h-full object-contain rounded" alt="Referencia"/> : <div className="text-zinc-500 flex flex-col items-center"><ImageIcon size={48}/><p>Sin referencia</p></div>}
+                        </div>
+                        <div className="hidden md:flex items-center justify-center text-zinc-500 font-bold">VS</div>
+                        <div className="flex-1 w-full h-full flex flex-col items-center justify-center bg-zinc-900 rounded-xl border border-zinc-700 p-2 relative">
+                            <span className="absolute top-4 left-4 bg-black/60 px-3 py-1 rounded text-xs font-bold text-emerald-300 backdrop-blur-sm">
+                                2. MI TRABAJO
+                            </span>
+                            {resImage ? <img src={resImage} className="max-w-full max-h-full object-contain rounded" alt="Resultado"/> : <div className="text-zinc-500 flex flex-col items-center"><Camera size={48}/><p>Falta foto final</p></div>}
+                        </div>
+                    </div>
                 </div>
-                <button className="text-xs bg-white text-rose-600 px-2 py-1 rounded border border-rose-200 shadow-sm hover:bg-rose-50">
-                  Contactar
-                </button>
-              </div>
-            ))}
-            {enrichedCustomers.filter(c => c.status === 'En Riesgo').length === 0 && (
-              <div className="text-center py-8 text-slate-400">
-                <Award size={32} className="mx-auto mb-2 opacity-50" />
-                <p>¡Todo excelente! No hay clientes en riesgo.</p>
-              </div>
-            )}
-          </div>
-          <div className="mt-4 pt-4 border-t border-slate-100">
-             <h4 className="text-xs font-semibold text-slate-500 uppercase mb-2">Próximos esperados</h4>
-             {enrichedCustomers
-                .filter(c => new Date(c.estimatedNext) < new Date(new Date().setDate(new Date().getDate() + 7)))
-                .slice(0, 2)
-                .map(c => (
-                  <div key={c.id} className="flex items-center gap-2 text-sm text-slate-600 mb-2">
-                    <Calendar size={14} className="text-indigo-500"/>
-                    <span>{c.name} (aprox. {new Date(c.estimatedNext).toLocaleDateString()})</span>
-                  </div>
-             ))}
-          </div>
-        </Card>
-      </div>
-    </div>
-  );
+            );
+        };
 
-  const ClientsListView = () => (
-    <Card className="overflow-hidden">
-      <div className="p-4 border-b border-slate-200 bg-slate-50 flex flex-col md:flex-row md:items-center justify-between gap-4">
-        <h3 className="font-bold text-slate-700">Base de Datos de Clientes</h3>
-        <div className="relative">
-          <Search className="absolute left-3 top-2.5 text-slate-400" size={18} />
-          <input 
-            type="text" 
-            placeholder="Buscar por nombre..." 
-            className="pl-10 pr-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 text-sm w-full md:w-64"
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-          />
-        </div>
-      </div>
-      <div className="overflow-x-auto">
-        <table className="w-full text-left text-sm text-slate-600">
-          <thead className="bg-slate-100 text-slate-700 uppercase font-semibold text-xs">
-            <tr>
-              <th className="px-6 py-3">Cliente</th>
-              <th className="px-6 py-3 text-center">Estado</th>
-              <th className="px-6 py-3 text-right">Compras</th>
-              <th className="px-6 py-3 text-right">Total ($)</th>
-              <th className="px-6 py-3">Última Vez</th>
-              <th className="px-6 py-3 text-center">Acciones</th>
-            </tr>
-          </thead>
-          <tbody className="divide-y divide-slate-200">
-            {enrichedCustomers.map((customer) => (
-              <tr key={customer.id} className="hover:bg-slate-50 transition-colors">
-                <td className="px-6 py-4">
-                  <div className="font-medium text-slate-900">{customer.name}</div>
-                  <div className="text-xs text-slate-400">{customer.phone}</div>
-                </td>
-                <td className="px-6 py-4 text-center">
-                  <Badge type={customer.statusColor}>{customer.status}</Badge>
-                </td>
-                <td className="px-6 py-4 text-right font-medium">{customer.orders}</td>
-                <td className="px-6 py-4 text-right font-medium text-emerald-600">${(customer.totalSpent || 0).toFixed(2)}</td>
-                <td className="px-6 py-4">
-                  <div>{customer.lastOrder ? new Date(customer.lastOrder).toLocaleDateString() : 'N/A'}</div>
-                  {customer.lastOrder && (
-                    <div className="text-xs text-slate-400">
-                       Hace {Math.floor((new Date() - new Date(customer.lastOrder))/(1000 * 60 * 60 * 24))} días
-                    </div>
-                  )}
-                </td>
-                <td className="px-6 py-4 text-center">
-                  <button onClick={() => deleteCustomer(customer.id)} className="p-2 text-slate-400 hover:text-rose-500 transition-colors">
-                    <Trash2 size={16} />
-                  </button>
-                </td>
-              </tr>
-            ))}
-            {enrichedCustomers.length === 0 && (
-              <tr>
-                <td colSpan="6" className="px-6 py-8 text-center text-slate-400">
-                  {loading ? (
-                    <div className="flex items-center justify-center gap-2">
-                      <Loader2 className="animate-spin" /> Cargando clientes...
-                    </div>
-                  ) : (
-                    "No se encontraron clientes."
-                  )}
-                </td>
-              </tr>
-            )}
-          </tbody>
-        </table>
-      </div>
-    </Card>
-  );
+        // --- Componente: Modal de Detalles del Cliente ---
 
-  return (
-    <div className="min-h-screen bg-slate-50 font-sans text-slate-800 flex flex-col md:flex-row">
-      {/* Sidebar de Navegación */}
-      <aside className="bg-indigo-900 text-white w-full md:w-64 flex-shrink-0 flex flex-col">
-        <div className="p-6 flex items-center gap-3 border-b border-indigo-800">
-          <div className="bg-pink-500 p-2 rounded-lg">
-            <Cake size={24} className="text-white" />
-          </div>
-          <div>
-            <h1 className="text-xl font-bold tracking-tight">SweetCRM</h1>
-            <p className="text-xs text-indigo-300">Control de Pastelería</p>
-          </div>
-        </div>
-        
-        <nav className="flex-1 p-4 space-y-2">
-          <button 
-            onClick={() => setActiveTab('dashboard')}
-            className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-all ${activeTab === 'dashboard' ? 'bg-indigo-700 text-white shadow-lg' : 'text-indigo-200 hover:bg-indigo-800'}`}
-          >
-            <TrendingUp size={20} />
-            <span className="font-medium">Panel Principal</span>
-          </button>
-          
-          <button 
-            onClick={() => setActiveTab('clients')}
-            className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-all ${activeTab === 'clients' ? 'bg-indigo-700 text-white shadow-lg' : 'text-indigo-200 hover:bg-indigo-800'}`}
-          >
-            <Users size={20} />
-            <span className="font-medium">Mis Clientes</span>
-          </button>
-
-          <div className="pt-8 px-4">
-             <div className="bg-indigo-800/50 rounded-xl p-4 border border-indigo-700">
-                <p className="text-xs font-semibold text-indigo-300 uppercase mb-2">Consejo del día</p>
-                <p className="text-sm text-indigo-100 italic">"Los clientes VIP compran 3x más si les envías un mensaje en su cumpleaños."</p>
-             </div>
-          </div>
-        </nav>
-        
-        <div className="p-4 border-t border-indigo-800">
-          <div className="flex items-center gap-2 text-xs text-indigo-300">
-             <Cloud size={14} className={loading ? "animate-pulse" : "text-emerald-400"} />
-             {loading ? "Sincronizando..." : "Conectado a la Nube"}
-          </div>
-          <button 
-            onClick={() => {
-              const dataStr = JSON.stringify(customers);
-              const dataUri = 'data:application/json;charset=utf-8,'+ encodeURIComponent(dataStr);
-              const exportFileDefaultName = 'respaldo_clientes_firebase.json';
-              const linkElement = document.createElement('a');
-              linkElement.setAttribute('href', dataUri);
-              linkElement.setAttribute('download', exportFileDefaultName);
-              linkElement.click();
-            }}
-            className="flex items-center gap-2 text-xs text-indigo-300 hover:text-white transition-colors mt-4"
-          >
-            <Download size={14} /> Exportar Datos Locales
-          </button>
-        </div>
-      </aside>
-
-      {/* Contenido Principal */}
-      <main className="flex-1 overflow-y-auto h-screen p-4 md:p-8 relative">
-        <div className="max-w-6xl mx-auto">
-          <div className="flex justify-between items-center mb-8">
-            <div>
-              <h2 className="text-2xl font-bold text-slate-800">
-                {activeTab === 'dashboard' ? 'Resumen del Negocio' : 'Directorio de Clientes'}
-              </h2>
-              <p className="text-slate-500">
-                {loading ? 'Conectando con tu base de datos...' : `Bienvenido, tienes ${customers.length} clientes registrados.`}
-              </p>
-            </div>
-            <button 
-              onClick={() => setShowAddModal(true)}
-              className="bg-pink-600 hover:bg-pink-700 text-white px-5 py-2.5 rounded-lg shadow-md flex items-center gap-2 transition-transform hover:scale-105 active:scale-95 font-medium"
-            >
-              <Plus size={20} />
-              <span className="hidden md:inline">Registrar Pedido</span>
-            </button>
-          </div>
-
-          {activeTab === 'dashboard' ? <DashboardView /> : <ClientsListView />}
-        </div>
-      </main>
-
-      {/* Modal para Agregar Pedido */}
-      {showAddModal && (
-        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-          <div className="bg-white rounded-2xl shadow-2xl w-full max-w-md overflow-hidden animate-fade-in-up">
-            <div className="bg-indigo-900 p-4 flex justify-between items-center">
-              <h3 className="text-white font-bold text-lg flex items-center gap-2">
-                <Cake size={20} /> Nuevo Pedido
-              </h3>
-              <button onClick={() => setShowAddModal(false)} className="text-indigo-200 hover:text-white">
-                ✕
-              </button>
-            </div>
+        const CustomerDetailModal = ({ customer, onClose, onUpdateOrder, onUpdateProfile, onUploadPhoto }) => {
+            if (!customer) return null;
             
-            <form onSubmit={handleAddOrder} className="p-6 space-y-4">
-              <div>
-                <label className="block text-sm font-medium text-slate-700 mb-1">Nombre del Cliente</label>
-                <input 
-                  type="text" 
-                  name="name" 
-                  list="client-names" 
-                  required 
-                  className="w-full p-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-pink-500 outline-none"
-                  placeholder="Ej. Juan Perez" 
-                  autoComplete="off"
-                />
-                <datalist id="client-names">
-                  {customers.map(c => <option key={c.id} value={c.name} />)}
-                </datalist>
-                <p className="text-xs text-slate-500 mt-1">Si el nombre existe, se sumará a su historial. Si no, se creará uno nuevo.</p>
-              </div>
+            const [isEditing, setIsEditing] = useState(false);
+            const [editData, setEditData] = useState({ name: customer.name, phone: customer.phone, email: customer.email });
+            const [comparisonImages, setComparisonImages] = useState(null); 
 
-              <div className="grid grid-cols-2 gap-4">
-                <div>
-                  <label className="block text-sm font-medium text-slate-700 mb-1">Monto ($)</label>
-                  <input type="number" name="amount" required className="w-full p-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-pink-500 outline-none" placeholder="0.00" min="0" step="0.01" />
+            const history = (customer.history || []).sort((a,b) => new Date(b.date) - new Date(a.date));
+            
+            const totalDebt = history.reduce((acc, order) => {
+                if (order.deliveryStatus === 'Cancelado') return acc; 
+                if (order.status === 'Pendiente') return acc + (parseFloat(order.amount) || 0);
+                if (order.status === 'Adelanto') return acc + ((parseFloat(order.amount) || 0) - (parseFloat(order.deposit) || 0));
+                return acc;
+            }, 0);
+
+            const flavors = history.map(h => h.details?.flavor).filter(Boolean);
+            const topFlavor = flavors.sort((a,b) =>
+                flavors.filter(v => v === a).length - flavors.filter(v => v === b).length
+            ).pop() || "Aún no definido";
+
+            const handleSaveProfile = () => {
+                onUpdateProfile(customer.id, editData);
+                setIsEditing(false);
+            };
+
+            const handlePhotoUpload = async (e, order, type) => {
+                const file = e.target.files[0];
+                if (!file) return;
+                try {
+                    const base64Img = await compressImage(file);
+                    onUploadPhoto(customer.id, order, type, base64Img);
+                } catch (error) {
+                    console.error("Error compressing image", error);
+                    alert("Error al procesar la imagen.");
+                }
+            };
+
+            return (
+                <>
+                    <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-[200] flex items-center justify-center p-4">
+                        <div className="bg-white rounded-2xl shadow-2xl w-full max-w-4xl max-h-[90vh] overflow-hidden flex flex-col animate-fade-in">
+                            <div className="bg-indigo-900 p-6 text-white shrink-0">
+                                <div className="flex justify-between items-start">
+                                    <div className="flex-1">
+                                        {isEditing ? (
+                                            <div className="space-y-2 mb-2 bg-indigo-800 p-2 rounded">
+                                                <input value={editData.name} onChange={e => setEditData({...editData, name: e.target.value})} className="block w-full text-indigo-900 px-2 py-1 rounded" placeholder="Nombre"/>
+                                                <div className="grid grid-cols-2 gap-2">
+                                                    <input value={editData.phone} onChange={e => setEditData({...editData, phone: e.target.value})} className="w-full text-indigo-900 px-2 py-1 rounded text-sm" placeholder="Teléfono"/>
+                                                    <input value={editData.email} onChange={e => setEditData({...editData, email: e.target.value})} className="w-full text-indigo-900 px-2 py-1 rounded text-sm" placeholder="Email"/>
+                                                </div>
+                                                <button onClick={handleSaveProfile} className="bg-emerald-500 hover:bg-emerald-600 text-white text-xs px-3 py-1 rounded flex items-center gap-1 mt-2">
+                                                    <Save size={14}/> Guardar Cambios
+                                                </button>
+                                            </div>
+                                        ) : (
+                                            <>
+                                                <h2 className="text-2xl font-bold flex items-center gap-2">
+                                                    <Users size={24} className="text-pink-400"/> {customer.name}
+                                                    <button onClick={() => setIsEditing(true)} className="opacity-50 hover:opacity-100 hover:bg-white/20 p-1.5 rounded transition-all ml-2" title="Editar Perfil"><Edit3 size={16} className="text-white"/></button>
+                                                </h2>
+                                                <div className="mt-2 text-xs opacity-70 mb-2">
+                                                    {customer.phone && <span>📞 {customer.phone} • </span>}
+                                                    {customer.email && <span>✉️ {customer.email}</span>}
+                                                </div>
+                                            </>
+                                        )}
+                                        <div className="flex flex-wrap gap-4 mt-2 text-indigo-200 text-sm">
+                                            <span className="flex items-center gap-1 bg-indigo-800/50 px-2 py-1 rounded"><AlertTriangle size={14}/> Deuda: <span className={totalDebt > 0 ? "text-rose-400 font-bold" : "text-emerald-400"}>${totalDebt}</span></span>
+                                            <span className="flex items-center gap-1 bg-indigo-800/50 px-2 py-1 rounded"><Award size={14}/> Gastado: ${customer.totalSpent}</span>
+                                            <span className="flex items-center gap-1 bg-indigo-800/50 px-2 py-1 rounded"><Heart size={14}/> Favorito: {topFlavor}</span>
+                                        </div>
+                                    </div>
+                                    <button onClick={onClose} className="p-2 hover:bg-white/10 rounded-full transition-colors"><X size={24}/></button>
+                                </div>
+                            </div>
+
+                            <div className="p-6 overflow-y-auto thin-scrollbar bg-slate-50 flex-1">
+                                <h3 className="text-lg font-bold text-slate-800 mb-4 flex items-center gap-2"><Clock size={20} className="text-indigo-600"/> Historial de Pedidos</h3>
+                                {history.length === 0 ? (
+                                    <p className="text-slate-400 text-center py-8">No hay historial detallado para este cliente.</p>
+                                ) : (
+                                    <div className="space-y-4">
+                                        {history.map((order, idx) => (
+                                            <div key={idx} className={`bg-white p-4 rounded-xl border shadow-sm relative overflow-hidden group hover:shadow-md transition-shadow ${order.deliveryStatus === 'Cancelado' ? 'opacity-60 border-rose-200 bg-rose-50' : 'border-slate-200'}`}>
+                                                <div className="absolute top-0 right-0 flex z-10">
+                                                    <div className={`px-3 py-1 text-xs font-bold rounded-bl-lg flex items-center gap-1 ${order.deliveryStatus === 'Entregado' ? 'bg-emerald-600 text-white' : order.deliveryStatus === 'Cancelado' ? 'bg-rose-600 text-white' : order.deliveryStatus === 'Postergado' ? 'bg-amber-500 text-white' : 'bg-slate-200 text-slate-600'}`}>
+                                                        {order.deliveryStatus === 'Entregado' && <CheckCircle size={12}/>}
+                                                        {order.deliveryStatus === 'Cancelado' && <XCircle size={12}/>}
+                                                        {order.deliveryStatus || 'En Proceso'}
+                                                    </div>
+                                                </div>
+
+                                                <div className="grid grid-cols-1 md:grid-cols-12 gap-4 mt-2">
+                                                    <div className="md:col-span-3 border-b md:border-b-0 md:border-r border-slate-100 pb-2 md:pb-0">
+                                                        <p className="text-xs text-slate-400 font-medium uppercase mb-1">Pedido: {new Date(order.date).toLocaleDateString()}</p>
+                                                        {order.deliveryDate && (
+                                                            <div className={`mb-2 px-2 py-1 rounded text-xs font-bold inline-block border ${order.deliveryStatus === 'Entregado' ? 'bg-emerald-50 text-emerald-700 border-emerald-100' : 'bg-indigo-50 text-indigo-700 border-indigo-100'}`}>
+                                                                📅 Entrega: {new Date(order.deliveryDate + 'T00:00:00').toLocaleDateString()}
+                                                            </div>
+                                                        )}
+                                                        <h4 className="font-bold text-indigo-900 text-lg leading-tight">{order.item}</h4>
+                                                        <div className="mt-2 flex items-center gap-2">
+                                                            <span className="text-xl font-bold text-slate-700">${order.amount}</span>
+                                                            <span className={`text-[10px] px-1.5 py-0.5 rounded border ${order.status === 'Pagado' ? 'bg-emerald-100 text-emerald-700 border-emerald-200' : order.status === 'Pendiente' ? 'bg-rose-100 text-rose-700 border-rose-200' : 'bg-amber-100 text-amber-700 border-amber-200'}`}>{order.status}</span>
+                                                        </div>
+                                                        {order.status === 'Adelanto' && <p className="text-xs text-rose-500 font-medium bg-rose-50 px-2 py-1 rounded inline-block mt-1 border border-rose-100">Resta: ${order.amount - (order.deposit || 0)}</p>}
+                                                    </div>
+
+                                                    <div className="md:col-span-6 space-y-3 pt-1">
+                                                        <div className="space-y-1 text-sm text-slate-600">
+                                                            {order.details?.weight && <div className="flex items-center gap-2"><Scale size={14} className="text-indigo-400"/> <span>{order.details.weight} Kg</span></div>}
+                                                            {order.details?.shape && <div className="flex items-center gap-2"><Shapes size={14} className="text-indigo-400"/> <span>{order.details.shape}</span></div>}
+                                                            {order.details?.flavor && <div className="flex items-center gap-2"><Heart size={14} className="text-pink-400"/> <span>Sabor: {order.details.flavor}</span></div>}
+                                                        </div>
+
+                                                        <div className="flex gap-3 mt-2">
+                                                            <div className="flex-1 relative aspect-square bg-slate-100 rounded-lg border border-slate-200 overflow-hidden group/img">
+                                                                {order.refImage ? (
+                                                                    <div className="w-full h-full cursor-pointer relative" onClick={() => setComparisonImages({ref: order.refImage, res: order.resultImage})}>
+                                                                        <img src={order.refImage} className="w-full h-full object-cover img-hover-zoom" alt="Ref"/>
+                                                                        <div className="absolute bottom-0 w-full bg-black/50 text-white text-[10px] text-center py-1">Referencia</div>
+                                                                    </div>
+                                                                ) : (
+                                                                    <div className="w-full h-full flex flex-col items-center justify-center text-slate-400 text-xs text-center p-2"><ImageIcon size={20} className="mb-1 opacity-50"/> Sin ref</div>
+                                                                )}
+                                                            </div>
+                                                            <div className="flex-1 relative aspect-square bg-slate-100 rounded-lg border border-slate-200 overflow-hidden group/img">
+                                                                {order.resultImage ? (
+                                                                    <div className="w-full h-full cursor-pointer relative" onClick={() => setComparisonImages({ref: order.refImage, res: order.resultImage})}>
+                                                                        <img src={order.resultImage} className="w-full h-full object-cover img-hover-zoom" alt="Final"/>
+                                                                        <div className="absolute bottom-0 w-full bg-emerald-600/80 text-white text-[10px] text-center py-1">Mi Torta</div>
+                                                                    </div>
+                                                                ) : (
+                                                                    <label className="w-full h-full flex flex-col items-center justify-center text-indigo-400 text-xs text-center p-2 cursor-pointer hover:bg-indigo-50 transition-colors border-2 border-dashed border-indigo-200 hover:border-indigo-400">
+                                                                        <Camera size={20} className="mb-1"/> Subir Foto Torta
+                                                                        <input type="file" accept="image/*" className="hidden" onChange={(e) => handlePhotoUpload(e, order, 'result')}/>
+                                                                    </label>
+                                                                )}
+                                                            </div>
+                                                        </div>
+                                                        {(order.refImage || order.resultImage) && <button onClick={() => setComparisonImages({ref: order.refImage, res: order.resultImage})} className="w-full text-xs bg-indigo-50 text-indigo-600 py-1 rounded border border-indigo-100 hover:bg-indigo-100 flex items-center justify-center gap-1"><Maximize2 size={12}/> Ver / Comparar</button>}
+                                                    </div>
+
+                                                    <div className="md:col-span-3 flex flex-col justify-between">
+                                                        <div className="bg-slate-50 p-3 rounded-lg border border-slate-100 mb-2">
+                                                            <p className="text-xs font-semibold text-slate-400 uppercase mb-1 flex items-center gap-1"><Palette size={12}/> Notas</p>
+                                                            <p className="text-sm text-slate-700 italic truncate">"{order.details?.decoration || order.details?.notes || 'Sin notas'}"</p>
+                                                        </div>
+                                                        {(!order.deliveryStatus || (order.deliveryStatus !== 'Entregado' && order.deliveryStatus !== 'Cancelado')) && (
+                                                            <div className="grid grid-cols-2 gap-2 mt-auto">
+                                                                <button onClick={() => onUpdateOrder(customer.id, order, 'Entregado')} className="col-span-2 flex flex-col items-center justify-center p-2 rounded bg-emerald-50 hover:bg-emerald-100 text-emerald-700 text-[10px] font-bold border border-emerald-200 transition-colors"><CheckCircle size={14} className="mb-1"/> Entregar</button>
+                                                                <button onClick={() => onUpdateOrder(customer.id, order, 'Postergado')} className="flex flex-col items-center justify-center p-2 rounded bg-amber-50 hover:bg-amber-100 text-amber-700 text-[10px] font-bold border border-amber-200 transition-colors"><RotateCw size={14} className="mb-1"/> Posterg</button>
+                                                                <button onClick={() => onUpdateOrder(customer.id, order, 'Cancelado')} className="flex flex-col items-center justify-center p-2 rounded bg-rose-50 hover:bg-rose-100 text-rose-700 text-[10px] font-bold border border-rose-200 transition-colors"><XCircle size={14} className="mb-1"/> Cancel</button>
+                                                            </div>
+                                                        )}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        ))}
+                                    </div>
+                                )}
+                            </div>
+                        </div>
+                    </div>
+                    {comparisonImages && <ComparisonModal refImage={comparisonImages.ref} resImage={comparisonImages.res} onClose={() => setComparisonImages(null)}/>}
+                </>
+            );
+        };
+
+        // --- Aplicación Principal ---
+
+        function SweetCRM() {
+            const [activeTab, setActiveTab] = useState('dashboard');
+            const [showAddModal, setShowAddModal] = useState(false);
+            const [viewingCustomer, setViewingCustomer] = useState(null); 
+            const [searchTerm, setSearchTerm] = useState('');
+            const [customers, setCustomers] = useState([]);
+            const [user, setUser] = useState(null);
+            const [loading, setLoading] = useState(true);
+
+            // Estado para el formulario inteligente
+            const [paymentStatus, setPaymentStatus] = useState('Pagado');
+            const [newOrderName, setNewOrderName] = useState('');
+            const [foundCustomer, setFoundCustomer] = useState(null);
+            const [tempRefImage, setTempRefImage] = useState(null); // Para guardar foto ref temporalmente antes de subir
+
+            // 1. Autenticación
+            useEffect(() => {
+                if (connectionError || !auth) {
+                    setLoading(false);
+                    return;
+                }
+                const initAuth = async () => {
+                    try {
+                        if (initialAuthToken) await signInWithCustomToken(auth, initialAuthToken);
+                        else await signInAnonymously(auth);
+                    } catch (error) {
+                        console.error("Auth error:", error);
+                    }
+                };
+                initAuth();
+                const unsubscribe = onAuthStateChanged(auth, setUser);
+                return () => unsubscribe();
+            }, []);
+
+            // 2. Sincronización
+            useEffect(() => {
+                if (!user || !db) return;
+                
+                // Siempre usamos la ruta de usuario segura para evitar errores de permisos
+                // Path: artifacts/{APP_ID}/users/{userId}/{COLLECTION_NAME}
+                const q = query(collection(db, 'artifacts', APP_ID, 'users', user.uid, COLLECTION_NAME));
+                
+                const unsubscribe = onSnapshot(q, (snapshot) => {
+                    setCustomers(snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })));
+                    setLoading(false);
+                }, (error) => {
+                    console.error("Error cargando datos:", error);
+                    setLoading(false);
+                });
+                return () => unsubscribe();
+            }, [user]);
+
+            useEffect(() => {
+                if (!newOrderName) { setFoundCustomer(null); return; }
+                const exactMatch = customers.find(c => c.name.toLowerCase() === newOrderName.toLowerCase().trim());
+                if (exactMatch) setFoundCustomer(exactMatch); else setFoundCustomer(null);
+            }, [newOrderName, customers]);
+
+            const metrics = useMemo(() => {
+                const totalRevenue = customers.reduce((acc, curr) => acc + (curr.totalSpent || 0), 0);
+                const totalOrders = customers.reduce((acc, curr) => acc + (curr.orders || 0), 0);
+                const avgTicket = totalOrders > 0 ? (totalRevenue / totalOrders).toFixed(2) : 0;
+                const threeMonthsAgo = new Date(); threeMonthsAgo.setMonth(threeMonthsAgo.getMonth() - 3);
+                const atRisk = customers.filter(c => c.lastOrder && new Date(c.lastOrder) < threeMonthsAgo && c.orders > 1).length;
+                return { totalRevenue, totalOrders, avgTicket, atRisk };
+            }, [customers]);
+
+            const enrichedCustomers = useMemo(() => {
+                const threeMonthsAgo = new Date(); threeMonthsAgo.setMonth(threeMonthsAgo.getMonth() - 3);
+                return customers.map(c => {
+                    let status = 'Regular', statusColor = 'neutral';
+                    const last = c.lastOrder ? new Date(c.lastOrder) : new Date();
+                    if ((c.totalSpent || 0) > 1000 || (c.orders || 0) > 10) { status = 'VIP'; statusColor = 'purple'; }
+                    else if (last < threeMonthsAgo && (c.orders || 0) > 1) { status = 'En Riesgo'; statusColor = 'danger'; }
+                    else if ((c.orders || 0) === 1 && (new Date() - new Date(c.joinDate)) / 86400000 < 30) { status = 'Nuevo'; statusColor = 'success'; }
+                    else if ((c.orders || 0) > 3) { status = 'Fiel'; statusColor = 'indigo'; }
+                    return { ...c, status, statusColor };
+                }).filter(c => c.name.toLowerCase().includes(searchTerm.toLowerCase()));
+            }, [customers, searchTerm]);
+
+            const upcomingDeliveries = useMemo(() => {
+                const today = new Date(); today.setHours(0,0,0,0);
+                const nextWeek = new Date(today); nextWeek.setDate(today.getDate() + 7);
+                let deliveries = [];
+                customers.forEach(c => {
+                    if(c.history) {
+                        c.history.forEach(h => {
+                            if(h.deliveryDate && (!h.deliveryStatus || (h.deliveryStatus !== 'Entregado' && h.deliveryStatus !== 'Cancelado'))) {
+                                const dDate = new Date(h.deliveryDate + 'T00:00:00');
+                                if(dDate >= today && dDate <= nextWeek) {
+                                    deliveries.push({ ...h, customerName: c.name, customerId: c.id, daysLeft: Math.ceil((dDate - today) / 86400000) });
+                                }
+                            }
+                        });
+                    }
+                });
+                return deliveries.sort((a,b) => new Date(a.deliveryDate) - new Date(b.deliveryDate));
+            }, [customers]);
+
+            // --- Handlers ---
+
+            const handleUpdateProfile = async (customerId, newData) => {
+                if (!user || !db) return;
+                try {
+                    const docRef = doc(db, 'artifacts', APP_ID, 'users', user.uid, COLLECTION_NAME, customerId);
+                    await updateDoc(docRef, newData);
+                    if (viewingCustomer && viewingCustomer.id === customerId) setViewingCustomer({ ...viewingCustomer, ...newData });
+                } catch (error) { console.error("Error updating profile:", error); alert("Error al actualizar perfil."); }
+            };
+
+            const handleUpdateOrderStatus = async (customerId, orderToUpdate, newStatus) => {
+                if (!user || !db) return;
+                const customer = customers.find(c => c.id === customerId);
+                if (!customer) return;
+                const newHistory = customer.history.map(order => {
+                    if (order.date === orderToUpdate.date && order.item === orderToUpdate.item) return { ...order, deliveryStatus: newStatus };
+                    return order;
+                });
+                try {
+                    const docRef = doc(db, 'artifacts', APP_ID, 'users', user.uid, COLLECTION_NAME, customerId);
+                    await updateDoc(docRef, { history: newHistory });
+                    if (viewingCustomer && viewingCustomer.id === customerId) setViewingCustomer({ ...viewingCustomer, history: newHistory });
+                } catch (error) { console.error("Error updating order:", error); }
+            };
+
+            const handleUploadPhoto = async (customerId, orderToUpdate, type, base64Img) => {
+                if (!user || !db) return;
+                const customer = customers.find(c => c.id === customerId);
+                if (!customer) return;
+                const newHistory = customer.history.map(order => {
+                    if (order.date === orderToUpdate.date && order.item === orderToUpdate.item) {
+                        return { ...order, [type === 'result' ? 'resultImage' : 'refImage']: base64Img };
+                    }
+                    return order;
+                });
+                try {
+                    const docRef = doc(db, 'artifacts', APP_ID, 'users', user.uid, COLLECTION_NAME, customerId);
+                    await updateDoc(docRef, { history: newHistory });
+                    if (viewingCustomer && viewingCustomer.id === customerId) setViewingCustomer({ ...viewingCustomer, history: newHistory });
+                } catch (error) { console.error("Error uploading photo:", error); }
+            };
+
+            const handleAddOrder = async (e) => {
+                e.preventDefault();
+                if (!user || !db) return;
+                const fd = new FormData(e.target);
+                const name = newOrderName; 
+                const amount = parseFloat(fd.get('amount'));
+                const orderDate = fd.get('orderDate') || new Date().toISOString().split('T')[0];
+                const newItem = {
+                    date: orderDate,
+                    deliveryDate: fd.get('deliveryDate'),
+                    amount,
+                    item: fd.get('item'),
+                    status: fd.get('paymentStatus'),
+                    deposit: parseFloat(fd.get('deposit') || 0),
+                    deliveryStatus: 'Pendiente',
+                    refImage: tempRefImage, // Imagen cargada en el modal
+                    details: {
+                        weight: fd.get('weight'),
+                        shape: fd.get('shape'),
+                        flavor: fd.get('flavor'),
+                        decoration: fd.get('decoration')
+                    }
+                };
+
+                const existing = customers.find(c => c.name.toLowerCase() === name.toLowerCase().trim());
+                const colRef = collection(db, 'artifacts', APP_ID, 'users', user.uid, COLLECTION_NAME);
+
+                try {
+                    if (existing) {
+                        await updateDoc(doc(colRef, existing.id), {
+                            totalSpent: (existing.totalSpent || 0) + amount,
+                            orders: (existing.orders || 0) + 1,
+                            lastOrder: orderDate,
+                            history: [...(existing.history || []), newItem]
+                        });
+                    } else {
+                        await addDoc(colRef, {
+                            name, phone: fd.get('phone'), email: fd.get('email'), totalSpent: amount, orders: 1, lastOrder: orderDate, joinDate: orderDate, history: [newItem]
+                        });
+                    }
+                    setShowAddModal(false);
+                    setPaymentStatus('Pagado');
+                    setNewOrderName('');
+                    setTempRefImage(null);
+                } catch (error) {
+                    console.error("Error saving:", error);
+                    alert("Error: " + error.message);
+                }
+            };
+
+            // Helpers para carga temporal en el formulario
+            const handleTempRefUpload = async (e) => {
+                const file = e.target.files[0];
+                if(file) {
+                    const img = await compressImage(file);
+                    setTempRefImage(img);
+                }
+            };
+
+            const deleteCustomer = async (id, e) => {
+                e.stopPropagation();
+                if (!confirm('¿Borrar cliente?')) return;
+                try {
+                    const docRef = doc(db, 'artifacts', APP_ID, 'users', user.uid, COLLECTION_NAME, id);
+                    await deleteDoc(docRef);
+                } catch (e) { console.error(e); }
+            };
+
+            if (connectionError) return <div className="h-screen flex items-center justify-center text-slate-500">Error Configuración Firebase</div>;
+
+            return (
+                <div className="min-h-screen flex flex-col md:flex-row bg-slate-50 relative">
+                    <aside className={`bg-indigo-900 text-white w-full md:w-64 flex-col flex shrink-0 ${isAutoConfigured ? 'mt-0' : ''}`}>
+                        <div className="p-6 border-b border-indigo-800 flex items-center gap-3">
+                            <div className="bg-pink-500 p-2 rounded-lg"><Cake className="text-white"/></div>
+                            <h1 className="font-bold text-xl">SweetCRM</h1>
+                        </div>
+                        <nav className="flex-1 p-4 space-y-2">
+                            <button onClick={()=>setActiveTab('dashboard')} className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg ${activeTab==='dashboard'?'bg-indigo-700':'hover:bg-indigo-800 text-indigo-200'}`}><TrendingUp size={20}/> Panel</button>
+                            <button onClick={()=>setActiveTab('clients')} className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg ${activeTab==='clients'?'bg-indigo-700':'hover:bg-indigo-800 text-indigo-200'}`}><Users size={20}/> Clientes</button>
+                        </nav>
+                        <div className="p-4 border-t border-indigo-800 text-xs text-indigo-300 flex items-center gap-2"><Cloud size={14} className={loading?"animate-pulse":"text-emerald-400"}/> {loading?"Cargando...":"En línea"}</div>
+                    </aside>
+
+                    <main className="flex-1 p-4 md:p-8 overflow-y-auto h-screen">
+                        <div className="max-w-6xl mx-auto">
+                            <div className="flex justify-between items-center mb-6">
+                                <h2 className="text-2xl font-bold text-slate-800">{activeTab==='dashboard'?'Resumen':'Base de Clientes'}</h2>
+                                <button onClick={()=>setShowAddModal(true)} className="bg-pink-600 text-white px-5 py-2.5 rounded-lg shadow hover:bg-pink-700 flex items-center gap-2 font-medium"><Plus size={20}/> Registrar Pedido</button>
+                            </div>
+                            
+                            {/* Dashboard View */}
+                            {activeTab === 'dashboard' && (
+                                <div className="space-y-6 animate-fade-in">
+                                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                                        <Card className="p-4 border-l-4 border-indigo-500 flex justify-between"><div><p className="text-slate-500 text-sm">Ventas</p><h3 className="text-2xl font-bold">${metrics.totalRevenue}</h3></div><div className="bg-indigo-50 p-2 rounded text-indigo-600"><DollarSign/></div></Card>
+                                        <Card className="p-4 border-l-4 border-emerald-500 flex justify-between"><div><p className="text-slate-500 text-sm">Clientes</p><h3 className="text-2xl font-bold">{customers.length}</h3></div><div className="bg-emerald-50 p-2 rounded text-emerald-600"><Users/></div></Card>
+                                        <Card className="p-4 border-l-4 border-rose-500 flex justify-between"><div><p className="text-slate-500 text-sm">En Riesgo</p><h3 className="text-2xl font-bold">{metrics.atRisk}</h3></div><div className="bg-rose-50 p-2 rounded text-rose-600"><AlertTriangle/></div></Card>
+                                        <Card className="p-4 border-l-4 border-amber-500 flex justify-between"><div><p className="text-slate-500 text-sm">Ticket Prom.</p><h3 className="text-2xl font-bold">${metrics.avgTicket}</h3></div><div className="bg-amber-50 p-2 rounded text-amber-600"><PieChartIcon/></div></Card>
+                                    </div>
+                                    <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                                        <Card className="p-6 lg:col-span-1 border-t-4 border-t-pink-500">
+                                            <h3 className="font-bold text-slate-800 mb-4 flex items-center gap-2"><Truck size={20} className="text-pink-500"/> Entregas (7 días)</h3>
+                                            {upcomingDeliveries.length === 0 ? <div className="text-center py-8 text-slate-400 bg-slate-50 rounded-lg"><CheckCircle size={32} className="mx-auto mb-2 opacity-30"/><p className="text-sm">¡Todo tranquilo! No hay entregas próximas.</p></div> : 
+                                            <div className="space-y-3">{upcomingDeliveries.map((delivery, idx) => (
+                                                <div key={idx} className="bg-pink-50 p-3 rounded-lg border border-pink-100 relative overflow-hidden flex flex-col cursor-pointer hover:bg-pink-100 transition-colors" onClick={() => { const c = customers.find(cust => cust.id === delivery.customerId); if(c) setViewingCustomer(c); }}>
+                                                    <div className="absolute right-0 top-0 bg-pink-200 text-pink-800 text-[10px] font-bold px-2 py-1 rounded-bl">{delivery.daysLeft === 0 ? 'HOY' : `En ${delivery.daysLeft} días`}</div>
+                                                    <p className="font-bold text-slate-800 text-sm">{delivery.customerName}</p>
+                                                    <p className="text-pink-700 font-medium text-xs truncate">{delivery.item}</p>
+                                                    <p className="text-slate-500 text-xs mt-1 flex items-center gap-1"><Calendar size={10}/> {new Date(delivery.deliveryDate + 'T00:00:00').toLocaleDateString()}</p>
+                                                </div>
+                                            ))}</div>}
+                                        </Card>
+                                        <Card className="p-6 lg:col-span-2">
+                                            <h3 className="font-bold mb-4">Mejores Clientes</h3>
+                                            <div className="h-64"><ResponsiveContainer width="100%" height="100%"><BarChart data={[...customers].sort((a,b)=>b.totalSpent-a.totalSpent).slice(0,5)}><CartesianGrid strokeDasharray="3 3" vertical={false}/><XAxis dataKey="name" tick={{fontSize:12}} interval={0}/><YAxis/><Tooltip/><Bar dataKey="totalSpent" fill="#6366f1" radius={[4,4,0,0]}/></BarChart></ResponsiveContainer></div>
+                                        </Card>
+                                    </div>
+                                </div>
+                            )}
+
+                            {/* Client List View */}
+                            {activeTab === 'clients' && (
+                                <Card className="overflow-hidden">
+                                    <div className="p-4 border-b bg-slate-50 flex justify-between items-center">
+                                        <h3 className="font-bold text-slate-700">Listado de Clientes</h3>
+                                        <div className="relative"><Search className="absolute left-3 top-2.5 text-slate-400" size={18}/><input type="text" placeholder="Buscar..." className="pl-10 pr-4 py-2 border rounded-lg text-sm w-64" value={searchTerm} onChange={e=>setSearchTerm(e.target.value)}/></div>
+                                    </div>
+                                    <div className="overflow-x-auto">
+                                        <table className="w-full text-left text-sm text-slate-600">
+                                            <thead className="bg-slate-100 uppercase text-xs font-semibold text-slate-700"><tr><th className="px-6 py-3">Cliente</th><th className="px-6 py-3 text-center">Perfil</th><th className="px-6 py-3 text-right">Pedidos</th><th className="px-6 py-3 text-right">Total</th><th className="px-6 py-3 text-center">Acciones</th></tr></thead>
+                                            <tbody className="divide-y divide-slate-200">{enrichedCustomers.map(c => (
+                                                <tr key={c.id} className="hover:bg-indigo-50/50 cursor-pointer transition-colors" onClick={() => setViewingCustomer(c)}>
+                                                    <td className="px-6 py-4"><div className="font-bold text-slate-800">{c.name}</div><div className="text-xs text-slate-400">{c.phone || 'Sin teléfono'}</div></td>
+                                                    <td className="px-6 py-4 text-center"><Badge type={c.statusColor}>{c.status}</Badge></td>
+                                                    <td className="px-6 py-4 text-right">{c.orders}</td>
+                                                    <td className="px-6 py-4 text-right font-medium text-emerald-600">${c.totalSpent}</td>
+                                                    <td className="px-6 py-4 text-center flex justify-center gap-2">
+                                                        <button onClick={(e) => {e.stopPropagation(); setViewingCustomer(c)}} className="p-2 text-indigo-500 hover:bg-indigo-100 rounded-full" title="Ver Historia Completa"><Eye size={18}/></button>
+                                                        <button onClick={(e) => deleteCustomer(c.id, e)} className="p-2 text-slate-400 hover:text-rose-500 hover:bg-rose-50 rounded-full"><Trash2 size={18}/></button>
+                                                    </td>
+                                                </tr>
+                                            ))}</tbody>
+                                        </table>
+                                    </div>
+                                </Card>
+                            )}
+                        </div>
+                    </main>
+
+                    {viewingCustomer && (
+                        <CustomerDetailModal 
+                            customer={viewingCustomer} 
+                            onClose={() => setViewingCustomer(null)} 
+                            onUpdateOrder={handleUpdateOrderStatus}
+                            onUpdateProfile={handleUpdateProfile}
+                            onUploadPhoto={handleUploadPhoto}
+                        />
+                    )}
+
+                    {showAddModal && (
+                        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-[150] flex items-center justify-center p-4">
+                            <div className="bg-white rounded-2xl shadow-2xl w-full max-w-lg overflow-hidden flex flex-col max-h-[90vh]">
+                                <div className="bg-indigo-900 p-4 flex justify-between items-center shrink-0">
+                                    <h3 className="text-white font-bold flex items-center gap-2"><Cake size={20}/> Nuevo Pedido Detallado</h3>
+                                    <button onClick={()=>setShowAddModal(false)} className="text-indigo-200 hover:text-white"><X size={20}/></button>
+                                </div>
+                                <form onSubmit={handleAddOrder} className="p-6 space-y-4 overflow-y-auto thin-scrollbar">
+                                    <div className="bg-slate-50 p-3 rounded-lg border border-slate-200">
+                                        <label className="block text-xs font-bold text-slate-500 uppercase mb-1">Cliente</label>
+                                        <div className="relative">
+                                            <input type="text" name="name" list="client-names" required className={`w-full p-2 border rounded outline-none transition-colors ${foundCustomer ? 'border-emerald-400 bg-emerald-50 text-emerald-900' : 'bg-white'}`} placeholder="Nombre completo" autoComplete="off" value={newOrderName} onChange={(e) => setNewOrderName(e.target.value)}/>
+                                            {foundCustomer && <div className="absolute right-2 top-2 text-emerald-600 flex items-center gap-1 text-xs font-bold pointer-events-none"><CheckCircle size={14}/> Cliente Frecuente</div>}
+                                        </div>
+                                        <datalist id="client-names">{customers.map(c=><option key={c.id} value={c.name}/>)}</datalist>
+                                        {!foundCustomer && <div className="grid grid-cols-2 gap-2 mt-2 animate-fade-in"><input type="tel" name="phone" className="p-2 border rounded text-sm bg-white" placeholder="Teléfono (Nuevo)"/><input type="email" name="email" className="p-2 border rounded text-sm bg-white" placeholder="Email (Nuevo)"/></div>}
+                                        {foundCustomer && <p className="text-xs text-emerald-600 mt-1 pl-1">Se agregará al historial de <b>{foundCustomer.name}</b> (Pedidos: {foundCustomer.orders})</p>}
+                                    </div>
+
+                                    <div className="grid grid-cols-2 gap-4">
+                                        <div><label className="block text-xs font-bold text-slate-500 uppercase mb-1">Fecha Pedido</label><input type="date" name="orderDate" required defaultValue={new Date().toISOString().split('T')[0]} className="w-full p-2 border rounded text-sm"/></div>
+                                        <div><label className="block text-xs font-bold text-pink-600 uppercase mb-1">Fecha Entrega</label><input type="date" name="deliveryDate" required className="w-full p-2 border border-pink-200 rounded text-sm focus:ring-2 focus:ring-pink-500 bg-pink-50"/></div>
+                                    </div>
+
+                                    <div className="grid grid-cols-2 gap-4">
+                                        <div><label className="block text-sm font-medium mb-1">Producto</label><input type="text" name="item" required className="w-full p-2 border rounded" placeholder="Ej. Torta Cumpleaños"/></div>
+                                        <div><label className="block text-sm font-medium mb-1">Precio Total ($)</label><input type="number" name="amount" required className="w-full p-2 border rounded font-bold text-slate-700" placeholder="0.00" step="0.01"/></div>
+                                    </div>
+
+                                    <div className="grid grid-cols-3 gap-2">
+                                        <div><label className="block text-xs font-medium text-slate-500 mb-1">Kilos/Porc.</label><input type="text" name="weight" className="w-full p-2 border rounded text-sm" placeholder="Ej. 2kg"/></div>
+                                        <div><label className="block text-xs font-medium text-slate-500 mb-1">Forma</label><select name="shape" className="w-full p-2 border rounded text-sm bg-white"><option value="">--</option><option value="Redonda">Redonda</option><option value="Cuadrada">Cuadrada</option><option value="Rectangular">Rectangular</option><option value="Corazón">Corazón</option><option value="Personalizada">Personalizada</option></select></div>
+                                        <div><label className="block text-xs font-medium text-slate-500 mb-1">Sabor</label><input type="text" name="flavor" className="w-full p-2 border rounded text-sm" placeholder="Ej. Vainilla"/></div>
+                                    </div>
+
+                                    <div>
+                                        <label className="block text-sm font-medium mb-1 flex items-center gap-1"><Palette size={14} className="text-pink-500"/> Decoración / Notas</label>
+                                        <textarea name="decoration" rows="2" className="w-full p-2 border rounded text-sm" placeholder="Describir colores, temática, frase en la torta..."></textarea>
+                                        
+                                        {/* UPLOAD FOTO REFERENCIA */}
+                                        <label className="block mt-2 cursor-pointer">
+                                            <div className={`flex items-center gap-2 p-2 border border-dashed rounded text-sm transition-colors ${tempRefImage ? 'bg-emerald-50 border-emerald-300 text-emerald-700' : 'bg-slate-50 border-slate-300 text-slate-500 hover:bg-slate-100'}`}>
+                                                {tempRefImage ? <CheckCircle size={16}/> : <Upload size={16}/>}
+                                                {tempRefImage ? '¡Foto Referencia cargada!' : 'Subir Foto de Referencia (Opcional)'}
+                                                <input type="file" accept="image/*" className="hidden" onChange={handleTempRefUpload}/>
+                                            </div>
+                                        </label>
+                                        {tempRefImage && <div className="mt-1"><img src={tempRefImage} className="h-16 w-16 object-cover rounded border" alt="preview"/> <button type="button" onClick={()=>setTempRefImage(null)} className="text-xs text-rose-500 underline ml-2">Quitar</button></div>}
+                                    </div>
+
+                                    <div className="bg-indigo-50 p-3 rounded-lg border border-indigo-100">
+                                        <label className="block text-xs font-bold text-indigo-800 uppercase mb-2 flex items-center gap-1"><CreditCard size={14}/> Estado del Pago</label>
+                                        <div className="flex gap-2 mb-2">
+                                            {['Pagado', 'Adelanto', 'Pendiente'].map(status => (
+                                                <button type="button" key={status} onClick={()=>setPaymentStatus(status)} className={`flex-1 py-1 px-2 rounded text-sm border ${paymentStatus===status ? 'bg-indigo-600 text-white border-indigo-600' : 'bg-white text-slate-600 border-slate-300'}`}>{status}</button>
+                                            ))}
+                                            <input type="hidden" name="paymentStatus" value={paymentStatus} />
+                                        </div>
+                                        {paymentStatus === 'Adelanto' && <div className="animate-fade-in"><label className="block text-xs text-indigo-700 mb-1">Monto Abonado (Seña)</label><input type="number" name="deposit" className="w-full p-2 border border-indigo-200 rounded text-sm focus:ring-2 focus:ring-indigo-500" placeholder="¿Cuánto pagó?" step="0.01"/></div>}
+                                    </div>
+
+                                    <button type="submit" className="w-full bg-pink-600 hover:bg-pink-700 text-white font-bold py-3 rounded-lg shadow-lg">Guardar Pedido Completo</button>
+                                </form>
+                            </div>
+                        </div>
+                    )}
                 </div>
-                <div>
-                  <label className="block text-sm font-medium text-slate-700 mb-1">Producto</label>
-                  <input type="text" name="item" className="w-full p-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-pink-500 outline-none" placeholder="Ej. Torta Selva Negra" />
-                </div>
-              </div>
+            );
+        }
 
-              <div className="pt-2 border-t border-slate-100 mt-2">
-                 <p className="text-xs font-semibold text-slate-500 mb-2 uppercase">Datos de contacto (Solo nuevos)</p>
-                 <div className="grid grid-cols-2 gap-4">
-                    <input type="tel" name="phone" className="w-full p-2 bg-slate-50 border border-slate-200 rounded-lg text-sm" placeholder="Teléfono" />
-                    <input type="email" name="email" className="w-full p-2 bg-slate-50 border border-slate-200 rounded-lg text-sm" placeholder="Email (Opcional)" />
-                 </div>
-              </div>
-
-              <button type="submit" className="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 rounded-lg mt-4 shadow-lg transition-colors">
-                Guardar Pedido
-              </button>
-            </form>
-          </div>
-        </div>
-      )}
-    </div>
-  );
-}
+        const root = createRoot(document.getElementById('root'));
+        root.render(<SweetCRM />);
+    </script>
+</body>
+</html>
