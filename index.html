@@ -2100,6 +2100,29 @@
                 }
             });
         }
+
+// --- 📡 RADAR: SEÑAL DE VIDA PARA EL ADMIN ---
+        const enviarLatido = async () => {
+            if (!auth.currentUser) return; // Si no está logueado, no envía nada
+            const esMovil = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+            
+            try {
+                // Escribimos en la base de datos que estamos vivos
+                await setDoc(doc(db, `artifacts/${appId}/public/data/presence`, auth.currentUser.uid), {
+                    platform: esMovil ? 'mobile' : 'pc',
+                    timestamp: serverTimestamp(),
+                    flag: '🌍' // Icono de visitante normal
+                });
+            } catch (e) { console.log("Radar silencioso..."); }
+        };
+
+        // Activar el repetidor cuando el usuario entra
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                enviarLatido(); // Primer aviso inmediato
+                setInterval(enviarLatido, 30000); // Repetir cada 30 segundos
+            }
+        });
     </script>
 </body>
 </html>
