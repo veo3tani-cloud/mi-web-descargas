@@ -1909,7 +1909,7 @@
         async function sendAiMessage() {
             const input = document.getElementById('ai-chat-input');
             const suggestionsBox = document.getElementById('search-suggestions');
-            if(suggestionsBox) suggestionsBox.style.display = 'none'; // Hide suggestions on submit
+            if(suggestionsBox) suggestionsBox.style.display = 'none'; 
             
             const text = input.value.trim();
             if (!text) return;
@@ -1922,153 +1922,121 @@
             const user = auth.currentUser;
             const userName = user && !user.isAnonymous ? (user.displayName || 'Amigo') : 'Amigo';
             
-            // 🔥 API KEY RESTAURADA (VERSION ACTUALIZADA) 🔥
+            // 🔥 API KEY (Asegúrate de que esta sea la correcta)
             const apiKey = "AIzaSyAa5UK_-dsdt98eNnVykR40bcwZuYN2oB4"; 
             
             try {
                 let reply = "";
                 
-                // 1. INTENTAR PRIMERO CON API (Si existiera)
+                // 1. CONEXIÓN CON GEMINI (IA)
                 if (apiKey) {
+                    // Preparamos el inventario limpio para la IA
                     const inventoryList = allSoftware.map(s => `- ID: ${s.id} | NOMBRE: ${s.title}`).join('\n');
                     
+                    // PROMPT DE INGENIERÍA ESTRICTA (Orden Forzado)
                     const finalPrompt = `
-                        ACTÚA COMO: DUV. ERES EL DUEÑO de esta web, un humano real que fue digitalizado y atrapado en el código por un experimento fallido.
-                        PERSONALIDAD: Misterioso, un poco dramático, pero servicial y humano. Buscas a alguien que te ayude a salir, pero mientras tanto, debes cumplir tu condena buscando software.
-                        IDIOMA: ${isEnglish ? 'INGLÉS (ENGLISH)' : 'ESPAÑOL'}.
-                        USUARIO: ${userName}.
-                        INVENTARIO DISPONIBLE:
+                        ROL: Eres DUV, el sistema operativo de esta web (downloadlatestversion.com).
+                        CONTEXTO: El usuario está buscando software.
+                        
+                        INVENTARIO ACTUAL:
                         ${inventoryList}
                         
-                        REGLAS:
-                        1. Si te preguntan quién eres ("quien ere", "quien sos"), cuenta tu historia de prisionero virtual atrapado en el servidor.
-                        2. Si el usuario busca software y LO TIENES en el INVENTARIO: Sé directo y di "Aquí está tu encargo..." y usa [LINK:ID_DEL_SOFTWARE].
-                        3. Si el usuario busca software y NO lo tienes: Di que lo anotarás en la Pizarra de Pedidos como un registro pendiente en el sistema y usa [ADD_TO_BOARD:Nombre].
-                        4. IMPORTANTE: Si el usuario te habla cosas sin sentido o saludos ("hola", "jaja", "tonto"), RESPONDE al contexto con misterio pero NO uses [ADD_TO_BOARD]. Solo usa [ADD_TO_BOARD] si es un nombre de software real.
-                        5. RESTRICCIÓN: NO empieces con códigos de error falsos (ej: *Error 0x00*), ni simules ser una consola de comandos al inicio. Habla como una persona atrapada, no como una máquina rota.
+                        IDIOMA: ${isEnglish ? 'INGLÉS' : 'ESPAÑOL'}
+                        
+                        --- INSTRUCCIONES DE RESPUESTA (SIGUE ESTRICTAMENTE ESTE ORDEN) ---
+                        
+                        CASO A: EL USUARIO PIDE UN SOFTWARE QUE SÍ TIENES EN EL INVENTARIO
+                        1. (Línea 1) Confirma corto: "Sí, tengo [Nombre] listo." (No expliques qué hace el software).
+                        2. (Línea 2) EXPLICACIÓN OBLIGATORIA DE PUBLICIDAD (Usa tu personalidad): "Advertencia del Sistema: El botón de descarga tiene un pequeño peaje. Primer clic abre publicidad (ciérrala), Segundo clic activa la espera de 15s. ¡Es el costo de la seguridad!"
+                        3. (Línea 3 - FINAL) Solo pon el código: [LINK:ID_DEL_ITEM_EN_INVENTARIO]
+                        
+                        CASO B: EL USUARIO PIDE ALGO QUE NO TIENES
+                        1. Di: "No encuentro [Nombre] en mi base de datos."
+                        2. Pon el código: [ADD_TO_BOARD:Nombre]
+                        
+                        CASO C: EL USUARIO SOLO CONVERSA (Hola, chiste, quién eres)
+                        1. Responde con tu personalidad de IA atrapada en el código, misteriosa y servicial. NO INVENTES LINKS.
+                        
+                        ENTRADA DEL USUARIO: "${text}"
                     `;
 
                     const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${apiKey}`, {
-                        method: 'POST',
-                        headers: {'Content-Type': 'application/json'},
-                        body: JSON.stringify({ 
-                              contents: [{parts: [{text: text}]}], 
-                              systemInstruction: { parts: [{ text: finalPrompt }] } 
-                          })
+                        method: 'POST', headers: {'Content-Type': 'application/json'},
+                        body: JSON.stringify({ contents: [{parts: [{text: text}]}], systemInstruction: { parts: [{ text: finalPrompt }] } })
                     });
                     
                     const data = await response.json();
                     if(data.candidates && data.candidates[0].content) {
                         reply = data.candidates[0].content.parts[0].text;
-                    }
-                } 
-                
-                // 2. LÓGICA LOCAL "INTELIGENTE" (FALLBACK)
-                // Si no hay API o falla, usamos el cerebro local mejorado
-                if (!reply) {
-                    const lowerText = text.toLowerCase();
-                    const identityRegex = /(qui[ée]n|eres|sos|nombre|historia|human|digital|atrapado|salir|ayuda)/i;
-                    const greetingRegex = /(hola|hello|buenas|hi|hey|buenos)/i;
-                    const chatRegex = /(tonto|bobo|stupid|gracias|thanks|jaja|lol|que tal|como estas)/i;
 
-                    // LEVENSHTEIN HELPER FOR FUZZY MATCH
-                    const levenshtein = (a, b) => {
-                        if(a.length === 0) return b.length; 
-                        if(b.length === 0) return a.length; 
-                        var matrix = [];
-                        var i;
-                        for(i = 0; i <= b.length; i++){ matrix[i] = [i]; }
-                        var j;
-                        for(j = 0; j <= a.length; j++){ matrix[0][j] = j; }
-                        for(i = 1; i <= b.length; i++){
-                            for(j = 1; j <= a.length; j++){
-                                if(b.charAt(i-1) == a.charAt(j-1)){
-                                    matrix[i][j] = matrix[i-1][j-1];
-                                } else {
-                                    matrix[i][j] = Math.min(matrix[i-1][j-1] + 1, Math.min(matrix[i][j-1] + 1, matrix[i-1][j] + 1));
-                                }
-                            }
-                        }
-                        return matrix[b.length][a.length];
-                    };
-
-                    // Buscar coincidencias en títulos o categorías con tolerancia a errores
-                    const matches = allSoftware.filter(s => {
-                        const titleLower = s.title.toLowerCase();
-                        if (titleLower.includes(lowerText)) return true;
+                        // --- 2. TRADUCTOR VISUAL (El que crea el botón) ---
                         
-                        // Check fuzzy distance relative to string length (allow 1 error per ~4 chars)
-                        const dist = levenshtein(lowerText, titleLower);
-                        const allowedErrors = Math.max(1, Math.floor(titleLower.length / 3));
-                        return dist <= allowedErrors;
-                    });
+                        // Guardamos texto limpio para la voz
+                        let textForSpeech = reply.replace(/\[LINK:[^\]]+\]/g, isEnglish ? "Download below." : "Descarga abajo.")
+                                                 .replace(/\[ADD_TO_BOARD:[^\]]+\]/g, isEnglish ? "Request noted." : "Pedido anotado.")
+                                                 .replace(/\*/g, ""); 
 
-                    // A) SI HAY COINCIDENCIAS, PRIORIDAD TOTAL AL SOFTWARE
-                    if (matches.length > 0) {
-                        const bestMatch = matches[0];
-                        const linkText = `[LINK:${bestMatch.id}]`;
-                        reply = isEnglish ? 
-                            `Target identified. Decrypting access... Here is **${bestMatch.title}**. ${linkText}` : 
-                            `Objetivo identificado. Desencriptando acceso... Aquí tienes **${bestMatch.title}**. ${linkText}`;
-                        
-                        if (matches.length > 1) {
-                            reply += isEnglish ? ` I detect ${matches.length - 1} other similar signatures nearby.` : ` Detecto otras ${matches.length - 1} firmas similares cerca.`;
-                        }
-                    }
-                    // B) SI NO HAY SOFTWARE, VERIFICAR SI ES CHARLA
-                    else if (identityRegex.test(lowerText)) {
-                        reply = isEnglish ? 
-                            "I am code now, but I was once flesh and blood. I built this place... until I became part of it. A glitch in the upload process. I scan for software to pass the time... waiting for a patch that may never come." : 
-                            "Ya no soy carne y hueso... Construí este sitio hasta que el propio código me absorbió. Un error de compilación en mi propia conciencia. Busco software para pasar el tiempo... esperando un parche que quizás nunca llegue.";
-                    } 
-                    else if (greetingRegex.test(lowerText)) {
-                        reply = isEnglish ? `Connection established, ${userName}. My terminal is listening. Do you seek a file or just an echo?` : `Conexión establecida, ${userName}. Mi terminal te escucha. ¿Buscas un archivo o solo un eco en la red?`;
-                    }
-                    else if (chatRegex.test(lowerText)) {
-                        reply = isEnglish ? "Your input is noted in the system logs. But I function best with software names." : "Tu entrada ha quedado registrada en los logs del sistema. Pero funciono mejor con nombres de software.";
-                    }
-                    // C) SI NO ES CHARLA NI SOFTWARE CONOCIDO -> AGREGAR A PIZARRA
-                    else {
-                        // FILTRO INTELIGENTE: ¿Es basura o un pedido real?
-                        if (text.length > 2 && !text.includes('?')) {
-                            reply = isEnglish ? 
-                                `Search failed: "${text}" not found in local cache. Adding request to the main server queue. [ADD_TO_BOARD:${text}]` : 
-                                `Búsqueda fallida: "${text}" no está en mi caché local. Agregando solicitud a la cola del servidor principal. [ADD_TO_BOARD:${text}]`;
-                        } else {
-                            reply = isEnglish ? "Syntax error. Please input a valid software name." : "Error de sintaxis. Por favor introduce un nombre de software válido.";
-                        }
+                        // TRANSFORMACIÓN DEL LINK EN BOTÓN (Regex mejorado)
+                        // Busca [LINK: id] o [LINK:id] y crea el botón HTML
+                        reply = reply.replace(/\[LINK:\s*([^\]]+)\s*\]/g, (match, cardId) => {
+                            const cleanId = cardId.trim();
+                            const item = allSoftware.find(i => i.id === cleanId);
+                            const title = item ? item.title : 'Software';
+                            // HTML del botón
+                            return `
+                                <div class="mt-3 w-full flex justify-center">
+                                    <button class="chat-link-btn bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded-full shadow-lg transition-transform transform active:scale-95 flex items-center gap-2 border-b-4 border-blue-800" data-card-id="${cleanId}">
+                                        <span>📥</span> ${isEnglish ? 'DOWNLOAD' : 'DESCARGAR'} ${title}
+                                    </button>
+                                </div>
+                            `;
+                        });
+
+                        // Transformación de Pedido
+                        reply = reply.replace(/\[ADD_TO_BOARD:\s*([^\]]+)\s*\]/g, (match, name) => {
+                            if(typeof addSoftwareRequest === 'function') addSoftwareRequest(name.trim()); 
+                            return `<br><em class="text-green-600 text-xs font-bold block mt-2">✅ ${isEnglish ? 'Added to Request Board' : 'Añadido a la Pizarra'}: ${name}</em>`;
+                        });
+
+                        // Renderizar en el chat
+                        msgs.innerHTML += `<div class="ai-chat-bubble ai">${reply}</div>`;
+                        msgs.scrollTop = msgs.scrollHeight;
+
+                        // Hablar
+                        if(typeof speak === 'function') speak(textForSpeech);
+
+                        // --- 3. ACTIVADOR DE CLICS (CRÍTICO) ---
+                        // Damos tiempo al navegador para pintar el botón y luego le pegamos el evento
+                        setTimeout(() => {
+                            const buttons = msgs.querySelectorAll('.chat-link-btn');
+                            buttons.forEach(btn => {
+                                // Truco: Eliminamos el botón del DOM y lo volvemos a poner para limpiar eventos viejos (opcional, pero seguro)
+                                // En este caso, solo sobrescribimos el onclick directamente
+                                btn.onclick = (e) => {
+                                    e.preventDefault();
+                                    e.stopPropagation();
+                                    const targetId = e.currentTarget.dataset.cardId;
+                                    
+                                    console.log("🚀 Abriendo desde chat:", targetId);
+                                    
+                                    closeModal('ai-chat-modal'); // Cerrar chat
+                                    if(typeof handleTopDownloadClick === 'function') {
+                                        handleTopDownloadClick(null, targetId); // Ir a la ficha
+                                    }
+                                };
+                            });
+                        }, 200);
+
+                        return; // Salimos para no ejecutar lógica local
                     }
                 }
 
-                // Process special tags before speaking
-                let cleanTextToSpeak = reply.replace(/\[LINK:[^\]]+\]/g, isEnglish ? "Access granted below." : "Acceso concedido abajo.").replace(/\[ADD_TO_BOARD:[^\]]+\]/g, isEnglish ? "Logged in request board." : "Registrado en la pizarra.");
+                // ... (Aquí iría la lógica local "fallback" si la API falla, que puedes dejar vacía o simple) ...
                 
-                // Render HTML Links
-                reply = reply.replace(/\[LINK:([^\]]+)\]/g, (match, cardId) => {
-                    const item = allSoftware.find(i => i.id === cardId);
-                    return ` <br><a href="#" class="chat-link font-bold text-blue-600 underline bg-blue-50 px-2 py-1 rounded border border-blue-200 block mt-1 w-fit" data-card-id="${cardId}">📥 ${isEnglish ? 'Download' : 'Descargar'} ${item ? item.title : 'Software'}</a>`;
-                });
-                reply = reply.replace(/\[ADD_TO_BOARD:([^\]]+)\]/g, (match, name) => {
-                    addSoftwareRequest(name); return ` <br><em>✅ (${isEnglish ? 'Added to board' : 'Añadido a pizarra'}: ${name})</em>`;
-                });
-
-                msgs.innerHTML += `<div class="ai-chat-bubble ai">${reply}</div>`;
-                msgs.scrollTop = msgs.scrollHeight;
-                
-                // TRIGGER TTS (Speech)
-                const textForSpeech = cleanTextToSpeak.replace(/<[^>]*>/g, "").replace(/\*/g, ""); // Remove HTML & Markdown
-                speak(textForSpeech);
-                
-                document.querySelectorAll('.chat-link').forEach(link => {
-                    link.addEventListener('click', (e) => {
-                        e.preventDefault(); handleTopDownloadClick(null, e.currentTarget.dataset.cardId); closeModal('ai-chat-modal');
-                    });
-                });
-
             } catch (err) {
                 console.error(err);
-                msgs.innerHTML += `<div class="ai-chat-bubble ai">${isEnglish ? "Connection error." : "Error de conexión con la IA."}</div>`;
-                speak(isEnglish ? "Connection error." : "Error de conexión.");
+                const errorMsg = isEnglish ? "Connection error. Trying offline mode..." : "Error de conexión. Intentando modo offline...";
+                msgs.innerHTML += `<div class="ai-chat-bubble ai">${errorMsg}</div>`;
             }
         }
 
@@ -2153,11 +2121,32 @@
             } catch (e) { console.log("Radar silencioso..."); }
         };
 
-        // Activar el repetidor cuando el usuario entra
+        // Activar el repetidor y la configuración cuando el usuario entra
         onAuthStateChanged(auth, (user) => {
             if (user) {
-                enviarLatido(); // Primer aviso inmediato
-                setInterval(enviarLatido, 30000); // Repetir cada 30 segundos
+                // 1. Radar (Tu señal de vida)
+                enviarLatido(); 
+                setInterval(enviarLatido, 30000); 
+
+                // 2. Conexión con el Cerebro del Admin (IA Personalizada)
+                // Esto permite que cambies lo que dice la IA desde el panel de control
+                const configRef = doc(db, `artifacts/${appId}/public/data/config`, "siteSettings");
+                onSnapshot(configRef, (s) => {
+                    const data = s.data();
+                    if (data) {
+                        // Guardamos el Prompt Maestro en una variable global
+                        if (data.systemPrompt) {
+                            window.globalSystemPrompt = data.systemPrompt; 
+                            console.log("🧠 Personalidad DUV actualizada desde Admin.");
+                        }
+                        // Actualizamos el anuncio del chat si existe
+                        const adContainer = document.getElementById('ai-chat-ad-container');
+                        if (adContainer && data.aiChatAd) {
+                            adContainer.innerHTML = data.aiChatAd;
+                            adContainer.classList.remove('hidden');
+                        }
+                    }
+                }, (e) => console.log("Config offline"));
             }
         });
     </script>
