@@ -814,15 +814,16 @@
             const videoContainerWrapper = document.getElementById('video-container-wrapper');
             const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
             
-            // 1. VIDEO POR DEFECTO
+            // 1. VIDEO POR DEFECTO (Si no pusiste nada en el Admin)
             let videoSrc = "https://www.youtube.com/embed/5qap5aO4i9A?autoplay=1&controls=0&mute=1"; 
             
-            // 2. DETECTOR DE LINK PERSONALIZADO
+            // 2. DETECTOR DE LINK PERSONALIZADO (Si pusiste algo en el Admin)
             if (customVideoUrl && customVideoUrl.trim() !== "") {
                 try {
                     let videoId = "";
                     let params = "?autoplay=1&controls=0&mute=1"; 
 
+                    // Extraer ID del video
                     if (customVideoUrl.includes("v=")) {
                         videoId = customVideoUrl.split("v=")[1].split("&")[0];
                     } else if (customVideoUrl.includes("youtu.be/")) {
@@ -831,10 +832,11 @@
                         videoId = customVideoUrl.split("embed/")[1].split("?")[0];
                     }
 
+                    // Extraer Minuto/Segundo (?t=17 o ?start=17)
                     if (customVideoUrl.includes("t=") || customVideoUrl.includes("start=")) {
                         const timeMatch = customVideoUrl.match(/[?&](t|start)=([^&]+)/);
                         if (timeMatch) {
-                            let timeVal = timeMatch[2];
+                            let timeVal = timeMatch[2].replace('s',''); // Quitar la 's' si existe
                             params += `&start=${parseInt(timeVal)}`;
                         }
                     }
@@ -845,6 +847,7 @@
                 } catch (e) { console.error("Error procesando video:", e); }
             }
             
+            // Ajuste visual para móviles
             if (videoContainerWrapper) {
                 if (isMobile) {
                     videoContainerWrapper.classList.remove('modal-video-container-vertical'); 
@@ -892,16 +895,15 @@
                     btn.classList.remove('gate-disabled', 'bg-slate-400');
                     btn.classList.add('bg-green-600', 'hover:bg-green-700', 'gate-ready');
                     
-                    // 🔥 LÓGICA DE TEXTO FINAL CON PESO Y ICONO 🔥
-                    const sizeLabel = fileSize ? ` (${fileSize})` : '';
-                    // Icono SVG inline para asegurar que se vea bien
+                    // Mostrar peso del archivo si existe
+                    const sizeText = fileSize ? ` (${fileSize})` : '';
                     const downloadIcon = `<svg class="w-6 h-6 inline-block mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>`;
 
                     if (isEnglish) {
-                        btnText.innerHTML = `${downloadIcon} DOWNLOAD ${sizeLabel}`;
+                        btnText.innerHTML = `${downloadIcon} DOWNLOAD ⬇️${sizeText}`;
                         statusText.textContent = "Download authorized.";
                     } else {
-                        btnText.innerHTML = `${downloadIcon} DESCARGAR ${sizeLabel}`;
+                        btnText.innerHTML = `${downloadIcon} DESCARGAR ⬇️${sizeText}`;
                         statusText.textContent = "Descarga autorizada.";
                     }
                 }
@@ -950,8 +952,8 @@
             const id = btn.dataset.id;
             const title = btn.dataset.title;
             const link = btn.dataset.link;
-            const gateVideo = btn.dataset.video;
-            const fileSize = btn.dataset.size; // 🔥 NUEVO: Capturar el peso
+            const gateVideo = btn.dataset.video; // 🔥 CAPTURAMOS EL LINK DEL VIDEO
+            const fileSize = btn.dataset.size;   // 🔥 CAPTURAMOS EL PESO
             
             if (!link || link === '#' || link === 'undefined') { alert("Enlace no disponible."); return; }
             
@@ -975,9 +977,10 @@
                 }
             }
 
-            // SEGUNDO CLIC: ABRIMOS EL GATE PASANDO EL VIDEO Y EL PESO
+            // SEGUNDO CLIC: Pasamos el link, el video y el peso
             openGateModal(link, gateVideo, fileSize);
             
+            // Registrar descarga en base de datos
             const itemRef = doc(db, `artifacts/${appId}/public/data/software-items`, id);
             updateDoc(itemRef, { downloads: increment(1) }).catch(console.error);
             logActivity('Descarga', title || 'Desconocido');
@@ -1189,7 +1192,7 @@
                                 data-title="${item.title}" 
                                 data-link="${item.downloadLink}" 
                                 data-video="${item.gateVideo || ''}"
-                                data-size="${item.fileSize || ''}"> <!-- AQUÍ ESTÁ EL PESO -->
+                                data-size="${item.fileSize || ''}"> 
                                 DESCARGAR
                             </button>
                             <a href="https://t.me/descargas_ultima_version_vip" target="_blank" class="mx-auto bg-sky-500 text-white font-bold py-1.5 px-5 rounded-full hover:bg-sky-600 transition-all animate-pulse flex items-center justify-center gap-2 text-xs shadow-lg transform hover:scale-105 border border-sky-400 w-fit mt-2 mb-1">
@@ -1911,6 +1914,7 @@
         }
 
         // --- NEW CHAT LOGIC FIX (ROBUST & SMART LOCAL FALLBACK) ---
+        // --- CHAT IA REPARADO Y BLINDADO ---
         async function sendAiMessage() {
             const input = document.getElementById('ai-chat-input');
             const suggestionsBox = document.getElementById('search-suggestions');
@@ -1919,6 +1923,7 @@
             const text = input.value.trim();
             if (!text) return;
             
+            // 1. Mostrar mensaje del usuario
             const msgs = document.getElementById('ai-chat-messages');
             msgs.innerHTML += `<div class="ai-chat-bubble user">${text}</div>`;
             input.value = '';
@@ -1927,21 +1932,20 @@
             const user = auth.currentUser;
             const userName = user && !user.isAnonymous ? (user.displayName || 'Amigo') : 'Amigo';
             
-            // 🔥 API KEY (Asegúrate de que esta sea la correcta)
-            const apiKey = "AIzaSyAa5UK_-dsdt98eNnVykR40bcwZuYN2oB4"; 
+            // 🔥 API KEY FIJA (No borrar)
+            const apiKey = "AIzaSyAiWoTawt-HDu5-mD_UpxjKncb55JkGRSE"; 
             
             try {
                 let reply = "";
                 
-                // 1. CONEXIÓN CON GEMINI (IA)
+                // 2. CONEXIÓN CON GEMINI
                 if (apiKey) {
-                    // Preparamos el inventario limpio para la IA
                     const inventoryList = allSoftware.map(s => `- ID: ${s.id} | NOMBRE: ${s.title}`).join('\n');
                     
                     // PROMPT DE INGENIERÍA ESTRICTA (Orden Forzado)
                     const finalPrompt = `
-                        ROL: Eres DUV, el sistema operativo de esta web (downloadlatestversion.com).
-                        CONTEXTO: El usuario está buscando software.
+                        ROL: Eres DUV, el sistema operativo de esta web.
+                        CONTEXTO: El usuario busca software.
                         
                         INVENTARIO ACTUAL:
                         ${inventoryList}
@@ -1951,16 +1955,16 @@
                         --- INSTRUCCIONES DE RESPUESTA (SIGUE ESTRICTAMENTE ESTE ORDEN) ---
                         
                         CASO A: EL USUARIO PIDE UN SOFTWARE QUE SÍ TIENES EN EL INVENTARIO
-                        1. (Línea 1) Confirma corto: "Sí, tengo [Nombre] listo." (No expliques qué hace el software).
-                        2. (Línea 2) EXPLICACIÓN OBLIGATORIA DE PUBLICIDAD (Usa tu personalidad): "Advertencia del Sistema: El botón de descarga tiene un pequeño peaje. Primer clic abre publicidad (ciérrala), Segundo clic activa la espera de 15s. ¡Es el costo de la seguridad!"
+                        1. (Línea 1) Confirma corto: "Sí, tengo [Nombre] listo." (No expliques qué hace).
+                        2. (Línea 2) EXPLICACIÓN OBLIGATORIA (Tu personalidad): "Advertencia del Sistema: El botón de descarga tiene un pequeño peaje. Primer clic abre publicidad (ciérrala), Segundo clic activa la espera de 15s. ¡Es el costo de la seguridad!"
                         3. (Línea 3 - FINAL) Solo pon el código: [LINK:ID_DEL_ITEM_EN_INVENTARIO]
                         
                         CASO B: EL USUARIO PIDE ALGO QUE NO TIENES
                         1. Di: "No encuentro [Nombre] en mi base de datos."
                         2. Pon el código: [ADD_TO_BOARD:Nombre]
                         
-                        CASO C: EL USUARIO SOLO CONVERSA (Hola, chiste, quién eres)
-                        1. Responde con tu personalidad de IA atrapada en el código, misteriosa y servicial. NO INVENTES LINKS.
+                        CASO C: EL USUARIO SOLO CONVERSA
+                        1. Responde con tu personalidad de IA atrapada. NO INVENTES LINKS.
                         
                         ENTRADA DEL USUARIO: "${text}"
                     `;
@@ -1974,15 +1978,14 @@
                     if(data.candidates && data.candidates[0].content) {
                         reply = data.candidates[0].content.parts[0].text;
 
-                        // --- 2. TRADUCTOR VISUAL (El que crea el botón) ---
+                        // --- 3. TRADUCTOR VISUAL (El que crea el botón) ---
                         
-                        // Guardamos texto limpio para la voz
-                        let textForSpeech = reply.replace(/\[LINK:[^\]]+\]/g, isEnglish ? "Download below." : "Descarga abajo.")
+                        // Limpiar texto para la voz
+                        let textForSpeech = reply.replace(/\[LINK:[^\]]+\]/g, isEnglish ? "Download link below." : "Enlace de descarga abajo.")
                                                  .replace(/\[ADD_TO_BOARD:[^\]]+\]/g, isEnglish ? "Request noted." : "Pedido anotado.")
                                                  .replace(/\*/g, ""); 
 
-                        // TRANSFORMACIÓN DEL LINK EN BOTÓN (Regex mejorado)
-                        // Busca [LINK: id] o [LINK:id] y crea el botón HTML
+                        // TRANSFORMACIÓN DEL LINK EN BOTÓN
                         reply = reply.replace(/\[LINK:\s*([^\]]+)\s*\]/g, (match, cardId) => {
                             const cleanId = cardId.trim();
                             const item = allSoftware.find(i => i.id === cleanId);
@@ -2010,13 +2013,12 @@
                         // Hablar
                         if(typeof speak === 'function') speak(textForSpeech);
 
-                        // --- 3. ACTIVADOR DE CLICS (CRÍTICO) ---
+                        // --- 4. ACTIVADOR DE CLICS (CRÍTICO) ---
                         // Damos tiempo al navegador para pintar el botón y luego le pegamos el evento
                         setTimeout(() => {
                             const buttons = msgs.querySelectorAll('.chat-link-btn');
                             buttons.forEach(btn => {
-                                // Truco: Eliminamos el botón del DOM y lo volvemos a poner para limpiar eventos viejos (opcional, pero seguro)
-                                // En este caso, solo sobrescribimos el onclick directamente
+                                // Sobrescribimos el onclick directamente para asegurar que funcione
                                 btn.onclick = (e) => {
                                     e.preventDefault();
                                     e.stopPropagation();
@@ -2035,16 +2037,15 @@
                         return; // Salimos para no ejecutar lógica local
                     }
                 }
-
-                // ... (Aquí iría la lógica local "fallback" si la API falla, que puedes dejar vacía o simple) ...
                 
+                // Si la API falla o no hay respuesta, mostrar error
+                msgs.innerHTML += `<div class="ai-chat-bubble ai text-red-500">Error de conexión con el núcleo.</div>`;
+
             } catch (err) {
                 console.error(err);
-                const errorMsg = isEnglish ? "Connection error. Trying offline mode..." : "Error de conexión. Intentando modo offline...";
-                msgs.innerHTML += `<div class="ai-chat-bubble ai">${errorMsg}</div>`;
+                msgs.innerHTML += `<div class="ai-chat-bubble ai">Error: ${err.message}</div>`;
             }
         }
-
         // Re-bind chat form correctly
         const originalChatForm = document.getElementById('ai-chat-form');
         if (originalChatForm) {
@@ -2062,6 +2063,7 @@
         }
 
         // --- FIX COMMENT SUBMIT (Enter & Click) ---
+        // --- ENVÍO DE COMENTARIOS (CON COPIA AL ADMIN) ---
         const submitComment = async () => {
             const input = document.getElementById('comment-input');
             const text = input.value.trim();
@@ -2076,11 +2078,27 @@
                 } catch(e) { console.error(e); return; }
             }
             
+            // 1. Guardar en la ficha del software (Para que se vea en la web)
             await addDoc(collection(db, `artifacts/${appId}/public/data/comments`, currentItemId, 'messages'), {
-                text: text, uid: user.uid, displayName: user.uid === ADMIN_ID ? 'Admin' : 'Usuario', timestamp: serverTimestamp()
+                text: text, 
+                uid: user.uid, 
+                displayName: user.uid === ADMIN_ID ? 'Admin' : 'Usuario', 
+                timestamp: serverTimestamp()
             });
             
-            // Update counter locally for instant feedback if needed, but firestore listener handles it
+            // 2. 🔥 MENSAJE ESPEJO AL ADMIN (Para que tú lo veas) 🔥
+            const currentItemName = allSoftware.find(i => i.id === currentItemId)?.title || currentItemId;
+            await addDoc(collection(db, `artifacts/${appId}/public/data/general-requests`), {
+                text: `[💬 ${currentItemName}] ${text}`, // Etiqueta especial para identificarlo
+                lowerCaseName: text.toLowerCase(),
+                timestamp: serverTimestamp(),
+                uid: user.uid,
+                displayName: 'Comentario Web',
+                votes: 0,
+                type: 'comment_mirror' // Marca interna
+            });
+            
+            // Update counter locally
             const itemRef = doc(db, `artifacts/${appId}/public/data/software-items`, currentItemId);
             updateDoc(itemRef, { commentsCount: increment(1) }).catch(console.error);
 
@@ -2088,6 +2106,7 @@
             logActivity('Comentario', item ? item.title : 'Item', text);
             
             input.value = '';
+            alert("Comentario enviado."); // Feedback visual rápido
         };
 
         const commentBtn = document.getElementById('submit-comment-btn');
