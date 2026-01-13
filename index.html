@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
     <!-- 🚀 SEO SUPREMO: TITULO Y METADATOS (BILINGÜE READY) -->
-    <title>Descargar Ultima Version - Software, Juegos y APKs Full (2025)</title>
+    <title>Descargar Ultima Version (Download Latest Version) - Apps & Juegos 2026</title>
     <meta name="description" content="Sitio Oficial. Descarga las últimas versiones de Adobe, Office, Juegos PC y Android (APKs Mods). Software verificado, libre de virus, enlaces directos y actualizados diariamente.">
     
     <!-- CÓDIGO DE VERIFICACIÓN ACTUALIZADO -->
@@ -2144,38 +2144,43 @@
 
 // --- 📡 RADAR: SEÑAL DE VIDA PARA EL ADMIN ---
         const enviarLatido = async () => {
-            if (!auth.currentUser) return; // Si no está logueado, no envía nada
+            if (!auth.currentUser) return; 
             const esMovil = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
-            
             try {
                 // Escribimos en la base de datos que estamos vivos
                 await setDoc(doc(db, `artifacts/${appId}/public/data/presence`, auth.currentUser.uid), {
                     platform: esMovil ? 'mobile' : 'pc',
                     timestamp: serverTimestamp(),
-                    flag: '🌍' // Icono de visitante normal
+                    flag: '🌍' 
                 });
             } catch (e) { console.log("Radar silencioso..."); }
         };
 
-        // Activar el repetidor y la configuración cuando el usuario entra
+        // --- CEREBRO FINAL (Conexión, Visitas y Configuración) ---
         onAuthStateChanged(auth, (user) => {
             if (user) {
-                // 1. Radar (Tu señal de vida)
+                // 1. Activar Radar
                 enviarLatido(); 
                 setInterval(enviarLatido, 30000); 
 
-                // 2. Conexión con el Cerebro del Admin (IA Personalizada)
-                // Esto permite que cambies lo que dice la IA desde el panel de control
+                // 2. REGISTRAR VISITA EN HISTORIAL (¡LO QUE FALTABA!)
+                // Usamos sessionStorage para contar 1 visita por sesión
+                if (!sessionStorage.getItem('visita_registrada')) {
+                    // Usamos la función logActivity que ya tienes definida arriba
+                    if (typeof logActivity === 'function') {
+                        logActivity('Visita', 'Home', 'Ingreso detectado');
+                    }
+                    sessionStorage.setItem('visita_registrada', 'true');
+                }
+
+                // 3. Cargar Configuración de IA desde Admin
                 const configRef = doc(db, `artifacts/${appId}/public/data/config`, "siteSettings");
                 onSnapshot(configRef, (s) => {
                     const data = s.data();
                     if (data) {
-                        // Guardamos el Prompt Maestro en una variable global
                         if (data.systemPrompt) {
                             window.globalSystemPrompt = data.systemPrompt; 
-                            console.log("🧠 Personalidad DUV actualizada desde Admin.");
                         }
-                        // Actualizamos el anuncio del chat si existe
                         const adContainer = document.getElementById('ai-chat-ad-container');
                         if (adContainer && data.aiChatAd) {
                             adContainer.innerHTML = data.aiChatAd;
