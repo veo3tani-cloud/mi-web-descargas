@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Verificación Requerida</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background: #1a1a2e;
+            color: white;
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            text-align: center;
+        }
+        .container {
+            width: 90%;
+            max-width: 400px;
+            background: #16213e;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.5);
+            border: 1px solid #3b82f6;
+        }
+        h2 { color: #60a5fa; margin-bottom: 10px; }
+        p { color: #94a3b8; font-size: 14px; margin-bottom: 20px; }
+        
+        .btn-red {
+            background: linear-gradient(to bottom, #ef4444, #b91c1c);
+            color: white;
+            border: none;
+            padding: 15px 20px;
+            width: 100%;
+            font-size: 18px;
+            font-weight: bold;
+            border-radius: 8px;
+            cursor: pointer;
+            box-shadow: 0 4px 0 #7f1d1d;
+            margin-bottom: 15px;
+            text-transform: uppercase;
+            animation: pulse 2s infinite;
+            text-decoration: none;
+            display: block;
+            box-sizing: border-box;
+        }
+        .btn-red:active { transform: translateY(4px); box-shadow: none; }
+
+        .btn-enter {
+            background: #334155;
+            color: #94a3b8;
+            border: 1px solid #475569;
+            padding: 12px;
+            width: 100%;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            display: none; /* Oculto al inicio */
+        }
+        
+        @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.02); } 100% { transform: scale(1); } }
+        
+        .status { margin-top: 10px; font-size: 12px; color: #64748b; }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h2>🔒 VERIFICACIÓN</h2>
+        <p>Para usar la versión Premium de esta App, necesitamos verificar que eres un humano activo.</p>
+        
+        <!-- ENLACE DE ADSTERRA DIRECTO -->
+        <a href="https://honeywhyvowel.com/dqk32uhrai?key=e144383761d76e0d58c40c45c1d00ad6" target="_blank" class="btn-red" onclick="activateEntry()">
+            👉 VER 1 ANUNCIO (CLIC)
+        </a>
+        
+        <div id="instruction" class="status">Espera unos segundos en el anuncio y regresa.</div>
+
+        <!-- BOTÓN DE ENTRADA (Aparece después del clic) -->
+        <button id="btnEnter" class="btn-enter" onclick="finish()">
+            ✅ YA VI EL ANUNCIO - ENTRAR
+        </button>
+    </div>
+
+    <script>
+        function activateEntry() {
+            document.getElementById('instruction').innerText = "Verificando visualización...";
+            setTimeout(() => {
+                document.getElementById('btnEnter').style.display = 'block';
+                document.getElementById('instruction').innerText = "¡Verificación completada!";
+            }, 3000); // Aparece a los 3 segundos
+        }
+        
+        function finish() {
+            // Intenta cerrar la ventana/webview
+            try {
+                // Métodos comunes para cerrar webviews en Android
+                window.close();
+                if(window.Android) { window.Android.close(); }
+            } catch(e){}
+            // Si no cierra, mostramos mensaje
+            document.body.innerHTML = "<h2 style='color:#4ade80'>¡LISTO!</h2><p>Presiona el botón <b>ATRÁS</b> de tu celular para entrar a la App.</p>";
+        }
+    </script>
+
+</body>
+</html>
