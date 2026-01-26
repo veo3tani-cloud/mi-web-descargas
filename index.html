@@ -225,7 +225,7 @@
     <div id="app" class="w-full flex-grow bg-[#f0f2f5] min-h-screen relative">
         
         <!-- TELEGRAM FLOATING BUTTON (TOP RIGHT) -->
-        <a href="https://t.me/descargas_ultima_version_vip" target="_blank" rel="noopener noreferrer" class="fixed top-20 right-4 z-50 telegram-pulse bg-white rounded-full p-1 shadow-xl cursor-pointer hover:scale-110 transition-transform" title="Únete a Telegram">
+        <a href="https://t.me/AppsYJuegosFull" target="_blank" rel="noopener noreferrer" class="fixed top-20 right-4 z-50 telegram-pulse bg-white rounded-full p-1 shadow-xl cursor-pointer hover:scale-110 transition-transform" title="Únete a Telegram">
             <div class="bg-[#229ED9] text-white w-12 h-12 rounded-full flex items-center justify-center">
                 <svg class="w-7 h-7 -ml-1" fill="currentColor" viewBox="0 0 24 24"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>
             </div>
@@ -580,7 +580,7 @@
             <div class="mt-8 flex flex-wrap justify-center items-center gap-4">
                 <button id="yape-modal-open" class="bg-purple-600 text-white font-semibold py-2.5 px-5 rounded-full hover:bg-purple-700 flex items-center gap-2">Yape</button>
                 <a href="https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=lahsvergon_23%40hotmail.com&item_name=Apoyo" target="_blank" rel="noopener noreferrer" class="bg-blue-600 text-white font-semibold py-2.5 px-5 rounded-full hover:bg-blue-700 flex items-center gap-2">PayPal</a>
-                <a href="https://t.me/descargas_ultima_version_vip" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 bg-sky-500 text-white font-semibold py-2.5 px-5 rounded-full hover:bg-sky-600 transition-colors">Telegram</a>
+                <a href="https://t.me/AppsYJuegosFull" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 bg-sky-500 text-white font-semibold py-2.5 px-5 rounded-full hover:bg-sky-600 transition-colors">Telegram</a>
             </div>
             <div class="mt-6">
                 <a href="https://wa.me/51924814457" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 bg-green-500 text-white font-semibold py-2 px-4 rounded-full">WhatsApp</a>
@@ -984,7 +984,7 @@
                         btn.innerText = originalText;
                         btn.classList.add('bg-blue-600', 'hover:bg-blue-700');
                         btn.classList.remove('bg-green-600', 'hover:bg-green-700', 'animate-pulse');
-                    }, 4000);
+                    }, 15000);
                     return; 
                 }
             }
@@ -1146,10 +1146,11 @@
             if (items.length === 0) { noResults.classList.remove('hidden'); container.classList.add('hidden'); return; }
             noResults.classList.add('hidden'); container.classList.remove('hidden');
             const sorted = items.sort((a, b) => {
-                const da = a.createdAt ? a.createdAt.toDate() : new Date(0);
-                const db = b.createdAt ? b.createdAt.toDate() : new Date(0);
-                return db - da;
-            });
+    // Busca primero la fecha de edición (updatedAt), si no existe, usa la de creación (createdAt)
+    const dateA = a.updatedAt ? a.updatedAt.toDate() : (a.createdAt ? a.createdAt.toDate() : new Date(0));
+    const dateB = b.updatedAt ? b.updatedAt.toDate() : (b.createdAt ? b.createdAt.toDate() : new Date(0));
+    return dateB - dateA; // Ordena del más reciente al más antiguo
+});
             sorted.forEach(item => {
                 let placeholder = activeTab === 'mobile' ? '16a34a/ffffff' : 'e2e8f0/94a3b8';
                 if(item.category && item.category.includes('adobe')) placeholder = '1e40af/ffffff';
@@ -1157,7 +1158,9 @@
                 card.className = 'bg-white rounded-xl shadow-sm overflow-hidden border border-slate-200 hover:shadow-lg transition-all duration-300 relative';
                 card.id = `card-${item.id}`;
                 let dateStr = "Reciente";
-                if(item.createdAt && item.createdAt.toDate) dateStr = item.createdAt.toDate().toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric' });
+                // Lógica inteligente: Si se editó, muestra fecha de edición. Si no, la de creación.
+const finalDate = item.updatedAt ? item.updatedAt.toDate() : (item.createdAt ? item.createdAt.toDate() : null);
+if(finalDate) dateStr = finalDate.toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric' });
                 
                 const formatTextContent = (text) => {
                     if (!text) return "";
@@ -1207,7 +1210,7 @@
                                 data-size="${item.fileSize || ''}"> 
                                 DESCARGAR
                             </button>
-                            <a href="https://t.me/descargas_ultima_version_vip" target="_blank" class="mx-auto bg-sky-500 text-white font-bold py-1.5 px-5 rounded-full hover:bg-sky-600 transition-all animate-pulse flex items-center justify-center gap-2 text-xs shadow-lg transform hover:scale-105 border border-sky-400 w-fit mt-2 mb-1">
+                            <a href="https://t.me/AppsYJuegosFull" target="_blank" class="mx-auto bg-sky-500 text-white font-bold py-1.5 px-5 rounded-full hover:bg-sky-600 transition-all animate-pulse flex items-center justify-center gap-2 text-xs shadow-lg transform hover:scale-105 border border-sky-400 w-fit mt-2 mb-1">
                                 <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>
                                 Suscribirse
                             </a>
@@ -1866,15 +1869,18 @@
         if(aiChatInput && suggestionsBox) {
             aiChatInput.addEventListener('input', (e) => {
                 const query = e.target.value.toLowerCase().trim();
-                if(query.length < 2) {
+                
+                // MODIFICADO: Ahora busca desde la 1ra letra para ser instantáneo
+                if(query.length < 1) { 
                     suggestionsBox.style.display = 'none';
                     return;
                 }
 
+                // MODIFICADO: Aumentado el límite a 7 resultados para llenar mejor la lista
                 const matches = allSoftware.filter(item => 
-                    item.title.toLowerCase().includes(query) || 
-                    (item.category && item.category.toLowerCase().includes(query))
-                ).slice(0, 5); // Limit to 5 suggestions
+                     item.title.toLowerCase().includes(query) || 
+                     (item.category && item.category.toLowerCase().includes(query))
+                ).slice(0, 7); 
 
                 if(matches.length > 0) {
                     let html = '';
@@ -1885,7 +1891,7 @@
                         const highlightedTitle = title.replace(regex, '<span class="suggestion-match">$1</span>');
                         
                         html += `<div class="suggestion-item" data-id="${item.id}" data-title="${title}">
-                                    ${highlightedTitle} <span class="text-xs text-gray-400 ml-2">(${item.platform})</span>
+                                    ${highlightedTitle} <span class="text-xs text-gray-400 ml-2">(${item.platform})</span> 
                                  </div>`;
                     });
                     suggestionsBox.innerHTML = html;
@@ -2072,6 +2078,79 @@
             // Re-bind mic
             const micBtn = newForm.querySelector('#ai-chat-mic');
             if(micBtn) micBtn.addEventListener('click', () => alert(isEnglish ? "Voice under maintenance." : "Voz en mantenimiento."));
+        }
+// 🚀 BUSCADOR TURBO INTEGRADO EN EL CHAT DE DUV 🚀
+        // Pegar esto AL FINAL del script, justo antes de "// --- FIX COMMENT SUBMIT"
+        
+        const aiChatInputTurbo = document.getElementById('ai-chat-input');
+        const suggestionsBoxTurbo = document.getElementById('search-suggestions');
+
+        if(aiChatInputTurbo && suggestionsBoxTurbo) {
+            // Aseguramos que el input esté limpio de clones anteriores
+            const finalInput = aiChatInputTurbo.cloneNode(true);
+            aiChatInputTurbo.parentNode.replaceChild(finalInput, aiChatInputTurbo);
+            
+            // Lógica de búsqueda instantánea
+            finalInput.addEventListener('input', (e) => {
+                const query = e.target.value.toLowerCase().trim();
+                
+                // 1. Reacción inmediata (Desde la 1ra letra)
+                if(query.length < 1) { 
+                    suggestionsBoxTurbo.style.display = 'none';
+                    return;
+                }
+
+                // 2. Buscar en todo el inventario (Límite 7 resultados)
+                const matches = allSoftware.filter(item => 
+                     item.title.toLowerCase().includes(query) || 
+                     (item.category && item.category.toLowerCase().includes(query))
+                ).slice(0, 7); 
+
+                if(matches.length > 0) {
+                    let html = '';
+                    matches.forEach(item => {
+                        // Resaltar la coincidencia
+                        const title = item.title;
+                        const regex = new RegExp(`(${query})`, 'gi');
+                        const highlightedTitle = title.replace(regex, '<span class="text-blue-600 font-black">$1</span>');
+                        
+                        html += `
+                        <div class="suggestion-item p-3 border-b border-slate-100 hover:bg-blue-50 cursor-pointer flex justify-between items-center transition-colors" data-id="${item.id}" data-title="${title}">
+                            <div class="flex items-center gap-2">
+                                <span class="text-lg">🚀</span>
+                                <span class="text-sm font-medium text-slate-700">${highlightedTitle}</span>
+                            </div>
+                            <span class="text-[10px] uppercase font-bold text-slate-400 bg-slate-100 px-2 py-1 rounded">${item.platform || 'APP'}</span>
+                        </div>`;
+                    });
+                    suggestionsBoxTurbo.innerHTML = html;
+                    suggestionsBoxTurbo.classList.remove('hidden');
+                    suggestionsBoxTurbo.style.display = 'block';
+                    
+                    // Al hacer clic en una sugerencia
+                    suggestionsBoxTurbo.querySelectorAll('.suggestion-item').forEach(el => {
+                        el.addEventListener('click', () => {
+                            const id = el.dataset.id;
+                            const title = el.dataset.title;
+                            finalInput.value = title;
+                            suggestionsBoxTurbo.style.display = 'none';
+                            
+                            // ACCIÓN TURBO: Cerrar chat y llevar a la descarga
+                            closeModal('ai-chat-modal'); 
+                            handleTopDownloadClick(null, id); 
+                        });
+                    });
+                } else {
+                    suggestionsBoxTurbo.style.display = 'none';
+                }
+            });
+
+            // Ocultar si se hace clic fuera
+            document.addEventListener('click', (e) => {
+                if (!finalInput.contains(e.target) && !suggestionsBoxTurbo.contains(e.target)) {
+                    suggestionsBoxTurbo.style.display = 'none';
+                }
+            });
         }
 
         // --- FIX COMMENT SUBMIT (Enter & Click) ---
