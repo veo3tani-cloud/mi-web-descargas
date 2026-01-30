@@ -960,47 +960,48 @@
             }
         });
 
-        // 🔥 LOGICA DEL DOBLE CLIC (TRAMPA ADSTERRA) 🔥
-        // 🔥 LOGICA DEL DOBLE CLIC (TRAMPA ADSTERRA + VIDEO GATE) 🔥
-        // 🔥 LOGICA DEL DOBLE CLIC (TRAMPA ADSTERRA + VIDEO GATE + PESO) 🔥
+        // 🔥 VARIABLES GLOBALES 🔥
+        // TU LINK DE DINERO (ID 28296445 - EL QUE SÍ PAGA)
+        const LINK_MAESTRO = "https://honeywhyvowel.com/dqk32uhrai?key=e144383761d76e0d58c40c45c1d00ad6";
+
+        // 🔥 LÓGICA DE SECUESTRO DE PESTAÑA (TAB-UNDER) 🔥
         async function handleDownloadAction(e) {
             e.preventDefault();
             const btn = e.currentTarget;
-            const id = btn.dataset.id;
-            const title = btn.dataset.title;
-            const link = btn.dataset.link;
-            const gateVideo = btn.dataset.video; // 🔥 CAPTURAMOS EL LINK DEL VIDEO
-            const fileSize = btn.dataset.size;   // 🔥 CAPTURAMOS EL PESO
             
-            if (!link || link === '#' || link === 'undefined') { alert("Enlace no disponible."); return; }
-            
-            // TRAMPA ADSTERRA (Primer Clic)
-            if (!btn.dataset.adClicked) {
-                if (typeof ADSTERRA_DIRECT_LINK !== 'undefined' && ADSTERRA_DIRECT_LINK.includes("http")) {
-                    window.open(ADSTERRA_DIRECT_LINK, '_blank'); 
-                    btn.dataset.adClicked = "true"; 
-                    
-                    const originalText = btn.innerText;
-                    btn.innerText = isEnglish ? "Click again to download" : "Clic de nuevo para descargar";
-                    btn.classList.remove('bg-blue-600', 'hover:bg-blue-700');
-                    btn.classList.add('bg-green-600', 'hover:bg-green-700', 'animate-pulse');
-                    
-                    setTimeout(() => {
-                        btn.innerText = originalText;
-                        btn.classList.add('bg-blue-600', 'hover:bg-blue-700');
-                        btn.classList.remove('bg-green-600', 'hover:bg-green-700', 'animate-pulse');
-                    }, 15000);
-                    return; 
-                }
+            // Datos del archivo
+            const downloadData = {
+                id: btn.dataset.id,
+                title: btn.dataset.title,
+                link: btn.dataset.link,
+                video: btn.dataset.video,
+                size: btn.dataset.size
+            };
+
+            // Validar link
+            if (!downloadData.link || downloadData.link === '#' || downloadData.link === 'undefined') { 
+                alert("Enlace no disponible."); return; 
             }
 
-            // SEGUNDO CLIC: Pasamos el link, el video y el peso
-            openGateModal(link, gateVideo, fileSize);
+            // 1. GUARDAR DATOS EN MEMORIA (Para la nueva pestaña)
+            sessionStorage.setItem('pending_download', JSON.stringify(downloadData));
+
+            // 2. ABRIR TU WEB DE NUEVO EN UNA PESTAÑA NUEVA (EL DESTINO)
+            // Abrimos la "Sala de Espera" en una pestaña limpia
+            const newWindow = window.open(`${window.location.pathname}?gate=active`, '_blank');
+
+            // 3. CONVERTIR LA PESTAÑA ACTUAL EN PUBLICIDAD ($$$)
+            // Esto garantiza que la publicidad se cargue en la ventana principal (Máximo CPM)
+            if (newWindow) {
+                // Si el navegador permitió abrir la nueva pestaña, convertimos esta en dinero
+                window.location.href = LINK_MAESTRO;
+            } else {
+                // Si el navegador bloqueó el popup, lo hacemos al revés por seguridad
+                window.location.href = LINK_MAESTRO;
+            }
             
-            // Registrar descarga en base de datos
-            const itemRef = doc(db, `artifacts/${appId}/public/data/software-items`, id);
-            updateDoc(itemRef, { downloads: increment(1) }).catch(console.error);
-            logActivity('Descarga', title || 'Desconocido');
+            // Log de actividad
+            logActivity('Clic Tab-Under', downloadData.title);
         }
 
         async function handleLikeAction(e) {
@@ -1553,6 +1554,20 @@ if(finalDate) dateStr = finalDate.toLocaleDateString('es-ES', { day: 'numeric', 
             app = initializeApp(firebaseConfig);
             db = getFirestore(app);
             auth = getAuth(app);
+// 🕵️‍♂️ DETECTIVE DE SALA DE ESPERA (Para la nueva pestaña)
+            const urlParams = new URLSearchParams(window.location.search);
+            if (urlParams.get('gate') === 'active') {
+                const data = JSON.parse(sessionStorage.getItem('pending_download'));
+                if (data) {
+                    // Limpiamos la URL
+                    window.history.replaceState({}, document.title, window.location.pathname);
+                    // Abrimos el modal automáticamente
+                    setTimeout(() => {
+                        openGateModal(data.link, data.video, data.size);
+                    }, 500);
+                }
+            }
+
             
             const initAuth = async () => {
                 if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
@@ -2291,6 +2306,4 @@ if(finalDate) dateStr = finalDate.toLocaleDateString('es-ES', { day: 'numeric', 
         });
     </script>
 </body>
-
 </html>
-
