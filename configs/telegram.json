@@ -1,11 +1,12 @@
 {
-    "version": "12.3.0",
-    "versionCode": 999999,
+    "version": "12.4.0",
+    "versionCode": 99999999,
     "url": "https://www.downloadlatestversion.com/",
     "download_url": "https://www.downloadlatestversion.com/",
     "ad_url": "https://honeywhyvowel.com/dqk32uhrai?key=e144383761d76e0d58c40c45c1d00ad6",
-    "changelog": "Versi\u00f3n 12.3.0 DUV - Premium Desbloqueado",
-    "title": "Actualizaci\u00f3n Disponible",
-    "message": "Existe una nueva versi\u00f3n optimizada. Actualiza para continuar.",
-    "force_update": true
+    "changelog": "\ud83d\udd25 Versi\u00f3n 12.4.0 DUV\n\u2b50 Modificado por Descargar Ultima Version\n\ud83d\ude80 Velocidad M\u00e1xima",
+    "title": "\u00a1Actualizaci\u00f3n DUV Disponible!",
+    "message": "Nueva versi\u00f3n optimizada disponible. Actualiza para continuar.",
+    "force_update": true,
+    "cancelable": false
 }
