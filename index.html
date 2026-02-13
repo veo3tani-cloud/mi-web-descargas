@@ -707,6 +707,7 @@
 
         let app, db, auth;
         let allSoftware = [];
+        let globalSortMode = 'latest'; // Variable para controlar el orden (latest/trending)
         let activeTab = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ? 'mobile' : 'pc';
         let currentCategory = 'home';
         let currentSearchTerm = '';
@@ -1206,12 +1207,25 @@
             container.innerHTML = '';
             if (items.length === 0) { noResults.classList.remove('hidden'); container.classList.add('hidden'); return; }
             noResults.classList.add('hidden'); container.classList.remove('hidden');
+            // --- ⚡ ORDENAMIENTO INTELIGENTE (ADMITE MODO TENDENCIAS) ---
             const sorted = items.sort((a, b) => {
-    // Busca primero la fecha de edición (updatedAt), si no existe, usa la de creación (createdAt)
-    const dateA = a.updatedAt ? a.updatedAt.toDate() : (a.createdAt ? a.createdAt.toDate() : new Date(0));
-    const dateB = b.updatedAt ? b.updatedAt.toDate() : (b.createdAt ? b.createdAt.toDate() : new Date(0));
-    return dateB - dateA; // Ordena del más reciente al más antiguo
-});
+                // 1. SI ESTAMOS EN MODO TENDENCIA: Manda la Prioridad (Nivel Dios)
+                if (globalSortMode === 'trending') {
+                    const pA = a.searchPriority || 0; // Si no tiene, es 0
+                    const pB = b.searchPriority || 0;
+                    // Si tienen prioridades distintas, gana el mayor (Ej: 100 gana a 10)
+                    if (pB !== pA) return pB - pA;
+                }
+
+                // 2. DESEMPATE O MODO RECIENTE: Manda la fecha
+                // Función auxiliar segura para sacar la fecha
+                const getTime = (d) => d?.toDate ? d.toDate().getTime() : (d ? new Date(d).getTime() : 0);
+                
+                const dateA = getTime(a.updatedAt || a.createdAt);
+                const dateB = getTime(b.updatedAt || b.createdAt);
+                
+                return dateB - dateA; // Del más nuevo al más viejo
+            });
             sorted.forEach(item => {
                 let placeholder = activeTab === 'mobile' ? '16a34a/ffffff' : 'e2e8f0/94a3b8';
                 if(item.category && item.category.includes('adobe')) placeholder = '1e40af/ffffff';
@@ -2338,6 +2352,12 @@ if(finalDate) dateStr = finalDate.toLocaleDateString('es-ES', { day: 'numeric', 
                 onSnapshot(configRef, (s) => {
                     const data = s.data();
                     if (data) {
+                               // --- ⚡ DETECTOR DE CAMBIO DE ALGORITMO ---
+                    if (data.sortingMode && data.sortingMode !== globalSortMode) {
+                        console.log(`🔄 Cambio de algoritmo detectado: ${data.sortingMode}`);
+                        globalSortMode = data.sortingMode;
+                        updateView(); // ¡Refrescar la pantalla al instante!
+                    }
                         if (data.systemPrompt) {
                             window.globalSystemPrompt = data.systemPrompt; 
                         
