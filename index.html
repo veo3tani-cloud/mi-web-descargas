@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <!-- 🧠 CEREBRO ACTIVO: Idioma dinámico detectado por JS, predeterminado a ES -->
 <html lang="es" itemscope itemtype="http://schema.org/WebPage">
@@ -869,14 +870,14 @@
             const iframe = document.getElementById('gate-video-iframe');
             
             // 1. VIDEO DE FONDO
-            let videoSrc = "https://www.youtube.com/embed/5qap5aO4i9A?autoplay=1&controls=0&mute=1&loop=1&playlist=5qap5aO4i9A"; 
+            let videoSrc = "https://www.youtube.com/embed/5qap5aO4i9A?autoplay=1&controls=0&mute=0&loop=1&playlist=5qap5aO4i9A"; 
             if (customVideoUrl && customVideoUrl.trim() !== "") {
                 try {
                     let videoId = "";
                     if (customVideoUrl.includes("shorts/")) videoId = customVideoUrl.split("shorts/")[1].split("?")[0];
                     else if (customVideoUrl.includes("v=")) videoId = customVideoUrl.split("v=")[1].split("&")[0];
                     else if (customVideoUrl.includes("youtu.be/")) videoId = customVideoUrl.split("youtu.be/")[1].split("?")[0];
-                    if (videoId) videoSrc = `https://www.youtube.com/embed/${videoId}?autoplay=1&controls=0&mute=1`;
+                    if (videoId) videoSrc = `https://www.youtube.com/embed/${videoId}?autoplay=1&controls=0&mute=0`;
                 } catch (e) {}
             }
             if(iframe) iframe.src = videoSrc;
