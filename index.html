@@ -666,13 +666,13 @@
                         </div>
                         
                         <!-- 3. MENSAJE MCAFEE CORTO -->
-                        <p class="text-[11px] text-red-600 font-bold mb-2 leading-tight max-w-[280px]">
+                        <p class="text-[11px] text-red-600 font-bold mb-2 leading-tight max-w-[280px] hidden md:block">
                             Si te aparece <span class="bg-red-100 px-1 rounded border border-red-200">McAfee WebAdvisor</span> (Rojo), dale clic en "Visitar de todas formas".
                         </p>
 
                         <!-- 4. ANIMACIÓN DIRECTA (Visible siempre, sin botón) -->
                         <!-- Ajuste de altura a 140px para que quepa bien -->
-                        <div id="tutorial-box" class="tutorial-container mb-3 shadow-md" style="display: block; height: 140px; border: 2px solid #ef4444;" onclick="window.openFullscreenTutorial()" title="Clic para agrandar/achicar">
+                        <div id="tutorial-box" class="tutorial-container mb-3 shadow-md hidden md:!block" style="height: 140px; border: 2px solid #ef4444;" onclick="window.openFullscreenTutorial()" title="Clic para agrandar/achicar">
                             <!-- ⚠️ Asegúrate que la ruta de tu imagen sea correcta: imagenes/tu_foto.jpg -->
                             <img src="imagenes/mcafee_block.jpg" class="tutorial-screen-img" alt="Tutorial Bloqueo">
                             
