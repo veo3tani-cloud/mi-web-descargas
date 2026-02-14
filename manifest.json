@@ -1,0 +1,37 @@
+{
+  "name": "Descargar Última Versión",
+  "short_name": "DUV",
+  "start_url": "/?source=pwa",
+  "display": "standalone",
+  "background_color": "#0f172a",
+  "theme_color": "#3b82f6",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "imagenes/icon-192.png",
+      "type": "image/png",
+      "sizes": "192x192"
+    },
+    {
+      "src": "imagenes/icon-512.png",
+      "type": "image/png",
+      "sizes": "512x512"
+    }
+  ],
+  "description": "Descarga software verificado y libre de virus para PC y Android."
+}
+```
+*(Nota: Necesitarás subir dos imágenes cuadradas de tu logo a la carpeta `imagenes`: una de 192x192 pixeles y otra de 512x512 pixeles).*
+
+#### 3. Conecta el cerebro a la App
+Ahora, ve a tu `index.html`. Busca la etiqueta `<head>`.
+Pega esta línea en cualquier parte dentro del `<head>`:
+
+```html
+<!-- 📱 PWA MANIFEST -->
+<link rel="manifest" href="manifest.json">
+<!-- Color de la barra de estado en Android -->
+<meta name="theme-color" content="#3b82f6">
+<!-- Capacidad de pantalla completa en iOS -->
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
