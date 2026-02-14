@@ -243,6 +243,142 @@
             0%, 100% { transform: translateY(0); }
             50% { transform: translateY(-8px); }
         }
+/* 🔥 ANIMACIÓN TUTORIAL ANTI-BLOQUEO 🔥 */
+        .tutorial-container {
+            position: relative;
+            width: 100%;
+            max-width: 320px;
+            height: 180px;
+            background: #f8fafc;
+            border: 2px dashed #cbd5e1;
+            border-radius: 12px;
+            overflow: hidden;
+            margin: 10px auto;
+            display: none; /* Oculto por defecto */
+        }
+        .tutorial-screen-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 0.9;
+        }
+        .cursor-hand {
+            position: absolute;
+            top: 40%;
+            left: 40%;
+            font-size: 32px;
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
+            z-index: 20;
+            animation: demoClick 3s infinite ease-in-out;
+        }
+        .click-ripple {
+            position: absolute;
+            width: 20px; height: 20px;
+            background: rgba(37, 99, 235, 0.6);
+            border-radius: 50%;
+            transform: translate(-50%, -50%) scale(0);
+            animation: rippleEffect 3s infinite;
+        }
+        
+       @keyframes demoClick {
+            0% { top: 40%; left: 40%; transform: scale(1); }
+            
+            /* 1. LLEGA (Ajustado: Más abajo 62% y más derecha 60%) */
+            35% { top: 64%; left: 60%; transform: scale(1); } 
+            
+            /* 2. PRESIONA */
+            50% { top: 64%; left: 60%; transform: scale(0.8) rotate(-10deg); } 
+            
+            /* 3. SUELTA */
+            65% { top: 64%; left: 60%; transform: scale(1) rotate(0deg); } 
+            
+            /* 4. SE VA */
+            100% { top: 40%; left: 40%; } 
+        }
+
+        @keyframes rippleEffect {
+            0%, 35% { opacity: 0; transform: translate(-50%, -50%) scale(0); }
+            
+            /* DESTELLO (Coordenadas idénticas a la mano: 62% / 60%) */
+            45% { opacity: 1; transform: translate(-50%, -50%) scale(1); top: 64%; left: 61%; margin-left: 12px; margin-top: 10px; }
+            60% { opacity: 0; transform: translate(-50%, -50%) scale(2.5); top: 64%; left: 61%; margin-left: 12px; margin-top: 10px; }
+            100% { opacity: 0; }
+        }
+        
+        /* 🔥 EFECTO ZOOM PARA EL TUTORIAL 🔥 */
+        /* Estado expandido (Pantalla completa) */
+        .tutorial-expanded {
+            position: fixed !important;
+            top: 0 !important;
+            left: 0 !important;
+            width: 100vw !important;
+            height: 100vh !important;
+            max-width: none !important;
+            margin: 0 !important;
+            z-index: 99999 !important; /* Por encima de todo */
+            border: none !important;
+            border-radius: 0 !important;
+            background-color: #000 !important; /* Fondo negro cine */
+            cursor: zoom-out !important; /* Cursor de "Alejar" */
+            display: flex !important;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        /* Ajuste de la imagen en pantalla completa para que no se corte */
+        .tutorial-expanded .tutorial-screen-img {
+            object-fit: contain !important; 
+        }
+
+        /* Ajuste de la mano y efectos en pantalla completa */
+        .tutorial-expanded .cursor-hand { font-size: 50px; } /* Mano más grande */
+        .tutorial-expanded .click-ripple { width: 40px; height: 40px; } /* Onda más grande */
+        
+        /* Cursor de "Lupa" para la caja normal */
+        .tutorial-container {
+            cursor: zoom-in;
+            transition: all 0.3s ease-in-out; /* Animación suave */
+        }
+
+        /* 🔥 TEXTO ROJO SALTANDO 🔥 */
+        .texto-fiesta {
+            color: #dc2626; /* Rojo Intenso */
+            font-weight: 900;
+            font-size: 1.2rem;
+            text-align: center;
+            display: block;
+            margin-bottom: 15px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            animation: saltar-texto 0.8s infinite ease-in-out;
+        }
+
+        @keyframes saltar-texto {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-5px) scale(1.05); }
+        }
+
+        /* 🔥 BOTÓN VERDE (FIX UNA SOLA LÍNEA) 🔥 */
+        .btn-listo {
+            background-color: #16a34a !important; /* Verde Puro */
+            background-image: none !important;
+            cursor: pointer !important;
+            box-shadow: 0 4px 0px #14532d !important;
+            transform: none !important;
+            animation: none !important;
+            border-bottom: none !important;
+            
+            /* TRUCO PARA QUE NO SE ROMPA EL TEXTO */
+            white-space: nowrap !important; /* Prohíbe partir el texto */
+            overflow: hidden; /* Seguridad */
+            padding-left: 10px !important;
+            padding-right: 10px !important;
+        }
+        .btn-listo:active {
+            transform: translateY(4px) !important;
+            box-shadow: none !important;
+        }
+
     </style>
     <link rel="icon" type="image/png" href="favicon.png">
 </head>
@@ -396,6 +532,37 @@
                         <div id="content-grid-mobile" class="card-container"><p class="text-slate-500 text-sm">Cargando...</p></div>
                         <div id="no-results-mobile" class="hidden text-center py-16"><h2 class="text-xl font-semibold text-slate-700">No hay resultados</h2></div>
                     </div>
+<!-- 🛡️ BLOQUE SEO DE "ALTA CALIDAD" PARA ADSENSE (INVISIBLE VISUALMENTE PERO VISIBLE PARA GOOGLE) -->
+                    <article class="mt-12 bg-white p-8 rounded-xl border border-slate-200 shadow-sm mx-2 sm:mx-0">
+                        <h2 class="text-2xl font-bold text-slate-800 mb-4">¿Por qué elegir Descargar Última Versión en 2026?</h2>
+                        <div class="prose text-slate-600 max-w-none text-sm sm:text-base leading-relaxed">
+                            <p class="mb-4">
+                                En el vasto ecosistema digital actual, encontrar software seguro, verificado y actualizado es un desafío constante. 
+                                Nuestra plataforma, <strong>Descargar Última Versión (DUV)</strong>, nace como una respuesta directa a la necesidad de un repositorio confiable 
+                                para usuarios de PC y Android. Nos especializamos en la curación manual de aplicaciones de productividad, herramientas de diseño y entretenimiento digital.
+                            </p>
+                            
+                            <h3 class="text-lg font-bold text-slate-700 mt-6 mb-2">Protocolos de Seguridad y Verificación</h3>
+                            <p class="mb-4">
+                                A diferencia de los portales de descarga automatizados, nuestro equipo de "Cazadores de Versiones" implementa un protocolo de seguridad de tres niveles:
+                            </p>
+                            <ul class="list-disc pl-5 mb-4 space-y-2">
+                                <li><strong>Análisis de Integridad:</strong> Cada archivo APK o ejecutable pasa por un escaneo de 60 motores antivirus antes de ser listado.</li>
+                                <li><strong>Prueba de Funcionalidad:</strong> Instalamos y ejecutamos el software en entornos virtuales (Sandbox) para asegurar que cumple lo que promete.</li>
+                                <li><strong>Monitoreo de Actualizaciones:</strong> Nuestro sistema rastrea las fuentes oficiales para ofrecerte la <em>Latest Version</em> en tiempo real.</li>
+                            </ul>
+
+                            <h3 class="text-lg font-bold text-slate-700 mt-6 mb-2">Optimización para Rendimiento</h3>
+                            <p>
+                                Entendemos que no todos los usuarios cuentan con equipos de última generación. Por ello, nuestras fichas técnicas incluyen detalles precisos sobre el consumo de recursos 
+                                y compatibilidad. Ya sea que busques herramientas para edición de video profesional o utilidades ligeras para Android, aquí encontrarás la versión que mejor se adapte a tu hardware.
+                            </p>
+                            
+                            <p class="mt-4 text-xs text-slate-400 border-t pt-4">
+                                <em>Descargo de responsabilidad: DUV actúa como un índice de preservación de software y análisis tecnológico. Respetamos la propiedad intelectual y recomendamos apoyar a los desarrolladores originales siempre que sea posible.</em>
+                            </p>
+                        </div>
+                    </article>
                 </main>
             </div>
             
@@ -484,40 +651,58 @@
                     </div>
                 </div>
                 <!-- ZONA DE ESPERA Y ADS -->
+                <!-- ZONA DE ESPERA Y ADS (COLUMNA DERECHA REORGANIZADA) -->
                 <div class="w-full md:w-1/3 p-4 md:p-6 flex flex-col justify-center items-center bg-gradient-to-br from-white to-slate-50 relative">
-                    <h2 class="text-xl md:text-2xl font-extrabold text-slate-900 mb-2 text-center" id="gate-title">Descarga Segura</h2>
-    
-    <!-- ZONA DE ACTIVACIÓN (ENLACE PURO = ANTI BLOQUEO) -->
-<div id="gate-trigger-zone" class="w-full h-auto flex flex-col items-center justify-center p-4 text-center">
-    <div class="mb-4 bg-yellow-50 text-yellow-800 p-3 rounded-lg text-sm border border-yellow-200">
-        <strong>⚠️ AYUDANOS A MANTENER VIVA ESTA PAGINA:</strong> 🛑.
-    </div>
-    
-    <!-- ENLACE SEGURO (MODIFICADO PARA ANTI-MCAFEE: href="javascript:void(0)") -->
-    <a id="start-gate-link" href="javascript:void(0)" class="w-full bg-gradient-to-r from-red-600 to-red-700 hover:from-red-500 hover:to-red-600 text-white font-black py-4 px-4 rounded-xl shadow-xl transform transition active:scale-95 flex flex-col items-center gap-1 border-b-4 border-red-900 no-underline cursor-pointer">
-        <span class="text-lg">1.-ABRE PUBLICIDAD</span>
-        <span class="text-xs font-normal text-red-100">2.-iNTERACTUA ó MANTENLA POR 20s</span>
-        <span class="text-xs font-normal text-red-100">3.-Regresas a ver tu descarga</span>
-    </a>
-    
-    <!-- 🛡️ MENSAJE ANTI-BLOQUEO MCAFEE (NUEVO) -->
-    <p class="text-xs text-slate-500 mt-4 font-medium max-w-xs mx-auto bg-yellow-50 border border-yellow-100 p-2 rounded-lg">
-        🛑 ¿SI LA PUBLICIDAD NO ABRE? <br>
-        SOLO DALE CLIC A <span class="font-bold text-slate-800">"VISITAR DE TODAS FORMAS"</span>. ES SEGURO Y TE DEJARA PASAR.
-    </p>
-    
-    <p id="gate-status" class="text-xs text-slate-400 mt-4 font-mono">Esperando inicio...</p>
-</div>
+                    
+                    <!-- 1. TÍTULO NUEVO -->
+                    <h2 class="text-lg md:text-xl font-extrabold text-slate-900 mb-2 text-center" id="gate-title">Centro de Verificación DUV</h2>
 
-    <!-- NUEVA ZONA: TITULO Y BOTON UNICO -->
-    <h3 id="titulo-estado" style="display:none; color:#334155; font-weight:800; text-align:center; margin-bottom:15px; font-size: 1.2rem;">
-        ⚙️ GENERANDO ENLACE...
-    </h3>
+                    <!-- ZONA DE ACTIVACIÓN -->
+                    <div id="gate-trigger-zone" class="w-full h-auto flex flex-col items-center justify-center p-1 text-center">
+                        
+                        <!-- 2. AVISO MANTENIMIENTO -->
+                        <div class="mb-2 bg-yellow-50 text-yellow-800 p-2 rounded-lg text-[10px] border border-yellow-200 w-full font-bold">
+                            ⚠️ AYUDANOS A MANTENER VIVA ESTA PAGINA: 🛑
+                        </div>
+                        
+                        <!-- 3. MENSAJE MCAFEE CORTO -->
+                        <p class="text-[11px] text-red-600 font-bold mb-2 leading-tight max-w-[280px]">
+                            Si te aparece <span class="bg-red-100 px-1 rounded border border-red-200">McAfee WebAdvisor</span> (Rojo), dale clic en "Visitar de todas formas".
+                        </p>
 
-    <!-- El botón ahora está siempre visible pero empieza bloqueado -->
-    <button id="proceed-download-btn" class="btn-espera" disabled style="display:none;">
-        🔒 Enlace Bloqueado
-    </button>
+                        <!-- 4. ANIMACIÓN DIRECTA (Visible siempre, sin botón) -->
+                        <!-- Ajuste de altura a 140px para que quepa bien -->
+                        <div id="tutorial-box" class="tutorial-container mb-3 shadow-md" style="display: block; height: 140px; border: 2px solid #ef4444;" onclick="window.openFullscreenTutorial()" title="Clic para agrandar/achicar">
+                            <!-- ⚠️ Asegúrate que la ruta de tu imagen sea correcta: imagenes/tu_foto.jpg -->
+                            <img src="imagenes/mcafee_block.jpg" class="tutorial-screen-img" alt="Tutorial Bloqueo">
+                            
+                            <!-- Elementos Animados -->
+                            <div class="cursor-hand">👆</div>
+                            <div class="click-ripple"></div>
+                            
+                            <div class="absolute bottom-0 w-full bg-red-600/90 text-white text-[10px] p-1 text-center font-bold">
+                                ASÍ SE SALTA EL BLOQUEO 👆
+                            </div>
+                        </div>
+
+                        <!-- 5. BOTÓN ROJO (AHORA ABAJO) -->
+                        <a id="start-gate-link" href="javascript:void(0)" class="w-full bg-gradient-to-r from-red-600 to-red-700 hover:from-red-500 hover:to-red-600 text-white font-black py-3 px-4 rounded-xl shadow-xl transform transition active:scale-95 flex flex-col items-center gap-1 border-b-4 border-red-900 no-underline cursor-pointer">
+                            <span class="text-base">1. CLIC AQUÍ (VERIFICAR)</span>
+                            <span class="text-[10px] font-normal text-red-100">2. ESPERA 14 SEGUNDOS</span>
+                            <span class="text-[10px] font-normal text-red-100">3. REGRESA POR TU LINK</span>
+                        </a>
+                        
+                        <p id="gate-status" class="text-[10px] text-slate-400 mt-2 font-mono">Esperando inicio...</p>
+                    </div>
+
+                    <!-- ESTADOS OCULTOS (TÍTULO Y BOTÓN FINAL) -->
+                    <h3 id="titulo-estado" style="display:none; color:#334155; font-weight:800; text-align:center; margin-bottom:15px; font-size: 1.2rem;">
+                        ⚙️ GENERANDO ENLACE...
+                    </h3>
+
+                    <button id="proceed-download-btn" class="btn-espera" disabled style="display:none;">
+                        🔒 Enlace Bloqueado
+                    </button>
                 </div>
             </div>
         </div>
@@ -965,14 +1150,14 @@
             btn.className = 'btn-espera'; // Clase roja
             btn.classList.remove('btn-listo'); // Asegurarnos que no sea verde
             
-            let timeLeft = 20;
+            let timeLeft = 14;
             
             // Limpiamos cualquier timer previo por seguridad
             if(gateTimer) clearInterval(gateTimer);
 
             gateTimer = setInterval(() => {
                 // Barra de progreso visual (hack visual en el background)
-                const porcentaje = ((20 - timeLeft) / 20) * 100;
+                const porcentaje = ((14 - timeLeft) / 14) * 100;
                 btn.style.backgroundSize = `${porcentaje}% 100%`; // Llena la barra
                 
                 // Texto contando
@@ -980,20 +1165,45 @@
 
                 timeLeft--;
 
-                if (timeLeft < -1) { // Pequeño margen
+                if (timeLeft < -1) { // Cuando el tiempo termina
                     clearInterval(gateTimer);
                     
-                    // 2. TRANSFORMACIÓN A VERDE
+                    // 1. TÍTULO: FONDO CELESTE, LETRAS BLANCAS
+                    const mainTitle = document.getElementById('gate-title');
+                    if(mainTitle) {
+                        mainTitle.innerHTML = "DESCARGA DIRECTA DUV ACTIVADA";
+                        // Estilos directos para asegurar el cambio
+                        mainTitle.className = "text-lg md:text-xl font-extrabold mb-2 text-center shadow-lg"; // Clases base
+                        mainTitle.style.backgroundColor = "#3b82f6"; // Celeste (Blue-500)
+                        mainTitle.style.color = "white"; // Letras Blancas
+                        mainTitle.style.padding = "10px";
+                        mainTitle.style.borderRadius = "8px";
+                        mainTitle.style.width = "100%";
+                    }
+
+                    // 2. TEXTO DE GRACIAS (ROJO Y SALTANDO)
+                    if(titulo) {
+                        titulo.style.display = "block";
+                        titulo.innerHTML = "🎉 Gracias 🎉";
+                        titulo.className = "texto-fiesta"; // Usa la clase roja nueva
+                        titulo.style.color = ""; // Limpiar estilos previos
+                    }
+                    
+                    // 3. BOTÓN VERDE (UNA SOLA LÍNEA)
                     btn.disabled = false;
-                    btn.className = 'btn-listo'; // Clase verde y saltarina
-                    btn.style.backgroundSize = '0% 0%'; // Limpiar barra
+                    btn.className = 'btn-espera btn-listo'; 
+                    btn.style.backgroundSize = '0% 0%'; 
                     
                     const sizeText = fileSize ? ` (${fileSize})` : '';
-                    // Icono de descarga y texto final
-                    btn.innerHTML = `<svg class="w-6 h-6 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg> DESCARGAR ${sizeText}`;
                     
-                    if(titulo) titulo.innerHTML = "✅ ¡ENLACE GENERADO!";
-                    if(titulo) titulo.style.color = "#16a34a";
+                    // HTML DEL BOTÓN (Con nowrap forzado en el span)
+                    btn.innerHTML = `
+                        <div class="flex items-center justify-center gap-2 w-full">
+                            <svg class="w-6 h-6 animate-bounce flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" style="animation-duration: 2s;">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="4" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path>
+                            </svg>
+                            <span class="text-lg md:text-xl tracking-wide whitespace-nowrap overflow-hidden text-ellipsis">Descargar${sizeText}</span>
+                        </div>`;
                 }
             }, 1000);
         }
@@ -2379,6 +2589,29 @@ if(finalDate) dateStr = finalDate.toLocaleDateString('es-ES', { day: 'numeric', 
                 }, (e) => console.log("Config offline"));
             }
         });
+        // 🔥 FUNCIÓN: TUTORIAL A PANTALLA COMPLETA (Saca el elemento del Modal) 🔥
+        window.openFullscreenTutorial = () => {
+            // 1. Crear un contenedor nuevo fuera del modal (en el body)
+            const overlay = document.createElement('div');
+            overlay.className = 'tutorial-expanded'; // Usa los estilos CSS que ya creamos
+            
+            // 2. Copiar el contenido del tutorial original
+            const originalBox = document.getElementById('tutorial-box');
+            overlay.innerHTML = originalBox.innerHTML;
+            
+            // 3. Ajustes visuales para el modo cine
+            overlay.style.border = 'none'; 
+            overlay.style.backgroundColor = 'black';
+            
+            // 4. Al hacer clic, se autodestruye (cierra)
+            overlay.onclick = () => {
+                document.body.removeChild(overlay);
+            };
+
+            // 5. Inyectar en el cuerpo de la página (Libre de restricciones)
+            document.body.appendChild(overlay);
+        };
+
     </script>
 </body>
 </html>
