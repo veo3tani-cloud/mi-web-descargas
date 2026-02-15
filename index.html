@@ -2384,55 +2384,59 @@ if(finalDate) dateStr = finalDate.toLocaleDateString('es-ES', { day: 'numeric', 
             const micBtn = newForm.querySelector('#ai-chat-mic');
             if(micBtn) micBtn.addEventListener('click', () => alert(isEnglish ? "Voice under maintenance." : "Voz en mantenimiento."));
         }
-// 🚀 BUSCADOR TURBO INTEGRADO EN EL CHAT DE DUV 🚀
-        // Pegar esto AL FINAL del script, justo antes de "// --- FIX COMMENT SUBMIT"
+// 🚀 BUSCADOR TURBO (VERSIÓN FIX APP) 🚀
+        // Busca las líneas donde defines 'aiChatInputTurbo' o la lógica del buscador y REEMPLÁZALAS con esto:
         
         const aiChatInputTurbo = document.getElementById('ai-chat-input');
         const suggestionsBoxTurbo = document.getElementById('search-suggestions');
 
         if(aiChatInputTurbo && suggestionsBoxTurbo) {
-            // Aseguramos que el input esté limpio de clones anteriores
+            // Clonamos el input para limpiar cualquier evento viejo que esté estorbando
             const finalInput = aiChatInputTurbo.cloneNode(true);
             aiChatInputTurbo.parentNode.replaceChild(finalInput, aiChatInputTurbo);
             
-            // 🔥 SOLUCIÓN EVENT DELEGATION (CLIC INFALIBLE) 🔥
-            // Escuchamos el clic en la CAJA PADRE, no en los items individuales.
-            // Esto evita que el evento se pierda al re-renderizar.
-            suggestionsBoxTurbo.addEventListener('click', (e) => {
+            // --- 1. LÓGICA DE SELECCIÓN (EL FIX DE ORO) ---
+            const handleSelection = (e) => {
+                // Buscamos si el toque fue en un item de la lista
                 const item = e.target.closest('.suggestion-item');
                 if (item) {
-                    e.preventDefault();
-                    e.stopPropagation(); // Detiene cualquier interferencia
+                    e.preventDefault(); // Evita que el teclado se cierre de golpe
+                    e.stopPropagation(); // Evita interferencias
                     
                     const id = item.dataset.id;
                     const title = item.dataset.title;
                     
-                    console.log("🚀 Clic detectado en sugerencia:", title);
+                    console.log("🚀 Selección detectada:", title);
                     
                     finalInput.value = title;
                     suggestionsBoxTurbo.style.display = 'none';
                     
-                    // ACCIÓN TURBO: Cerrar chat y llevar a la descarga
+                    // Acción: Cerrar modal y navegar
                     closeModal('ai-chat-modal'); 
                     
-                    // Pequeño delay para asegurar que el modal se cierre antes de navegar
+                    // Pequeña pausa para que la App respire antes de mover la pantalla
                     setTimeout(() => {
-                        handleTopDownloadClick(null, id);
+                        if(typeof handleTopDownloadClick === 'function') {
+                            handleTopDownloadClick(null, id);
+                        }
                     }, 50);
                 }
-            });
+            };
 
-            // Lógica de búsqueda instantánea
+            // ESCUCHAMOS 'MOUSEDOWN' Y 'TOUCHSTART' (Esto arregla el problema en Apps)
+            suggestionsBoxTurbo.addEventListener('mousedown', handleSelection);
+            suggestionsBoxTurbo.addEventListener('touchstart', handleSelection, { passive: false });
+
+            // --- 2. LÓGICA DE BÚSQUEDA MIENTRAS ESCRIBES ---
             finalInput.addEventListener('input', (e) => {
                 const query = e.target.value.toLowerCase().trim();
                 
-                // 1. Reacción inmediata (Desde la 1ra letra)
                 if(query.length < 1) { 
                     suggestionsBoxTurbo.style.display = 'none';
                     return;
                 }
 
-                // 2. Buscar en todo el inventario (Límite 7 resultados)
+                // Buscar en tu variable 'allSoftware' (Límite 7)
                 const matches = allSoftware.filter(item => 
                      item.title.toLowerCase().includes(query) || 
                      (item.category && item.category.toLowerCase().includes(query))
@@ -2441,32 +2445,30 @@ if(finalDate) dateStr = finalDate.toLocaleDateString('es-ES', { day: 'numeric', 
                 if(matches.length > 0) {
                     let html = '';
                     matches.forEach(item => {
-                        // Resaltar la coincidencia
                         const title = item.title;
                         const regex = new RegExp(`(${query})`, 'gi');
                         const highlightedTitle = title.replace(regex, '<span class="text-blue-600 font-black">$1</span>');
                         
+                        // IMPORTANTE: Usamos <button> en vez de <div> porque Android los respeta más
                         html += `
-                        <div class="suggestion-item p-3 border-b border-slate-100 hover:bg-blue-50 cursor-pointer flex justify-between items-center transition-colors" data-id="${item.id}" data-title="${title}">
-                            <div class="flex items-center gap-2">
+                        <button type="button" class="suggestion-item w-full text-left p-3 border-b border-slate-100 hover:bg-blue-50 cursor-pointer flex justify-between items-center transition-colors focus:outline-none bg-white" data-id="${item.id}" data-title="${title}">
+                            <div class="flex items-center gap-2 pointer-events-none">
                                 <span class="text-lg">🚀</span>
                                 <span class="text-sm font-medium text-slate-700">${highlightedTitle}</span>
                             </div>
-                            <span class="text-[10px] uppercase font-bold text-slate-400 bg-slate-100 px-2 py-1 rounded">${item.platform || 'APP'}</span>
-                        </div>`;
+                            <span class="text-[10px] uppercase font-bold text-slate-400 bg-slate-100 px-2 py-1 rounded pointer-events-none">${item.platform || 'APP'}</span>
+                        </button>`;
                     });
                     suggestionsBoxTurbo.innerHTML = html;
                     suggestionsBoxTurbo.classList.remove('hidden');
                     suggestionsBoxTurbo.style.display = 'block';
-                    
-                    // YA NO AGREGAMOS LISTENERS AQUÍ (Event Delegation se encarga arriba)
                 } else {
                     suggestionsBoxTurbo.style.display = 'none';
                 }
             });
 
-            // Ocultar si se hace clic fuera
-            document.addEventListener('click', (e) => {
+            // Ocultar si tocan fuera (Usamos mousedown para ser rápidos)
+            document.addEventListener('mousedown', (e) => {
                 if (!finalInput.contains(e.target) && !suggestionsBoxTurbo.contains(e.target)) {
                     suggestionsBoxTurbo.style.display = 'none';
                 }
@@ -2626,6 +2628,48 @@ if(finalDate) dateStr = finalDate.toLocaleDateString('es-ES', { day: 'numeric', 
             // 5. Inyectar en el cuerpo de la página (Libre de restricciones)
             document.body.appendChild(overlay);
         };
+
+// 🚀 MODO PUENTE: SI ESTOY EN APP -> ABRIR CHROME 🚀
+        // Pega esto AL FINAL del script, antes de </script>
+        (function() {
+            // Detectar si estamos atrapados en la App (WebView)
+            const userAgent = navigator.userAgent || navigator.vendor || window.opera;
+            const isWebView = /wv|Android.*Version\/[0-9]\.[0-9]/.test(userAgent) && !/Chrome\/[0-9]/.test(userAgent); 
+            // Nota: La detección exacta puede variar, pero 'wv' suele delatar al WebView de Android.
+
+            if (isWebView) {
+                console.log("📱 App detectada. Iniciando protocolo de expulsión a Chrome...");
+                
+                // 1. Mostrar pantalla de carga bonita mientras redirige
+                const overlay = document.createElement('div');
+                overlay.style.cssText = "position:fixed;top:0;left:0;width:100%;height:100%;background:#ffffff;z-index:9999999;display:flex;flex-direction:column;justify-content:center;align-items:center;";
+                overlay.innerHTML = `
+                    <div style="font-size:50px;animation:bounce 1s infinite;">🚀</div>
+                    <h2 style="font-family:sans-serif;color:#1e293b;margin-top:20px;">Abriendo DUV...</h2>
+                    <p style="font-family:sans-serif;color:#64748b;font-size:14px;">Cargando versión completa en tu navegador.</p>
+                    <button id="force-chrome-btn" style="margin-top:30px;background:#2563eb;color:white;border:none;padding:12px 24px;border-radius:99px;font-weight:bold;">Abrir Manualmente</button>
+                    <style>@keyframes bounce {0%, 100% {transform: translateY(0);} 50% {transform: translateY(-10px);}}</style>
+                `;
+                document.body.appendChild(overlay);
+
+                // 2. Función para forzar la apertura externa
+                const openExternal = () => {
+                    const target = window.location.href;
+                    // Intentamos abrir una nueva ventana, que la mayoría de WebViews capturan y envían al navegador del sistema
+                    const newWin = window.open(target, '_system');
+                    if(!newWin) {
+                        // Si falla, intentamos la redirección directa que a veces dispara el Intent
+                        window.location.href = target; 
+                    }
+                };
+
+                // Intentar automáticamente a los 500ms
+                setTimeout(openExternal, 800);
+
+                // Botón de respaldo por si acaso
+                document.getElementById('force-chrome-btn').addEventListener('click', openExternal);
+            }
+        })();
 
     </script>
 </body>
