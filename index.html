@@ -2395,6 +2395,33 @@ if(finalDate) dateStr = finalDate.toLocaleDateString('es-ES', { day: 'numeric', 
             const finalInput = aiChatInputTurbo.cloneNode(true);
             aiChatInputTurbo.parentNode.replaceChild(finalInput, aiChatInputTurbo);
             
+            // 🔥 SOLUCIÓN EVENT DELEGATION (CLIC INFALIBLE) 🔥
+            // Escuchamos el clic en la CAJA PADRE, no en los items individuales.
+            // Esto evita que el evento se pierda al re-renderizar.
+            suggestionsBoxTurbo.addEventListener('click', (e) => {
+                const item = e.target.closest('.suggestion-item');
+                if (item) {
+                    e.preventDefault();
+                    e.stopPropagation(); // Detiene cualquier interferencia
+                    
+                    const id = item.dataset.id;
+                    const title = item.dataset.title;
+                    
+                    console.log("🚀 Clic detectado en sugerencia:", title);
+                    
+                    finalInput.value = title;
+                    suggestionsBoxTurbo.style.display = 'none';
+                    
+                    // ACCIÓN TURBO: Cerrar chat y llevar a la descarga
+                    closeModal('ai-chat-modal'); 
+                    
+                    // Pequeño delay para asegurar que el modal se cierre antes de navegar
+                    setTimeout(() => {
+                        handleTopDownloadClick(null, id);
+                    }, 50);
+                }
+            });
+
             // Lógica de búsqueda instantánea
             finalInput.addEventListener('input', (e) => {
                 const query = e.target.value.toLowerCase().trim();
@@ -2432,19 +2459,7 @@ if(finalDate) dateStr = finalDate.toLocaleDateString('es-ES', { day: 'numeric', 
                     suggestionsBoxTurbo.classList.remove('hidden');
                     suggestionsBoxTurbo.style.display = 'block';
                     
-                    // Al hacer clic en una sugerencia
-                    suggestionsBoxTurbo.querySelectorAll('.suggestion-item').forEach(el => {
-                        el.addEventListener('click', () => {
-                            const id = el.dataset.id;
-                            const title = el.dataset.title;
-                            finalInput.value = title;
-                            suggestionsBoxTurbo.style.display = 'none';
-                            
-                            // ACCIÓN TURBO: Cerrar chat y llevar a la descarga
-                            closeModal('ai-chat-modal'); 
-                            handleTopDownloadClick(null, id); 
-                        });
-                    });
+                    // YA NO AGREGAMOS LISTENERS AQUÍ (Event Delegation se encarga arriba)
                 } else {
                     suggestionsBoxTurbo.style.display = 'none';
                 }
