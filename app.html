@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>App Oficial DUV - Descarga Segura</title>
+    
+    <!-- Metaetiquetas para WhatsApp (¡Vital para que se vea bonito al compartir!) -->
+    <meta property="og:title" content="📲 Descarga la App Oficial de DUV">
+    <meta property="og:description" content="Acceso directo, sin virus y con notificaciones de estrenos. La forma más segura de descargar.">
+    <meta property="og:image" content="https://www.downloadlatestversion.com/imagen-preview.jpg?v=2">
+    <meta property="og:url" content="https://www.downloadlatestversion.com/app.html">
+    <meta name="theme-color" content="#3b82f6">
+
+    <!-- Estilos (Mismos de tu web para consistencia) -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; background-color: #f8fafc; }
+        .logo { width: 48px; height: 48px; display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, #38bdf8, #3b82f6); border-radius: 12px; color: white; font-weight: 800; font-size: 28px; transform: rotate(-10deg); box-shadow: 0 4px 6px -1px rgba(59, 130, 246, 0.5); }
+        .blob { position: absolute; filter: blur(40px); z-index: -1; opacity: 0.5; }
+        .blob-1 { top: 0; left: 0; width: 300px; height: 300px; background: #bfdbfe; border-radius: 50%; }
+        .blob-2 { bottom: 0; right: 0; width: 300px; height: 300px; background: #ddd6fe; border-radius: 50%; }
+        
+        @keyframes float { 0% { transform: translateY(0px); } 50% { transform: translateY(-10px); } 100% { transform: translateY(0px); } }
+        .hero-img { animation: float 3s ease-in-out infinite; }
+        
+        .download-btn {
+            background: linear-gradient(to right, #2563eb, #1d4ed8);
+            box-shadow: 0 10px 25px -5px rgba(37, 99, 235, 0.4);
+            transition: all 0.3s ease;
+        }
+        .download-btn:hover { transform: scale(1.05); box-shadow: 0 15px 30px -5px rgba(37, 99, 235, 0.5); }
+        .download-btn:active { transform: scale(0.98); }
+    </style>
+</head>
+<body class="flex flex-col min-h-screen relative overflow-x-hidden">
+    
+    <!-- Fondos Decorativos -->
+    <div class="blob blob-1"></div>
+    <div class="blob blob-2"></div>
+
+    <!-- HEADER SIMPLE -->
+    <header class="p-4 flex justify-center">
+        <div class="flex items-center gap-3">
+            <div class="logo">D</div>
+            <h1 class="text-xl font-extrabold text-slate-800 tracking-tight">Descargar Ultima Version</h1>
+        </div>
+    </header>
+
+    <!-- CONTENIDO PRINCIPAL -->
+    <main class="flex-grow container mx-auto px-4 flex flex-col items-center justify-center text-center py-8">
+        
+        <span class="inline-block py-1 px-3 rounded-full bg-blue-100 text-blue-700 text-xs font-bold tracking-wide mb-4 border border-blue-200">
+            ✨ NUEVA VERSIÓN 2.0 DISPONIBLE
+        </span>
+
+        <h2 class="text-4xl md:text-5xl font-black text-slate-900 mb-4 leading-tight">
+            Tu Zona Segura<br><span class="text-blue-600">En Tu Bolsillo</span>
+        </h2>
+
+        <p class="text-slate-600 text-lg max-w-lg mb-8 leading-relaxed">
+            Olvídate de buscar la página cada vez. Instala nuestra App Oficial y ten acceso directo a miles de juegos y software verificado al instante.
+        </p>
+
+        <!-- IMAGEN DEL MOVIL (Placeholder visual) -->
+        <div class="hero-img mb-8 relative w-48 h-48 md:w-64 md:h-64 flex items-center justify-center bg-white rounded-[2rem] shadow-2xl border-4 border-slate-100">
+            <div class="absolute inset-0 bg-gradient-to-br from-blue-50 to-white rounded-[1.8rem]"></div>
+            <span class="text-8xl relative z-10">🚀</span>
+            <!-- Badge de seguridad -->
+            <div class="absolute -bottom-4 -right-4 bg-green-100 text-green-700 px-3 py-1 rounded-full text-xs font-bold border border-green-200 flex items-center gap-1 shadow-sm">
+                <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                100% Seguro
+            </div>
+        </div>
+
+        <!-- BOTÓN DE DESCARGA -->
+        <div class="w-full max-w-md space-y-4">
+            <!-- ⚠️ CAMBIA 'DUV_Oficial.apk' POR EL NOMBRE REAL DE TU ARCHIVO EN EL HOSTING -->
+            <a href="DUV_Oficial.apk" download class="download-btn w-full block py-4 px-6 rounded-xl text-white font-bold text-xl flex items-center justify-center gap-3">
+                <svg class="w-7 h-7" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
+                DESCARGAR APK
+            </a>
+            <p class="text-xs text-slate-400">Versión 2.0 • Android 5.0+ • 3.5 MB</p>
+        </div>
+
+        <!-- CARACTERÍSTICAS -->
+        <div class="grid grid-cols-3 gap-4 mt-12 w-full max-w-2xl">
+            <div class="p-4 bg-white rounded-xl shadow-sm border border-slate-100">
+                <div class="text-2xl mb-2">⚡</div>
+                <h3 class="font-bold text-slate-800 text-sm">Más Rápido</h3>
+            </div>
+            <div class="p-4 bg-white rounded-xl shadow-sm border border-slate-100">
+                <div class="text-2xl mb-2">🛡️</div>
+                <h3 class="font-bold text-slate-800 text-sm">Anti Virus</h3>
+            </div>
+            <div class="p-4 bg-white rounded-xl shadow-sm border border-slate-100">
+                <div class="text-2xl mb-2">🔔</div>
+                <h3 class="font-bold text-slate-800 text-sm">Avisos</h3>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- GUÍA DE INSTALACIÓN (Acordeón) -->
+    <section class="bg-white border-t border-slate-200 py-8 px-4">
+        <div class="container mx-auto max-w-lg">
+            <h3 class="text-center font-bold text-slate-800 mb-6">¿Cómo Instalar?</h3>
+            
+            <div class="space-y-4">
+                <div class="flex gap-4">
+                    <div class="flex-shrink-0 w-8 h-8 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center font-bold">1</div>
+                    <p class="text-sm text-slate-600 pt-1">Descarga el archivo APK presionando el botón azul de arriba.</p>
+                </div>
+                <div class="flex gap-4">
+                    <div class="flex-shrink-0 w-8 h-8 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center font-bold">2</div>
+                    <p class="text-sm text-slate-600 pt-1">Si Chrome te pregunta, dale a <strong>"Descargar de todos modos"</strong> (Es seguro).</p>
+                </div>
+                <div class="flex gap-4">
+                    <div class="flex-shrink-0 w-8 h-8 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center font-bold">3</div>
+                    <p class="text-sm text-slate-600 pt-1">Abre el archivo y selecciona <strong>"Instalar"</strong>. ¡Listo!</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="bg-slate-50 py-6 text-center border-t border-slate-200">
+        <p class="text-xs text-slate-400">© 2026 Descargar Ultima Version. Todos los derechos reservados.</p>
+        <a href="index.html" class="text-xs text-blue-500 font-bold mt-2 inline-block">Ir a la Web Principal</a>
+    </footer>
+
+</body>
+</html>
