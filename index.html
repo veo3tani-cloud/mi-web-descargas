@@ -790,10 +790,19 @@
                 <div id="ai-chat-error" class="hidden text-sm text-red-600 bg-red-100 p-3 rounded-lg mb-3"></div>
                 <form id="ai-chat-form" class="flex items-center gap-3" onsubmit="event.preventDefault();">
                     <div class="relative flex-grow">
-                        <input type="text" id="ai-chat-input" placeholder="Escribe..." class="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500" autocomplete="off">
-                        <!-- SUGGESTIONS BOX (AUTOCOMPLETE) -->
-                        <div id="search-suggestions" class="hidden"></div>
-                    </div>
+    <!-- 1. AGREGUÉ 'pr-10' AQUI PARA QUE EL TEXTO NO SE MONTE EN LA X -->
+    <input type="text" id="ai-chat-input" placeholder="Escribe..." class="w-full p-3 pr-10 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500" autocomplete="off">
+    
+    <!-- 2. BOTÓN X DE LIMPIEZA (NUEVO) -->
+    <button type="button" id="clear-search-btn" class="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-red-500 hidden p-1 transition-colors z-10" aria-label="Limpiar búsqueda">
+        <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+        </svg>
+    </button>
+
+    <!-- SUGGESTIONS BOX (AUTOCOMPLETE) -->
+    <div id="search-suggestions" class="hidden"></div>
+</div>
                     <button type="button" id="ai-chat-mic" class="p-3 bg-slate-200 text-slate-700 rounded-lg hover:bg-slate-300 transition-colors flex items-center justify-center min-w-[44px] min-h-[44px]">
                          <svg id="mic-icon" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z"></path></svg>
                          <svg id="mic-listening" class="h-6 w-6 text-red-500 hidden animate-pulse" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="10"></circle></svg>
@@ -2417,6 +2426,30 @@ if(finalDate) dateStr = finalDate.toLocaleDateString('es-ES', { day: 'numeric', 
         if(aiChatInputTurbo && suggestionsBoxTurbo) {
             // Clonamos para limpiar eventos viejos
             const finalInput = aiChatInputTurbo.cloneNode(true);
+            // --- 🟢 LOGICA BOTÓN X (LIMPIAR) 🟢 ---
+    const clearBtn = document.getElementById('clear-search-btn');
+    if (clearBtn) {
+        // 1. Mostrar/Ocultar la X al escribir
+        finalInput.addEventListener('input', (e) => {
+            if (e.target.value.length > 0) {
+                clearBtn.classList.remove('hidden');
+            } else {
+                clearBtn.classList.add('hidden');
+            }
+        });
+
+        // 2. Acción al dar clic en la X
+        clearBtn.addEventListener('click', () => {
+            finalInput.value = ''; // Borrar texto
+            finalInput.focus();    // Mantener teclado abierto
+            clearBtn.classList.add('hidden'); // Ocultar X
+            suggestionsBoxTurbo.style.display = 'none'; // Cerrar sugerencias
+        });
+        
+        // 3. Chequeo inicial (por si el modal se abre con texto viejo)
+        if(finalInput.value.length > 0) clearBtn.classList.remove('hidden');
+    }
+    // --- FIN LOGICA X ---
             aiChatInputTurbo.parentNode.replaceChild(finalInput, aiChatInputTurbo);
             
             // --- 1. LÓGICA DE CLIC HÍBRIDO (EL SECRETO PARA LA APP) ---
