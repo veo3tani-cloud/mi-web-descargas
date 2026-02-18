@@ -166,7 +166,11 @@
         .telegram-pulse { animation: pulse-telegram 2s infinite; }
 
         /* Banners Mobile/PC */
-        @media (max-width: 768px) { #mobile-ad-top { position: fixed; top: 0; left: 0; width: 100%; height: 60px; display: flex !important; justify-content: center; align-items: center; background: #fff; z-index: 50; box-shadow: 0 2px 5px rgba(0,0,0,0.1); } body { padding-top: 60px; } #pc-ad-top-downloads { display: none !important; } }
+        @media (max-width: 768px) { 
+            #mobile-ad-top { display: none !important; } 
+            body { padding-top: 0 !important; } /* ✅ FIX: Eliminado espacio de 60px */
+            #pc-ad-top-downloads { display: none !important; } 
+        }
         @media (min-width: 769px) { #mobile-ad-top { display: none !important; } #pc-ad-top-downloads { display: flex !important; justify-content: center; align-items: center; width: 100%; max-width: 728px; margin: 0 auto; } }
 
         /* Comentarios & Pizarra */
@@ -865,7 +869,11 @@
         import { GoogleGenerativeAI } from "https://esm.run/@google/generative-ai";
 
         // --- CONFIGURACIÓN DE VIDEOS GUÍA ---
+        // 1. Video horizontal para PC (YouTube o similar)
         const PC_GUIDE_URL = "https://www.youtube.com/embed/Zs-1k7F0_vE"; 
+        
+        // 2. Video vertical para Móvil (Google Drive o link directo mp4)
+        // Usa tu enlace de Drive o sube un Short a YouTube y pon el link aquí
         const MOBILE_GUIDE_URL = "https://drive.google.com/file/d/1lLN0IgFZlGfYoYybOfiPhr-VybZZgzoU/preview";
         
         let gateTimer = null; // Timer global para el gate
@@ -1099,8 +1107,11 @@
             const modal = document.getElementById('download-gate-modal');
             const iframe = document.getElementById('gate-video-iframe');
             
-            // 1. VIDEO DE FONDO
-            let videoSrc = "https://www.youtube.com/embed/5qap5aO4i9A?autoplay=1&controls=0&mute=0&loop=1&playlist=5qap5aO4i9A"; 
+            // --- CEREBRO DE VIDEO INTELIGENTE ---
+            let videoSrc = "";
+            const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+            
+            // 1. Prioridad: Video Personalizado (si el Admin lo puso en la ficha) - MÁXIMA PRIORIDAD
             if (customVideoUrl && customVideoUrl.trim() !== "") {
                 try {
                     let videoId = "";
@@ -1110,6 +1121,36 @@
                     if (videoId) videoSrc = `https://www.youtube.com/embed/${videoId}?autoplay=1&controls=0&mute=0`;
                 } catch (e) {}
             }
+            
+            // 2. Prioridad: Campaña Global (PC vs Móvil)
+            if (!videoSrc) {
+                if (isMobile && window.globalVideoMobile) {
+                     videoSrc = window.globalVideoMobile;
+                     // Si es youtube, adaptar
+                     if(videoSrc.includes("youtu")) {
+                         let vId = videoSrc.includes("v=") ? videoSrc.split("v=")[1] : videoSrc.split("/").pop();
+                         videoSrc = `https://www.youtube.com/embed/${vId}?autoplay=1&controls=0&mute=0`;
+                     }
+                } else if (!isMobile && window.globalVideoPC) {
+                     videoSrc = window.globalVideoPC;
+                     if(videoSrc.includes("youtu")) {
+                         let vId = videoSrc.includes("v=") ? videoSrc.split("v=")[1] : videoSrc.split("/").pop();
+                         videoSrc = `https://www.youtube.com/embed/${vId}?autoplay=1&controls=0&mute=0`;
+                     }
+                }
+            }
+
+            // 3. Fallback Inteligente: PC vs Móvil (Default)
+            if (!videoSrc) {
+                if (isMobile) {
+                    // Si es Móvil, usa el video vertical (Drive o MP4 directo)
+                    videoSrc = MOBILE_GUIDE_URL; 
+                } else {
+                    // Si es PC, usa el video horizontal de YouTube
+                    videoSrc = `${PC_GUIDE_URL}?autoplay=1&controls=0&mute=0&loop=1&playlist=${PC_GUIDE_URL.split('/').pop()}`;
+                }
+            }
+
             if(iframe) iframe.src = videoSrc;
             if(modal) modal.classList.add('open');
 
@@ -1303,9 +1344,13 @@
             }
 
             // ABRIR EL MODAL DE INMEDIATO (Sin trucos)
-            const gateVideo = btn.dataset.video;
+            // NOTA: Eliminamos finalGateVideo de aquí porque ahora se calcula dinámicamente en openGateModal
+            // para saber si es PC o Móvil en el momento del clic.
+            const customVideoUrl = btn.dataset.video; // Esto ahora solo trae el video específico del item, si lo hay
             const fileSize = btn.dataset.size;
-            openGateModal(link, gateVideo, fileSize);
+            
+            // Llamamos al modal. Él decidirá qué video mostrar (Global PC, Global Móvil o Item)
+            openGateModal(link, customVideoUrl, fileSize);
 
             // Log de estadística
             const itemRef = doc(db, `artifacts/${appId}/public/data/software-items`, id);
@@ -1503,11 +1548,10 @@ if(finalDate) dateStr = finalDate.toLocaleDateString('es-ES', { day: 'numeric', 
                 const safeImgUrl = isValidImageUrl(item.imageUrl) ? item.imageUrl : `https://placehold.co/600x400/${placeholder}?text=No+Image`;
                 const displayTitle = `${item.title} ${item.version ? `<span class="text-sm font-normal text-slate-500 ml-1">${item.version}</span>` : ''}`;
 
-                // 🔥 INTERRUPTOR MAESTRO DE VIDEO 🔥
-                // Si el Admin mandó un video global, úsalo. Si no, usa el de la App.
-                const finalGateVideo = (window.globalVideoUrl && window.globalVideoUrl.length > 10) 
-                                        ? window.globalVideoUrl 
-                                        : (item.gateVideo || '');
+                // 🔥 INTERRUPTOR MAESTRO DE VIDEO (SIMPLIFICADO) 🔥
+                // Ya no necesitamos decidir aquí si es PC o Móvil. Le pasamos el video específico del item si existe.
+                const finalGateVideo = item.gateVideo || '';
+                
                 card.innerHTML = `
                     <img src="${safeImgUrl}" alt="Descargar ${item.title} Full" loading="lazy" style="width: 100%; height: 192px; object-fit: cover;" onerror="this.src='https://placehold.co/600x400/${placeholder}?text=Error'">
                     <div class="p-5">
@@ -2022,13 +2066,30 @@ if(finalDate) dateStr = finalDate.toLocaleDateString('es-ES', { day: 'numeric', 
                     if(!configUnsubscribe) {
                           configUnsubscribe = onSnapshot(radarRef, (s) => {
                             const adContainer = document.getElementById('ai-chat-ad-container');
-                            if (adContainer && s.exists()) {
+                            if (s.exists()) {
                                 const data = s.data();
-                                if (data.aiChatAd && data.aiChatAd.trim() !== "") {
-                                    adContainer.innerHTML = data.aiChatAd; adContainer.classList.remove('hidden');
-                                } else {
-                                    adContainer.classList.remove('hidden'); 
-                                 }
+                                // --- ACTUALIZACIÓN: VIDEOS GLOBALES (PC vs MÓVIL) ---
+                                if (data.globalVideoPC) window.globalVideoPC = data.globalVideoPC;
+                                if (data.globalVideoMobile) window.globalVideoMobile = data.globalVideoMobile;
+                                // Compatibilidad hacia atrás (o limpieza si se borran)
+                                if (!data.globalVideoPC) window.globalVideoPC = null;
+                                if (!data.globalVideoMobile) window.globalVideoMobile = null;
+                                
+                                // --- DETECTOR DE CAMBIO DE ALGORITMO ---
+                                if (data.sortingMode && data.sortingMode !== globalSortMode) {
+                                    console.log(`🔄 Cambio de algoritmo detectado: ${data.sortingMode}`);
+                                    globalSortMode = data.sortingMode;
+                                    updateView(); // ¡Refrescar la pantalla al instante!
+                                }
+                                if (data.systemPrompt) {
+                                    window.globalSystemPrompt = data.systemPrompt; 
+                                }
+                                if (adContainer && data.aiChatAd) {
+                                    adContainer.innerHTML = data.aiChatAd;
+                                    adContainer.classList.remove('hidden');
+                                } else if(adContainer) {
+                                    adContainer.classList.remove('hidden');
+                                }
                             } else {
                                 if(adContainer) adContainer.classList.remove('hidden');
                             }
