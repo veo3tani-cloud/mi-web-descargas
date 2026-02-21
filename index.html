@@ -1102,7 +1102,7 @@
 
         // 🔥 FUNCION GATE: TÉCNICA "TÚNEL LIMPIO" (ANTI-MCAFEE) 🔥
         // 🔥 FUNCION GATE: TÉCNICA "TÚNEL LIMPIO" (ANTI-MCAFEE) 🔥
-        function openGateModal(downloadLink, customVideoUrl, fileSize) {
+        function openGateModal(downloadLink, customVideoUrl, fileSize, itemTitle) {
             currentDownloadLink = downloadLink;
             const modal = document.getElementById('download-gate-modal');
             const iframe = document.getElementById('gate-video-iframe');
@@ -1111,7 +1111,7 @@
             let videoSrc = "";
             const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
             
-            // 1. Prioridad: Video Personalizado (si el Admin lo puso en la ficha) - MÁXIMA PRIORIDAD
+            // 1. Prioridad: Video Personalizado (si el Admin lo puso en la ficha)
             if (customVideoUrl && customVideoUrl.trim() !== "") {
                 try {
                     let videoId = "";
@@ -1144,6 +1144,7 @@
             if (!videoSrc) {
                 if (isMobile) {
                     // Si es Móvil, usa el video vertical (Drive o MP4 directo)
+                    // Truco para Drive: Cambiar /view o /preview por nada para iframe a veces, o usar el preview link directo
                     videoSrc = MOBILE_GUIDE_URL; 
                 } else {
                     // Si es PC, usa el video horizontal de YouTube
@@ -1187,6 +1188,9 @@
 
                 newLink.addEventListener('click', (e) => {
                     e.preventDefault(); 
+                    
+                    // 🚨 REGISTRAR CLIC EN BOTÓN ROJO (Verificación)
+                    if (typeof logActivity === 'function') logActivity('Gate_Iniciado', itemTitle || 'Desconocido', 'Usuario inició el gate (Clic Rojo)');
 
                     // 1. DESCIFRAR EL LINK (Esto arregla el error del localhost)
                     // atob convierte el código secreto en el link real de Adsterra
@@ -1218,12 +1222,12 @@
 
                     // 4. INICIAR TU TIMER
                     if(triggerZone) triggerZone.style.display = 'none';
-                    iniciarCuentaRegresiva(fileSize);
+                    iniciarCuentaRegresiva(fileSize, itemTitle);
                 });
             }
         }
 
-        function iniciarCuentaRegresiva(fileSize) {
+        function iniciarCuentaRegresiva(fileSize, itemTitle) {
             const btn = document.getElementById('proceed-download-btn');
             const titulo = document.getElementById('titulo-estado');
             
@@ -1235,6 +1239,20 @@
             btn.className = 'btn-espera'; // Clase roja
             btn.classList.remove('btn-listo'); // Asegurarnos que no sea verde
             
+            // 🚨 Re-creamos el botón clonado para limpiar eventos anteriores y poner el nuevo logger
+            const newBtn = btn.cloneNode(true);
+            btn.parentNode.replaceChild(newBtn, btn);
+            
+            newBtn.addEventListener('click', () => {
+                 if(!newBtn.disabled) {
+                     // 🚨 REGISTRAR CLIC EN BOTÓN VERDE (Conversión Final)
+                     if (typeof logActivity === 'function') logActivity('Descarga_Final', itemTitle || 'Desconocido', 'Usuario completó la espera y dio clic final (Verde)');
+                     
+                     closeModal('download-gate-modal');
+                     if(currentDownloadLink) { window.open(currentDownloadLink, '_blank'); currentDownloadLink = null; }
+                 }
+            });
+
             let timeLeft = 14;
             
             // Limpiamos cualquier timer previo por seguridad
@@ -1243,10 +1261,10 @@
             gateTimer = setInterval(() => {
                 // Barra de progreso visual (hack visual en el background)
                 const porcentaje = ((14 - timeLeft) / 14) * 100;
-                btn.style.backgroundSize = `${porcentaje}% 100%`; // Llena la barra
+                newBtn.style.backgroundSize = `${porcentaje}% 100%`; // Llena la barra
                 
                 // Texto contando
-                btn.innerHTML = `Regresa en ${timeLeft}s...`;
+                newBtn.innerHTML = `Regresa en ${timeLeft}s...`;
 
                 timeLeft--;
 
@@ -1275,14 +1293,14 @@
                     }
                     
                     // 3. BOTÓN VERDE (UNA SOLA LÍNEA)
-                    btn.disabled = false;
-                    btn.className = 'btn-espera btn-listo'; 
-                    btn.style.backgroundSize = '0% 0%'; 
+                    newBtn.disabled = false;
+                    newBtn.className = 'btn-espera btn-listo'; 
+                    newBtn.style.backgroundSize = '0% 0%'; 
                     
                     const sizeText = fileSize ? ` (${fileSize})` : '';
                     
                     // HTML DEL BOTÓN (Con nowrap forzado en el span)
-                    btn.innerHTML = `
+                    newBtn.innerHTML = `
                         <div class="flex items-center justify-center gap-2 w-full">
                             <svg class="w-6 h-6 animate-bounce flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" style="animation-duration: 2s;">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="4" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path>
@@ -1317,14 +1335,7 @@
         }
         
         // ... (Keep existing modal button logic) ...
-        const proceedBtn = document.getElementById('proceed-download-btn');
-        if(proceedBtn) proceedBtn.addEventListener('click', () => {
-            // Only proceed if enabled
-            if(!proceedBtn.disabled) {
-                closeModal('download-gate-modal');
-                if(currentDownloadLink) { window.open(currentDownloadLink, '_blank'); currentDownloadLink = null; }
-            }
-        });
+        // Este bloque ya no es necesario porque la lógica está dentro de openGateModal/iniciarCuentaRegresiva
 
         // 🔥 VARIABLES GLOBALES 🔥
         // TU LINK DE DINERO (ID 28296445 - EL QUE SÍ PAGA)
@@ -1344,18 +1355,16 @@
             }
 
             // ABRIR EL MODAL DE INMEDIATO (Sin trucos)
-            // NOTA: Eliminamos finalGateVideo de aquí porque ahora se calcula dinámicamente en openGateModal
-            // para saber si es PC o Móvil en el momento del clic.
-            const customVideoUrl = btn.dataset.video; // Esto ahora solo trae el video específico del item, si lo hay
+            const gateVideo = btn.dataset.video;
             const fileSize = btn.dataset.size;
             
-            // Llamamos al modal. Él decidirá qué video mostrar (Global PC, Global Móvil o Item)
-            openGateModal(link, customVideoUrl, fileSize);
+            // Pasamos el título para el registro detallado
+            openGateModal(link, gateVideo, fileSize, title);
 
-            // Log de estadística
+            // Log de estadística (Paso 1: Intención)
             const itemRef = doc(db, `artifacts/${appId}/public/data/software-items`, id);
             updateDoc(itemRef, { downloads: increment(1) }).catch(console.error);
-            if (typeof logActivity === 'function') logActivity('Descarga', title || 'Desconocido');
+            if (typeof logActivity === 'function') logActivity('Descarga', title || 'Desconocido', 'Usuario hizo clic en la ficha (Paso 1)');
         }
         
 
@@ -1930,7 +1939,7 @@ if(finalDate) dateStr = finalDate.toLocaleDateString('es-ES', { day: 'numeric', 
                     window.history.replaceState({}, document.title, window.location.pathname);
                     // Abrimos el modal automáticamente
                     setTimeout(() => {
-                        openGateModal(data.link, data.video, data.size);
+                        openGateModal(data.link, data.video, data.size, data.title);
                     }, 500);
                 }
             }
