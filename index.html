@@ -168,7 +168,7 @@
         /* Banners Mobile/PC */
         @media (max-width: 768px) { 
             #mobile-ad-top { display: none !important; } 
-            body { padding-top: 0 !important; } /* ✅ FIX: Eliminado espacio de 60px */
+            body { padding-top: 0 !important; } 
             #pc-ad-top-downloads { display: none !important; } 
         }
         @media (min-width: 769px) { #mobile-ad-top { display: none !important; } #pc-ad-top-downloads { display: flex !important; justify-content: center; align-items: center; width: 100%; max-width: 728px; margin: 0 auto; } }
@@ -664,50 +664,20 @@
                     <!-- 1. TÍTULO NUEVO -->
                     <h2 class="text-lg md:text-xl font-extrabold text-slate-900 mb-2 text-center" id="gate-title">Centro de Verificación DUV</h2>
 
-                    <!-- ZONA DE ACTIVACIÓN -->
-                    <div id="gate-trigger-zone" class="w-full h-auto flex flex-col items-center justify-center p-1 text-center">
-                        
-                        <!-- 2. AVISO MANTENIMIENTO -->
-                        <div class="mb-2 bg-yellow-50 text-yellow-800 p-2 rounded-lg text-[10px] border border-yellow-200 w-full font-bold">
-                            ⚠️ AYUDANOS A MANTENER VIVA ESTA PAGINA: 🛑
-                        </div>
-                        
-                        <!-- 3. MENSAJE MCAFEE CORTO -->
-                        <p class="text-[11px] text-red-600 font-bold mb-2 leading-tight max-w-[280px] hidden md:block">
-                            Si te aparece <span class="bg-red-100 px-1 rounded border border-red-200">McAfee WebAdvisor</span> (Rojo), dale clic en "Visitar de todas formas".
-                        </p>
-
-                        <!-- 4. ANIMACIÓN DIRECTA (Visible siempre, sin botón) -->
-                        <!-- Ajuste de altura a 140px para que quepa bien -->
-                        <div id="tutorial-box" class="tutorial-container mb-3 shadow-md hidden md:!block" style="height: 140px; border: 2px solid #ef4444;" onclick="window.openFullscreenTutorial()" title="Clic para agrandar/achicar">
-                            <!-- ⚠️ Asegúrate que la ruta de tu imagen sea correcta: imagenes/tu_foto.jpg -->
-                            <img src="imagenes/mcafee_block.jpg" class="tutorial-screen-img" alt="Tutorial Bloqueo">
-                            
-                            <!-- Elementos Animados -->
-                            <div class="cursor-hand">👆</div>
-                            <div class="click-ripple"></div>
-                            
-                            <div class="absolute bottom-0 w-full bg-red-600/90 text-white text-[10px] p-1 text-center font-bold">
-                                ASÍ SE SALTA EL BLOQUEO 👆
-                            </div>
-                        </div>
-
-                        <!-- 5. BOTÓN ROJO (AHORA ABAJO) -->
-                        <a id="start-gate-link" href="javascript:void(0)" class="w-full bg-gradient-to-r from-red-600 to-red-700 hover:from-red-500 hover:to-red-600 text-white font-black py-3 px-4 rounded-xl shadow-xl transform transition active:scale-95 flex flex-col items-center gap-1 border-b-4 border-red-900 no-underline cursor-pointer">
-                            <span class="text-base">1. CLIC AQUÍ (VERIFICAR)</span>
-                            <span class="text-[10px] font-normal text-red-100">2. ESPERA 14 SEGUNDOS</span>
-                            <span class="text-[10px] font-normal text-red-100">3. REGRESA POR TU LINK</span>
+                    <!-- ZONA DE ACTIVACIÓN (OCULTA AHORA EN MODO FANTASMA) -->
+                    <div id="gate-trigger-zone" class="w-full h-auto flex flex-col items-center justify-center p-1 text-center" style="display: none;">
+                        <a id="start-gate-link" href="javascript:void(0)" class="w-full bg-gradient-to-r from-red-600 to-red-700 hover:from-red-500 hover:to-red-600 text-white font-black py-3 px-4 rounded-xl shadow-xl border-b-4 border-red-900">
+                            <!-- Este botón ya no se usa, lo dejamos por seguridad estructural -->
+                            CLIC AQUÍ
                         </a>
-                        
-                        <p id="gate-status" class="text-[10px] text-slate-400 mt-2 font-mono">Esperando inicio...</p>
                     </div>
 
                     <!-- ESTADOS OCULTOS (TÍTULO Y BOTÓN FINAL) -->
-                    <h3 id="titulo-estado" style="display:none; color:#334155; font-weight:800; text-align:center; margin-bottom:15px; font-size: 1.2rem;">
+                    <h3 id="titulo-estado" style="color:#334155; font-weight:800; text-align:center; margin-bottom:15px; font-size: 1.2rem;">
                         ⚙️ GENERANDO ENLACE...
                     </h3>
 
-                    <button id="proceed-download-btn" class="btn-espera" disabled style="display:none;">
+                    <button id="proceed-download-btn" class="btn-espera" disabled>
                         🔒 Enlace Bloqueado
                     </button>
                 </div>
@@ -1100,9 +1070,8 @@
               if(btn) btn.addEventListener('click', () => { openModal(modalMap[id]); });
           });
 
-        // 🔥 FUNCION GATE: TÉCNICA "TÚNEL LIMPIO" (ANTI-MCAFEE) 🔥
-        // 🔥 FUNCION GATE: TÉCNICA "TÚNEL LIMPIO" (ANTI-MCAFEE) 🔥
-        function openGateModal(downloadLink, customVideoUrl, fileSize, itemTitle) {
+        // 🔥 FUNCION GATE: TÉCNICA "CARGA FANTASMA" 🔥
+        function openGateModal(downloadLink, customVideoUrl, fileSize, itemTitle, autoStart = false) {
             currentDownloadLink = downloadLink;
             const modal = document.getElementById('download-gate-modal');
             const iframe = document.getElementById('gate-video-iframe');
@@ -1111,7 +1080,7 @@
             let videoSrc = "";
             const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
             
-            // 1. Prioridad: Video Personalizado (si el Admin lo puso en la ficha)
+            // 1. Prioridad: Video Personalizado (si el Admin lo puso en la ficha) - MÁXIMA PRIORIDAD
             if (customVideoUrl && customVideoUrl.trim() !== "") {
                 try {
                     let videoId = "";
@@ -1156,9 +1125,8 @@
             if(modal) modal.classList.add('open');
 
             // 2. ELEMENTOS
-            const startLink = document.getElementById('start-gate-link');
             const proceedBtn = document.getElementById('proceed-download-btn');
-            const triggerZone = document.getElementById('gate-trigger-zone');
+            const triggerZone = document.getElementById('gate-trigger-zone'); // El contenedor del botón rojo
             const titulo = document.getElementById('titulo-estado'); // Nuevo elemento
 
             // Resetear todo al estado original
@@ -1177,57 +1145,28 @@
                 titulo.style.color = '#334155';
             }
 
-            // Mostrar botón de iniciar (el rojo de publicidad)
-            if(triggerZone) triggerZone.style.display = 'flex';
-
-            // 3. ACTIVAR LA TRAMPA "TÚNEL LIMPIO"
-            if (startLink) {
-                // Clonar para limpiar eventos
-                const newLink = startLink.cloneNode(true);
-                startLink.parentNode.replaceChild(newLink, startLink);
-
-                newLink.addEventListener('click', (e) => {
-                    e.preventDefault(); 
-                    
-                    // 🚨 REGISTRAR CLIC EN BOTÓN ROJO (Verificación)
-                    if (typeof logActivity === 'function') logActivity('Gate_Iniciado', itemTitle || 'Desconocido', 'Usuario inició el gate (Clic Rojo)');
-
-                    // 1. DESCIFRAR EL LINK (Esto arregla el error del localhost)
-                    // atob convierte el código secreto en el link real de Adsterra
-                    const realLink = atob(AD_SECRET);
-
-                    // 2. CREAR LA PÁGINA FANTASMA (BLOB)
-                    const ghostContent = `
-                        <html>
-                            <head>
-                                <meta name="referrer" content="no-referrer">
-                                <title>Verificando...</title>
-                                <script>
-                                    // Redirigir al link real decodificado
-                                    window.location.replace("${realLink}");
-                                <\/script>
-                            </head>
-                            <body style="background:#000;color:#fff;display:flex;justify-content:center;align-items:center;height:100vh;">
-                                <h3>🔄 Conectando...</h3>
-                            </body>
-                        </html>
-                    `;
-                    
-                    // Convertimos el HTML en un archivo en memoria
-                    const blob = new Blob([ghostContent], { type: 'text/html' });
-                    const blobUrl = URL.createObjectURL(blob);
-                    
-                    // 3. ABRIR EL ARCHIVO DE MEMORIA (McAfee ve esto como seguro)
-                    window.open(blobUrl, "_blank");
-
-                    // 4. INICIAR TU TIMER
-                    if(triggerZone) triggerZone.style.display = 'none';
-                    iniciarCuentaRegresiva(fileSize, itemTitle);
-                });
+            // 🔥 ESTRATEGIA CARGA FANTASMA 🔥
+            if (autoStart) {
+                // Ocultamos la zona del botón rojo. ¡Magia!
+                if(triggerZone) triggerZone.style.display = 'none';
+                iniciarCuentaRegresiva(fileSize, itemTitle, downloadLink);
+            } else {
+                // Modo Clásico (Fallback por seguridad, aunque ya no se usará)
+                if(triggerZone) triggerZone.style.display = 'flex';
+                const startLink = document.getElementById('start-gate-link');
+                if (startLink) {
+                    const newLink = startLink.cloneNode(true);
+                    startLink.parentNode.replaceChild(newLink, startLink);
+                    newLink.addEventListener('click', (e) => {
+                        e.preventDefault(); 
+                        if(triggerZone) triggerZone.style.display = 'none';
+                        iniciarCuentaRegresiva(fileSize, itemTitle, downloadLink);
+                    });
+                }
             }
         }
 
-        function iniciarCuentaRegresiva(fileSize, itemTitle) {
+        function iniciarCuentaRegresiva(fileSize, itemTitle, finalDownloadLink) {
             const btn = document.getElementById('proceed-download-btn');
             const titulo = document.getElementById('titulo-estado');
             
@@ -1239,17 +1178,29 @@
             btn.className = 'btn-espera'; // Clase roja
             btn.classList.remove('btn-listo'); // Asegurarnos que no sea verde
             
-            // 🚨 Re-creamos el botón clonado para limpiar eventos anteriores y poner el nuevo logger
+            // 🚨 RECREAMOS EL BOTÓN VERDE PARA EVITAR DOBLES EVENTOS Y PONER TRACKING
             const newBtn = btn.cloneNode(true);
             btn.parentNode.replaceChild(newBtn, btn);
             
             newBtn.addEventListener('click', () => {
                  if(!newBtn.disabled) {
-                     // 🚨 REGISTRAR CLIC EN BOTÓN VERDE (Conversión Final)
-                     if (typeof logActivity === 'function') logActivity('Descarga_Final', itemTitle || 'Desconocido', 'Usuario completó la espera y dio clic final (Verde)');
+                     // 🎯 REGISTRAR LA CONVERSIÓN FINAL (El usuario llegó a la meta)
+                     if (typeof logActivity === 'function') logActivity('Descarga_Final', itemTitle || 'Desconocido', 'Conversión Exitosa (Botón Verde)');
                      
+                     const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+                     const realAdLink = atob(AD_SECRET);
+
+                     if (isMobile) {
+                         // DOBLE ACCIÓN MÓVIL: Abre la publicidad y la descarga
+                         window.open(realAdLink, '_blank'); // Abre Adsterra
+                         setTimeout(() => {
+                             window.location.href = finalDownloadLink || currentDownloadLink; // Lo lleva a la descarga en la pestaña actual
+                         }, 100);
+                     } else {
+                         // PC: Descarga directa (ya vio el ad al inicio)
+                         window.open(finalDownloadLink || currentDownloadLink, '_blank');
+                     }
                      closeModal('download-gate-modal');
-                     if(currentDownloadLink) { window.open(currentDownloadLink, '_blank'); currentDownloadLink = null; }
                  }
             });
 
@@ -1334,14 +1285,11 @@
             }
         }
         
-        // ... (Keep existing modal button logic) ...
-        // Este bloque ya no es necesario porque la lógica está dentro de openGateModal/iniciarCuentaRegresiva
-
         // 🔥 VARIABLES GLOBALES 🔥
         // TU LINK DE DINERO (ID 28296445 - EL QUE SÍ PAGA)
         const LINK_MAESTRO = "https://honeywhyvowel.com/dqk32uhrai?key=e144383761d76e0d58c40c45c1d00ad6";
 
-        // 🔥 LOGICA SEGURA: SOLO ABRE EL MODAL (Paso 1) 🔥
+        // 🔥 LOGICA SEGURA: SOLO ABRE EL MODAL Y LA PUBLI (Paso 1) 🔥
         async function handleDownloadAction(e) {
             e.preventDefault(); 
             const btn = e.currentTarget;
@@ -1354,17 +1302,19 @@
                 return; 
             }
 
-            // ABRIR EL MODAL DE INMEDIATO (Sin trucos)
-            const gateVideo = btn.dataset.video;
-            const fileSize = btn.dataset.size;
-            
-            // Pasamos el título para el registro detallado
-            openGateModal(link, gateVideo, fileSize, title);
-
-            // Log de estadística (Paso 1: Intención)
+            // 1. REGISTRAR INTENCIÓN EN EL ADMIN (Paso 1)
             const itemRef = doc(db, `artifacts/${appId}/public/data/software-items`, id);
             updateDoc(itemRef, { downloads: increment(1) }).catch(console.error);
-            if (typeof logActivity === 'function') logActivity('Descarga', title || 'Desconocido', 'Usuario hizo clic en la ficha (Paso 1)');
+            if (typeof logActivity === 'function') logActivity('Descarga', title || 'Desconocido', 'Clic inicial en la ficha (Abre publi)');
+
+            // 2. DISPARAR LA PUBLICIDAD EN NUEVA PESTAÑA MÁGICAMENTE
+            const realAdLink = atob(AD_SECRET);
+            window.open(realAdLink, "_blank");
+
+            // 3. ABRIR EL MODAL DE INMEDIATO (Y arrancar el timer ocultando el botón rojo)
+            const customVideoUrl = btn.dataset.video; 
+            const fileSize = btn.dataset.size;
+            openGateModal(link, customVideoUrl, fileSize, title, true); // true = autoStart
         }
         
 
