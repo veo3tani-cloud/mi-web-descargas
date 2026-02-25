@@ -2679,19 +2679,22 @@ if(finalDate) dateStr = finalDate.toLocaleDateString('es-ES', { day: 'numeric', 
                 // 2. REGISTRAR VISITA Y DETECTAR ORIGEN DEL TRÁFICO 🕵️‍♂️
                 if (!sessionStorage.getItem('visita_registrada')) {
                     
-                    // Función cerebro para detectar de dónde viene el usuario
                     const getOrigen = () => {
+                        // 1. Primero buscamos si usaste un link "trampa" (Ej: ?ref=telegram)
+                        const urlParams = new URLSearchParams(window.location.search);
+                        const refParam = urlParams.get('ref') || urlParams.get('utm_source');
+                        if (refParam) return "Campaña: " + refParam.toUpperCase() + " 🎯";
+
+                        // 2. Si no hay link trampa, buscamos la huella del navegador
                         const ref = document.referrer.toLowerCase();
-                        if (!ref) return "Directo (App o URL) 📱"; // Si no hay rastro
+                        if (!ref) return "Directo o Privado (App/WhatsApp) 📱";
                         if (ref.includes('t.me') || ref.includes('telegram')) return "Telegram ✈️";
                         if (ref.includes('youtube.com') || ref.includes('youtu.be')) return "YouTube 🔴";
                         if (ref.includes('tiktok.com')) return "TikTok 🎵";
                         if (ref.includes('facebook.com') || ref.includes('fb.')) return "Facebook 📘";
                         if (ref.includes('instagram.com')) return "Instagram 📸";
                         if (ref.includes('google.')) return "Google Search 🔍";
-                        if (ref.includes('bing.com') || ref.includes('yahoo.com')) return "Otro Buscador 🔎";
                         
-                        // Si viene de otra página rara, saca el nombre de la página
                         try { return "Web: " + new URL(ref).hostname; } catch(e) { return "Otro sitio web 🔗"; }
                     };
 
@@ -2701,6 +2704,7 @@ if(finalDate) dateStr = finalDate.toLocaleDateString('es-ES', { day: 'numeric', 
                     if (typeof logActivity === 'function') {
                         logActivity('Visita', 'Página Principal', 'Origen: ' + origenTrafico);
                     }
+                    // Guardamos que ya lo contamos para no saturar la base de datos
                     sessionStorage.setItem('visita_registrada', 'true');
                 }
 
