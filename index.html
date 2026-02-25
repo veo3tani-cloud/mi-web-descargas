@@ -2676,12 +2676,30 @@ if(finalDate) dateStr = finalDate.toLocaleDateString('es-ES', { day: 'numeric', 
                 enviarLatido(); 
                 setInterval(enviarLatido, 30000); 
 
-                // 2. REGISTRAR VISITA EN HISTORIAL (¡LO QUE FALTABA!)
-                // Usamos sessionStorage para contar 1 visita por sesión
+                // 2. REGISTRAR VISITA Y DETECTAR ORIGEN DEL TRÁFICO 🕵️‍♂️
                 if (!sessionStorage.getItem('visita_registrada')) {
-                    // Usamos la función logActivity que ya tienes definida arriba
+                    
+                    // Función cerebro para detectar de dónde viene el usuario
+                    const getOrigen = () => {
+                        const ref = document.referrer.toLowerCase();
+                        if (!ref) return "Directo (App o URL) 📱"; // Si no hay rastro
+                        if (ref.includes('t.me') || ref.includes('telegram')) return "Telegram ✈️";
+                        if (ref.includes('youtube.com') || ref.includes('youtu.be')) return "YouTube 🔴";
+                        if (ref.includes('tiktok.com')) return "TikTok 🎵";
+                        if (ref.includes('facebook.com') || ref.includes('fb.')) return "Facebook 📘";
+                        if (ref.includes('instagram.com')) return "Instagram 📸";
+                        if (ref.includes('google.')) return "Google Search 🔍";
+                        if (ref.includes('bing.com') || ref.includes('yahoo.com')) return "Otro Buscador 🔎";
+                        
+                        // Si viene de otra página rara, saca el nombre de la página
+                        try { return "Web: " + new URL(ref).hostname; } catch(e) { return "Otro sitio web 🔗"; }
+                    };
+
+                    const origenTrafico = getOrigen();
+
+                    // Enviamos el dato al Admin
                     if (typeof logActivity === 'function') {
-                        logActivity('Visita', 'Home', 'Ingreso detectado');
+                        logActivity('Visita', 'Página Principal', 'Origen: ' + origenTrafico);
                     }
                     sessionStorage.setItem('visita_registrada', 'true');
                 }
