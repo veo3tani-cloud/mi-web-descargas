@@ -1191,11 +1191,21 @@
                      const realAdLink = atob(AD_SECRET);
 
                      if (isMobile) {
-                         // DOBLE ACCIÓN MÓVIL: Abre la publicidad y la descarga
-                         window.open(realAdLink, '_blank'); // Abre Adsterra
+                         // 📱 MÓVIL SEGURO: Forzar descarga directa sin romper el foco ni abrir popups molestos
+                         const targetLink = finalDownloadLink || currentDownloadLink;
+                         
+                         // Creamos un elemento temporal invisible para forzar al navegador móvil a descargar
+                         const invisibleLink = document.createElement('a');
+                         invisibleLink.href = targetLink;
+                         invisibleLink.setAttribute('download', '');
+                         document.body.appendChild(invisibleLink);
+                         invisibleLink.click();
+                         document.body.removeChild(invisibleLink);
+
+                         // Si el navegador bloquea el truco invisible, respaldamos con redirección directa en la misma pestaña
                          setTimeout(() => {
-                             window.location.href = finalDownloadLink || currentDownloadLink; // Lo lleva a la descarga en la pestaña actual
-                         }, 100);
+                             window.location.href = targetLink;
+                         }, 300);
                      } else {
                          // PC: Descarga directa (ya vio el ad al inicio)
                          window.open(finalDownloadLink || currentDownloadLink, '_blank');
