@@ -130,12 +130,23 @@
         .ai-chat-bubble.user { background-color: #3b82f6; color: white; border-bottom-right-radius: 0.25rem; align-self: flex-end; margin-left: auto; }
         .ai-chat-bubble.ai { background-color: #f3f4f6; color: #1f2937; border-bottom-left-radius: 0.25rem; align-self: flex-start; margin-right: auto; border: 1px solid #e5e7eb; }
         
-        /* SEARCH SUGGESTIONS (GOOGLE STYLE) */
-        #search-suggestions { position: absolute; bottom: 100%; left: 0; right: 0; background: white; border: 1px solid #cbd5e1; border-radius: 0.5rem; box-shadow: 0 -4px 6px -1px rgba(0, 0, 0, 0.1); max-height: 150px; overflow-y: auto; z-index: 50; display: none; margin-bottom: 4px; }
-        .suggestion-item { padding: 0.5rem 1rem; cursor: pointer; font-size: 0.9rem; color: #475569; border-bottom: 1px solid #f1f5f9; transition: background 0.2s; text-align: left; }
-        .suggestion-item:last-child { border-bottom: none; }
-        .suggestion-item:hover { background-color: #eff6ff; color: #2563eb; }
-        .suggestion-match { font-weight: bold; color: #2563eb; }
+        /* SEARCH SUGGESTIONS (GOOGLE STYLE - OPTIMIZADO MÓVIL) */
+#search-suggestions { 
+    position: absolute; 
+    top: 100%; /* Cambiado de bottom a top para que despliegue hacia abajo correctamente */
+    left: 0; 
+    right: 0; 
+    background: white; 
+    border: 1px solid #cbd5e1; 
+    border-radius: 0.5rem; 
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.15); 
+    max-height: 280px; /* Ampliado para mostrar más opciones sin necesidad de scroll forzoso */
+    overflow-y: auto; 
+    z-index: 100; /* Incrementado para asegurar que esté por encima de todo */
+    display: none; 
+    margin-top: 4px; 
+    -webkit-overflow-scrolling: touch; /* Scroll fluido nativo en iOS y Android */
+}
 
         /* 🔥 NUEVO ESTILO PARA SMART TAGS (Filtros Cápsula) */
         .smart-tag-btn { 
@@ -2358,12 +2369,15 @@ if(finalDate) dateStr = finalDate.toLocaleDateString('es-ES', { day: 'numeric', 
                     }
                 });
 
-                // Ocultar si clic fuera
-                document.addEventListener('mousedown', (e) => {
-                    if (!cleanInput.contains(e.target) && !boxSuggestions.contains(e.target)) {
-                        boxSuggestions.style.display = 'none';
-                    }
-                });
+                // Ocultar si clic fuera (Soporte táctil y de mouse mejorado)
+const handleOutsideClick = (e) => {
+    if (boxSuggestions && !cleanInput.contains(e.target) && !boxSuggestions.contains(e.target)) {
+        boxSuggestions.style.display = 'none';
+    }
+};
+
+document.addEventListener('mousedown', handleOutsideClick);
+document.addEventListener('touchstart', handleOutsideClick, { passive: true });
             }
         }
 
