@@ -133,19 +133,18 @@
         /* SEARCH SUGGESTIONS (GOOGLE STYLE - OPTIMIZADO MÓVIL) */
 #search-suggestions { 
     position: absolute; 
-    top: 100%; /* Cambiado de bottom a top para que despliegue hacia abajo correctamente */
+    bottom: 100%; /* Despliega hacia arriba del input */
     left: 0; 
     right: 0; 
     background: white; 
     border: 1px solid #cbd5e1; 
     border-radius: 0.5rem; 
-    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.15); 
-    max-height: 280px; /* Ampliado para mostrar más opciones sin necesidad de scroll forzoso */
+    box-shadow: 0 -4px 6px -1px rgba(0, 0, 0, 0.1); 
+    max-height: 200px; 
     overflow-y: auto; 
-    z-index: 100; /* Incrementado para asegurar que esté por encima de todo */
+    z-index: 99999; /* Super alto para que nunca se esconda */
     display: none; 
-    margin-top: 4px; 
-    -webkit-overflow-scrolling: touch; /* Scroll fluido nativo en iOS y Android */
+    margin-bottom: 4px; 
 }
 
         /* 🔥 NUEVO ESTILO PARA SMART TAGS (Filtros Cápsula) */
@@ -771,7 +770,7 @@
             <div id="ai-chat-messages" class="flex-grow flex flex-col p-4 space-y-2 overflow-y-auto bg-white">
                 <div class="ai-chat-bubble ai">Hola, soy DUV. ¿Qué buscas hoy?</div>
             </div>
-            <div class="p-4 border-t border-slate-200 bg-slate-50 relative">
+            <div class="p-4 border-t border-slate-200 bg-slate-50 relative" style="overflow: visible !important;">
                 <div id="ai-chat-error" class="hidden text-sm text-red-600 bg-red-100 p-3 rounded-lg mb-3"></div>
                 <form id="ai-chat-form" class="flex items-center gap-3" onsubmit="event.preventDefault();">
                     <div class="relative flex-grow">
